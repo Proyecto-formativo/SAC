@@ -1,0 +1,60 @@
+body {
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.contenido-login {
+  padding: 2rem 5rem;
+  background-color: #eee;
+  width: 31.25em;
+}
+.divlogin {
+  width: 762px;
+  height: 762px;
+  border: 1px solid;
+}
+.contenido-login div a {
+  font-size: 0.8rem;
+}
+.logosena {
+  width: 218px;
+  height: 217px;
+  margin: auto;
+}
+
+.logosena img {
+  width: 218px;
+}
+.btn-login {
+  background-color: #fc7323;
+  color: #fff;
+  font-weight: bold;
+}
+.btn-login:focus {
+  box-shadow: none;
+}
+.btn-login:hover {
+  background-color: #da6826;
+  color: #fff;
+}
+.error {
+  position: fixed;
+  top: -50px;
+  width: 100%;
+  text-align: center;
+  animation: animate 5s;
+}
+
+@keyframes animate {
+  0% {
+    top: -10px;
+  }
+  20% {
+    top: 0px;
+  }
+  50% {
+    top: 0px;
+  }
+  100% {
+    top: -50px;
+  }
+}

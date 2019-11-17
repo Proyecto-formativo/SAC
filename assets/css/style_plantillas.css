@@ -1,0 +1,147 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.style-flex {
+  background: linear-gradient(45deg, #249784, #249762);
+  width: 100%;
+  padding: 10px;
+  justify-content: space-around;
+  position: fixed;
+  right: 0px;
+  left: 0px;
+  z-index: 3;
+  height: 70px;
+}
+.style-img {
+  width: 150px;
+  height: 70px;
+}
+.st-text {
+  font-size: 20px !important;
+}
+
+/* estilos del menu y los botones */
+.style-contenido {
+  display: flex;
+  /* height: calc(100vh - 30px); */
+  position: fixed;
+  top: 70px;
+  left: 0;
+  bottom: 0;
+  width: 16%;
+  z-index: 3;
+  background: linear-gradient(#249784, #249762);
+}
+
+.style-navegacion {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+/* focus para quitar la sombra que viene por defecto con bootstrap */
+.btn:focus {
+  box-shadow: none;
+}
+
+.botoncito {
+  color: #fff;
+  text-align: center;
+}
+.botoncito:hover {
+  color: #fff;
+}
+.style-botones {
+  color: #fff;
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.style-botones:hover {
+  color: #fff;
+  background: #249762;
+}
+.btn4 {
+  padding: 0 !important;
+}
+/* estilos a la linea inferior del menu */
+hr {
+  width: 80%;
+  margin: 0 auto;
+  border-top: 1px solid white;
+}
+.style-change {
+  position: fixed;
+  top: 70px;
+  left: 16%;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url(../images_sac/fondo_index.png);
+  /* background-attachment: fixed; */
+  background-position-x: 100%;
+  background-attachment: inherit;
+  width: 83.98%;
+  height: 100%;
+}
+/* contenido de estilo que cambia dependiendo de las opciones del usuario */
+.style-float {
+  /* word-break: break-all; */
+  margin: 35px auto;
+  background: rgba(255, 255, 255, 0.876);
+  padding: 20px 20px 40px 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  position: absolute;
+  width: 69em;
+  left: 21em;
+  top: 7em;
+}
+.people {
+  border-top: 1px solid;
+  text-align: end;
+}
+.people p {
+  margin-bottom: 0;
+}
+.error {
+  position: fixed;
+  top: -70px;
+  width: 100%;
+  height: 70px;
+  text-align: center;
+  z-index: 99;
+  animation: animate2 5s;
+}
+.style-mensaje{
+  height: 69px;
+}
+
+@keyframes animate2 {
+  0% {
+    top: -30px;
+  }
+  20% {
+    top: 0px;
+  }
+  50% {
+    top: 0px;
+  }
+  100% {
+    top: -100px;
+  }
+}
+textarea{
+  height: 0;
+
+}
+.style-textareaficha{
+  max-height: 100px;
+  height: 58px!important;
+}
+.style-textareaficha-bienestar{
+  height: 250px!important;
+}
+.style-textareaficha-bienestarho2{
+  max-height: 100px;
+  height: 58px!important;
+}
