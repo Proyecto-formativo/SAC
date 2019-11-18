@@ -2,7 +2,7 @@
     <?=$header?>
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
-<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script>
+<!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script>-->
 </head>
 <body>
 
@@ -20,53 +20,28 @@
 <nav>
     <div class="style-contenido">
         <div class="style-navegacion">
+
+
+        <!-- Boton Administrar -->
+        <div class="dbtn-group dropright style-botones botoncito">
+                <button class="btn botoncito dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Administrar
+                </button>
+
+                <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/sugerencia'); ?>" id="btn-2" class="dropdown-item">Sugerencia</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fin Boton Administrar -->
+
             <a href="<?=base_url('Administrador/lodelsebas')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
                 <button type="button" id="btn-1" class="btn botoncito">Acta comite </button> <i class="far fa-bell"></i>
                 </div>
             </a>
-
-            <div class="dbtn-group dropright style-botones botoncito">
-                <button class="btn botoncito dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Reportes Generales
-                </button>
-
-                <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Aprendices Citados Por Ficha Y Programa</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Areas Que Realizan Más Citaciones A Comité</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité Por Materia</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Equipo Ejecutor Por Ficha</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Instructor Que Realiza Más Citaciones Por Programa De Foración</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Aprendices Citados Por Ficha Y Programa</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité En El Año</button>
-                    </div>
-                </div>
-            </div>
-
-
-
 
             <a href="<?=base_url('Administrador/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Administrador extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso']);
+		$this->load->model(['usuario','acceso', 'sugerencia']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 	}
@@ -130,4 +130,176 @@ class Administrador extends CI_Controller {
             show_404();
         }
     }
+
+    /*Control ==== Administracion Sugerencia ==== */
+    public function sugerencia(){
+        if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 5) {
+            $data['sugerencias'] = $this->sugerencia->MostrarSuegerencia();
+            $dinamica = $this->load->view('content/Administrador/sugerencia/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        }else{
+            show_404();
+        }
+    }
+
+    public function FrmAgregarSugerencia() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/sugerencia/agregar', '',true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarSugerencia() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+
+            $this->form_validation->set_rules('sugerencia', 'Sugerencia','trim|required');
+
+            if ($this->form_validation->run() == false) {
+                $dinamica = $this->load->view('content/Administrador/sugerencia/agregar', '',true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $nombre = $this->input->post('sugerencia');
+                $resultado = $this->sugerencia->agregarSugerencia($nombre);
+
+                if ($resultado) {
+                    $data['sugerencias'] = $this->sugerencia->MostrarSuegerencia();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Sugerencia Agregada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/sugerencia/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarSugerencia($codigo) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['sugerencia'] = $this->sugerencia->getSugerencia($codigo);
+            $dinamica = $this->load->view('content/Administrador/sugerencia/editar',$data,true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarSugerencia() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $codigo = $this->input->post('codigo');
+            $nombre = $this->input->post('sugerencia');
+
+            $this->form_validation->set_rules('sugerencia', 'Sugerencia', 'trim|required');
+
+            if ($this->form_validation->run() == false) {
+                
+                $data['sugerencia'] = $this->sugerencia->getSugerencia($codigo);
+                $dinamica = $this->load->view('content/Administrador/sugerencia/editar',$data,true);
+                $this->Plantilla_Administrador($dinamica);
+
+            } else {
+
+                $resultado = $this->sugerencia->editarSugerencia($codigo, $nombre);
+                
+                if ($resultado) {
+                    $data['sugerencias'] = $this->sugerencia->MostrarSuegerencia();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Sugerencia Editada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/sugerencia/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+               
+            }
+        }
+    }
+
+    public function eliminarSugerencia() {
+
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+
+            $codigo = $this->input->post('codigo');
+
+            $resultado = $this->sugerencia->eliminarSugerencia($codigo);
+            
+
+            if ($resultado) {
+                $data['sugerencias'] = $this->sugerencia->MostrarSuegerencia();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Sugerencia Eliminada'
+                })";
+                $dinamica = $this->load->view('content/Administrador/sugerencia/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['sugerencias'] = $this->sugerencia->MostrarSuegerencia();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                Toast.fire({
+                    icon: 'error',
+                    title: 'La Sugerencia no se puede eliminar porque hay registros asociados a esta'
+                })";
+                $dinamica = $this->load->view('content/Administrador/sugerencia/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+
+            
+        }
+
+        
+        
+    }
+    // Fin Control Administracion Sugerencia
 }
