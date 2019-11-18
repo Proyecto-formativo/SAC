@@ -145,3 +145,8 @@ textarea{
   max-height: 100px;
   height: 58px!important;
 }
+
+.bg-sena {
+	background: #249784 !important;
+	color: #fff !important;
+}
