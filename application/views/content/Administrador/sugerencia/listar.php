@@ -1,7 +1,7 @@
 <div class="container">
   <a href="<?= base_url('Administrador/FrmAgregarSugerencia'); ?>" class="btn bg-sena mb-3">Agregar</a>
   
-  <table id="example" class="table table-striped table-bordered mt-3" style="width:100%">
+  <table id="sugerencia" class="table table-striped table-bordered mt-3" style="width:100%">
         <thead>
             <tr>
                 <th>Codigo</th>
@@ -42,7 +42,7 @@
       <form action="<?php echo base_url('Administrador/eliminarSugerencia'); ?>" method="POST">
         <input type="hidden" id="codigo_sugerencia" name="codigo">
         <div class="modal-body">
-          Esta seguro de eliminar esta recomendacion?
+          Esta seguro de eliminar esta Sugerencia?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn bg-sena" data-dismiss="modal">Cancelar</button>

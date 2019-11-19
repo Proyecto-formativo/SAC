@@ -32,6 +32,18 @@
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/sugerencia'); ?>" id="btn-2" class="dropdown-item">Sugerencia</a>
                     </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/recomendacion'); ?>" id="btn-2" class="dropdown-item">Recomendación</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/municipio'); ?>" id="btn-2" class="dropdown-item">Municipio</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/etapaformacion'); ?>" id="btn-2" class="dropdown-item">Etapa Formación</a>
+                    </div>
                 </div>
             </div>
 
