@@ -1,8 +1,7 @@
 <div class="container">
+  <a href="<?= base_url('Administrador/FrmAgregarEtapaProyecto'); ?>" class="btn bg-sena">Agregar</a>
 
-<a href="<?= base_url('Administrador/FrmAgregarEtapaFormacion'); ?>" class="btn bg-sena">Agregar</a>
-
-  <table id="etapasformacion" class="table table-striped table-bordered mt-3" style="width:100%">
+  <table id="etapasproyecto" class="table table-striped table-bordered mt-3" style="width: 100%;">
     <thead>
       <tr>
         <th>Codigo</th>
@@ -13,25 +12,24 @@
     </thead>
 
     <tbody>
-      <?php foreach($etapasformacion->result() as $etapaformacion) : ?>
+      <?php foreach ($etapasproyecto->result() as $etapaproyecto) : ?>
         <tr>
-          <td><?= $etapaformacion->codigo; ?></td>
-          <td><?= $etapaformacion->nombre; ?></td>
-          <td><a href="<?php echo base_url('Administrador/FrmEditarEtapaFormacion/' . $etapaformacion->codigo); ?>" class="btn bg-sena">Editar</a></td>
+          <td><?= $etapaproyecto->codigo; ?></td>
+          <td><?= $etapaproyecto->nombre; ?></td>
+          <td><a href="<?= base_url('Administrador/FrmEditarEtapaProyecto/' . $etapaproyecto->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>
-            <button type="button" class="btn btn-danger eliminarEtapaFormacion" data-toggle="modal">
+            <button type="button" class="btn btn-danger eliminarEtapaProyecto" data-toggle="modal">
               Eliminar
             </button>
           </td>
         </tr>
-      <?php endforeach;?>
+      <?php endforeach; ?>
     </tbody>
   </table>
-
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="eliminarEtapaFormacionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="eliminarEtapaProyectoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -40,10 +38,10 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="<?php echo base_url('Administrador/eliminarEtapaFormacion'); ?>" method="POST">
-        <input type="hidden" id="codigo_etapaformacion" name="codigo">
+      <form action="<?php echo base_url('Administrador/eliminarEtapaProyecto'); ?>" method="POST">
+        <input type="hidden" id="codigo_etapaproyecto" name="codigo">
         <div class="modal-body">
-          Esta seguro de eliminar esta Etapa Formación?
+          Esta seguro de eliminar esta Etapa Proyecto?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn bg-sena" data-dismiss="modal">Cancelar</button>

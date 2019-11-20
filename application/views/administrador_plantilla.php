@@ -44,6 +44,26 @@
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/etapaformacion'); ?>" id="btn-2" class="dropdown-item">Etapa Formación</a>
                     </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/etapaproyecto'); ?>" id="btn-2" class="dropdown-item">Etapa Proyecto</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/estadoinstructor'); ?>" id="btn-2" class="dropdown-item">Estado Instructor</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/estadoaprendiz'); ?>" id="btn-2" class="dropdown-item">Estado Aprendiz</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/centros'); ?>" id="btn-2" class="dropdown-item">Centro</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/sedes'); ?>" id="btn-2" class="dropdown-item">Sede</a>
+                    </div>
                 </div>
             </div>
 
