@@ -19,7 +19,7 @@
       <label for="">Centro:</label>
       <select name="centro" class="form-control">
         <?php foreach($centros->result() as $centro) : ?>
-          <option value="<?= $centro->codigo; ?>"><?= $centro->nombre; ?></option>
+          <option value="<?= $centro->codigo; ?>" <?= set_select('centro', $centro->codigo); ?>><?= $centro->nombre; ?></option>
         <?php endforeach; ?>
       </select>
     </div>

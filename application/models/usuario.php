@@ -28,4 +28,9 @@ class usuario extends CI_Model{
         $sql = $this->db->query("SELECT u.docId,u.nombres, u.apellidos,af.numFicha from tblaprendicesficha as af inner join tblusuario as u on u.docID = af.docIDaprendiz where numficha = $ficha");
         return $sql;
     }
+
+    public function getCoordinadores() {
+        $sql = $this->db->query("SELECT docID AS documento, CONCAT(nombres, ' ', apellidos) AS coordinador FROM tblusuario WHERE perfil = 2 ORDER BY CONCAT(nombres, ' ', apellidos)");
+        return $sql;
+    }
 }

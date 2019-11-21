@@ -35,7 +35,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar Centro</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Sede</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -43,7 +43,7 @@
       <form action="<?php echo base_url('Administrador/eliminarSede'); ?>" method="POST">
         <input type="hidden" id="codigo_sede" name="codigo">
         <div class="modal-body">
-          Esta seguro de eliminar el Centro?
+          Esta seguro de eliminar el Sede?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn bg-sena" data-dismiss="modal">Cancelar</button>

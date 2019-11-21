@@ -3,10 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Administrador extends CI_Controller {
 	public function __construct(){
-		parent::__construct();
-		$this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede']);
-		$this->load->library(['form_validation']);
+        parent::__construct();
+        //Carga de los Modelos Requeridos en el perfil de Administrador
+        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha']);
+        
+        //Carga de la libreria para la validación de formularios
+        $this->load->library(['form_validation']);
+        
+        //Carga del helper Validar Perfil
         $this->load->helper(['validarPerfil']);
+
+        //Carga de la Base de Datos
         $this->load->database();
 	}
 
@@ -325,7 +332,7 @@ class Administrador extends CI_Controller {
 
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
 
-            $this->form_validation->set_rules('recomendacion', 'Recomendación', 'trim|required|alpha');
+            $this->form_validation->set_rules('recomendacion', 'Recomendación', 'trim|required');
             
             if ($this->form_validation->run() == false) {
                 $dinamica = $this->load->view('content/Administrador/recomendacion/agregar', '', true);
@@ -2053,6 +2060,694 @@ class Administrador extends CI_Controller {
     }
     /*==== Fin Control Administracion Sede ==== */
 
+    /* 
+    
+        ==================================================================================================
 
+    */
+
+    /*==== Control Administracion Niveles de Formación ==== */
+    public function niveles() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['niveles'] = $this->nivel->mostrarNiveles();
+            $dinamica = $this->load->view('content/Administrador/nivel/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarNivel() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+
+            if ($this->form_validation->run() == false) {
+                $dinamica = $this->load->view('content/Administrador/nivel/agregar', '', true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+
+                $nombre = $this->input->post('nombre');
+                $resultado = $this->nivel->agregarNivel($nombre);
+
+                if ($resultado) {
+                    $data['niveles'] = $this->nivel->mostrarNiveles();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Nivel Agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/nivel/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+
+                    $data['niveles'] = $this->nivel->mostrarNiveles();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Nivel no Agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/nivel/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                }
+
+            }
+
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarNivel() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == true) {
+            
+            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+
+            if ($this->form_validation->run() == false) {
+                $codigo = $this->input->post('codigo');
+                $data['nivel'] = $this->nivel->getNivel($codigo);
+                $dinamica = $this->load->view('content/Administrador/nivel/editar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $codigo = $this->input->post('codigo');
+                $nombre = $this->input->post('nombre');
+                $resultado = $this->nivel->editarNivel($codigo, $nombre);
+
+                if ($resultado) {
+                    $data['niveles'] = $this->nivel->mostrarNiveles();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Nivel Editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/nivel/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['niveles'] = $this->nivel->mostrarNiveles();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Nivel no Editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/nivel/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarNivel() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $codigo = $this->input->post('codigo');
+            $resultado = $this->nivel->eliminarNivel($codigo);
+
+            if ($resultado) {
+                $data['niveles'] = $this->nivel->mostrarNiveles();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Nivel Eliminado'
+                })";
+                $dinamica = $this->load->view('content/Administrador/nivel/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+
+            } else {
+                $data['niveles'] = $this->nivel->mostrarNiveles();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar el Nivel porque hay registros asociados a este'
+                })";
+                $dinamica = $this->load->view('content/Administrador/nivel/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        }
+    }
+
+    //Carga de Vistas Formularios Nivel
+    public function FrmAgregarNivel() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/nivel/agregar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarNivel($codigo) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['nivel'] = $this->nivel->getNivel($codigo);
+            $dinamica = $this->load->view('content/Administrador/nivel/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+
+    }
+    /*==== Fin Control Administracion Niveles de Formación ==== */
+
+    /* 
+    
+        ==================================================================================================
+
+    */
+
+    /*==== Control Administracion Áreas ==== */
+    public function areas() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['areas'] = $this->area->mostrarAreas();
+            $dinamica = $this->load->view('content/Administrador/area/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarArea() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('codigo', 'Codigo', 'trim|required|numeric|max_length[6]|is_unique[tblarea.codigo]');
+            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarArea();
+            } else {
+                $datos = array(
+                    'codigo_area' => $this->input->post('codigo'),
+                    'nombre' => $this->input->post('nombre'),
+                    'codigo_centro' => $this->input->post('centro'),
+                    'docid_coordinador' => $this->input->post('coordinador') 
+                );
+
+                $resultado = $this->area->agregarArea($datos);
+
+                if ($resultado) {
+                $data['areas'] = $this->area->mostrarAreas();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Área agregada'
+                })";
+                $dinamica = $this->load->view('content/Administrador/area/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['areas'] = $this->area->mostrarAreas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Área no agregada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/area/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarArea() {
+
+        $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+
+        if ($this->form_validation->run() == false) {
+            $codigo = $this->input->post('codigo');
+            $this->FrmEditarArea($codigo);
+        } else {
+            $datos = array(
+                'codigo_area' => $this->input->post('codigo'),
+                'nombre' => $this->input->post('nombre'),
+                'codigo_centro' => $this->input->post('centro'),
+                'docid_coordinador' => $this->input->post('coordinador')
+            );
+
+            $resultado = $this->area->editarArea($datos);
+
+            if ($resultado) {
+                $data['areas'] = $this->area->mostrarAreas();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Área editada'
+                })";
+                $dinamica = $this->load->view('content/Administrador/area/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['areas'] = $this->area->mostrarAreas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Área no editada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/area/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+
+        }
+    }
+
+    public function eliminarArea() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $codigo = $this->input->post('codigo');
+            $resultado = $this->area->eliminarArea($codigo);
+
+            if ($resultado) {
+                $data['areas'] = $this->area->mostrarAreas();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Área eliminada'
+                })";
+                $dinamica = $this->load->view('content/Administrador/area/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['areas'] = $this->area->mostrarAreas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'No se puede eliminar el Área porque hay registros asociados a esta'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/area/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Área
+    public function FrmAgregarArea() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['coordinadores'] = $this->usuario->getCoordinadores();
+            $data['centros'] = $this->centro->mostrarCentros();
+            $dinamica = $this->load->view('content/Administrador/area/agregar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarArea($codigo) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['area'] = $this->area->getArea($codigo);
+            $data['coordinadores'] = $this->usuario->getCoordinadores();
+            $data['centros'] = $this->centro->mostrarCentros();
+            $dinamica = $this->load->view('content/Administrador/area/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Áreas ==== */
+
+    /* 
+    
+        ==================================================================================================
+
+    */
+
+    /*==== Control Administracion Programas ==== */
+    public function programas() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['programas'] = $this->programa->mostrarProgramas();
+            $dinamica = $this->load->view('content/Administrador/programa/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarPrograma() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('codigo', 'Codigo', 'trim|required|numeric|max_length[10]|is_unique[tblprograma.codigo]');
+            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+            $this->form_validation->set_rules('proyecto', 'Proyecto Formativo', 'trim|required');
+
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarPrograma();
+            } else {
+                $datos = array(
+                    'codigo' => $this->input->post('codigo'),
+                    'nombre' => $this->input->post('nombre'),
+                    'nivel' => $this->input->post('nivel'),
+                    'area' => $this->input->post('area'),
+                    'proyecto' => $this->input->post('proyecto')
+                );
+
+                $resultado = $this->programa->agregarPrograma($datos);
+
+                if ($resultado) {
+                $data['programas'] = $this->programa->mostrarProgramas();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Programa agregado'
+                })";
+                $dinamica = $this->load->view('content/Administrador/programa/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['programas'] = $this->programa->mostrarProgramas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Programa no agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/programa/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }                
+            }
+        }
+    }
+
+    public function editarPrograma() {
+
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+            $this->form_validation->set_rules('proyecto', 'Proyecto Formativo', 'trim|required');
+
+            if ($this->form_validation->run() == false) {
+                $codigo = $this->input->post('codigo');
+                $data['niveles'] = $this->nivel->mostrarNiveles();
+                $data['areas'] = $this->area->mostrarAreas();
+                $data['programa'] = $this->programa->getPrograma($codigo);
+                $dinamica = $this->load->view('content/Administrador/programa/editar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $datos = array(
+                    'codigo' => $this->input->post('codigo'),
+                    'nombre' => $this->input->post('nombre'),
+                    'nivel' => $this->input->post('nivel'),
+                    'area' => $this->input->post('area'),
+                    'proyecto' => $this->input->post('proyecto')
+                );
+
+                $resultado = $this->programa->editarPrograma($datos);
+
+                if ($resultado) {
+                    $data['programas'] = $this->programa->mostrarProgramas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Programa editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/programa/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['programas'] = $this->programa->mostrarProgramas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Programa no editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/programa/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }                
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarPrograma() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $codigo = $this->input->post('codigo');
+            $resultado = $this->programa->eliminarPrograma($codigo);
+
+            if ($resultado) {
+                    $data['programas'] = $this->programa->mostrarProgramas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Programa eliminado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/programa/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['programas'] = $this->programa->mostrarProgramas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'No se puede eliminar el Programa porque hay registros asociados a este'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/programa/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }                
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Programa
+    public function FrmAgregarPrograma() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['niveles'] = $this->nivel->mostrarNiveles();
+            $data['areas'] = $this->area->mostrarAreas();
+            $dinamica = $this->load->view('content/Administrador/programa/agregar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarPrograma($codigo) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['niveles'] = $this->nivel->mostrarNiveles();
+            $data['areas'] = $this->area->mostrarAreas();
+            $data['programa'] = $this->programa->getPrograma($codigo);
+            $dinamica = $this->load->view('content/Administrador/programa/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        }
+    }
+    /*==== Fin Control Administracion Programas ==== */
+
+    /* 
+    
+        ==================================================================================================
+
+    */
+
+    /*==== Control Administracion Fichas ==== */
+    public function fichas() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['fichas'] = $this->ficha->listarFichas();
+            $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Fichas ==== */
 
 }
