@@ -5,6 +5,7 @@ class usuario extends CI_Model{
         $this->load->database();
     }
 
+    //Mostrar Datos de Usuario para el perfil de instructor
     public function MostrarDatosUsuario($docuemnto){
         $sql = $this->db->get_where('tblusuario',['docID'=>$docuemnto]);
         if ($sql->result()) {
@@ -29,13 +30,24 @@ class usuario extends CI_Model{
         return $sql;
     }
 
+    //Mostrar Coordinadores en la lista desplegable del modulo Area
     public function getCoordinadores() {
         $sql = $this->db->query("SELECT docID AS documento, CONCAT(nombres, ' ', apellidos) AS coordinador FROM tblusuario WHERE perfil = 2 ORDER BY CONCAT(nombres, ' ', apellidos)");
         return $sql;
     }
 
+    //Mostrar Instructores en la lista desplegable del modulo Ficha
     public function getInstructores() {
         $sql = $this->db->query("SELECT docID AS documento, CONCAT(nombres, ' ', apellidos) AS instructor FROM tblusuario WHERE perfil = 1 ORDER BY CONCAT(nombres, ' ', apellidos)");
         return $sql;
     }
+
+    //Mostrar Usuarios que tengan el perfil de Administrador
+    public function mostrarAdministradores() {
+        $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo WHERE u.perfil = 5 ORDER BY p.nombre");
+        return $sql;
+    }
+    //Mostrar Usuarios que tengan el perfil de Coordinador
+    //Mostrar Usuarios que tengan el perfil de Instructor
+    //Mostrar Usuarios que tengan el perfil de Aprendiz
 }

@@ -2,7 +2,7 @@
     <?=$header?>
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
-<!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script>-->
+<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -80,16 +80,25 @@
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/fichas'); ?>" id="btn-2" class="dropdown-item">Fichas</a>
                     </div>
+
                 </div>
             </div>
 
             <!-- Fin Boton Administrar -->
 
-            <a href="<?=base_url('Administrador/lodelsebas')?>" id="btn-4" class="btn botoncito btn4">
-                <div class="style-botones ">
-                <button type="button" id="btn-1" class="btn botoncito">Acta comite </button> <i class="far fa-bell"></i>
+            <!-- Administración de Usuarios -->
+            <div class="dbtn-group dropright style-botones botoncito">
+                <button class="btn botoncito dropdown-toggle " type="button" id="dropdownMenuUsuarios" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Usuarios
+                </button>
+
+                <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuUsuarios">
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/administradores'); ?>" id="btn-2" class="dropdown-item">Administradores</a>
+                    </div>
                 </div>
-            </a>
+            </div>
+            <!-- Fin Administración de Usuarios -->
 
             <a href="<?=base_url('Administrador/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">

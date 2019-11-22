@@ -106,7 +106,7 @@ class Instructor extends CI_Controller {
                 $ruta = 'assets/documentos/';
                 $config = [
                     'upload_path' => './assets/documentos/',
-                    'allowed_types' => 'docx|jpg|png|txt|doc',
+                    'allowed_types' => 'docx|jpg|png|txt|doc|pdf|rar|zip',
                 ];
                 $this->load->library('upload',$config);
 

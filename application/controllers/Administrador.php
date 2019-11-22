@@ -2986,4 +2986,22 @@ class Administrador extends CI_Controller {
     }
     /*==== Fin Control Administracion Fichas ==== */
 
+    /* 
+    
+        ==================================================================================================
+
+    */
+
+    /*==== Control Administracion Usuarios ==== */
+    public function administradores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['administradores'] = $this->usuario->mostrarAdministradores();
+            $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Usuarios ==== */
+
 }

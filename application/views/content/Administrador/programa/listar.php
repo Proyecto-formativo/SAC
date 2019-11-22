@@ -1,6 +1,7 @@
 <div class="container">
   <a href="<?= base_url('Administrador/FrmAgregarPrograma'); ?>" class="btn bg-sena">Agregar</a>
 
+<div class="table-responsive">
   <table id="programa" class="table table-striped table-bordered mt-3" style="width: 100%;">
     <thead>
       <tr>
@@ -32,6 +33,7 @@
       <?php endforeach; ?>
     </tbody>
   </table>
+</div>  
 </div>
 
 <!-- Modal -->

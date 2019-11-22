@@ -1,6 +1,7 @@
 <div class="container">
   <a href="<?= base_url('Administrador/FrmAgregarFicha'); ?>" class="btn bg-sena">Agregar</a>
   <div>
+    <div class="table-responsive">
     <table id="ficha" class="table table-striped table-bordered mt-3" style="width: 100%; overflow-x: scroll;">
       <thead>
         <tr>
@@ -11,6 +12,8 @@
           <th>Etapa Proyecto</th>
           <th>Instructor Lider</th>
           <th>Horario</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
           <th>Editar</th>
           <th>Eliminar</th>
         </tr>
@@ -26,6 +29,8 @@
             <td><?= $ficha->etapaproyecto; ?></td>
             <td><?= $ficha->instructorlider ?></td>
             <td><?= $ficha->horainicio; ?> a <?=$ficha->horafin; ?></td>
+            <td><?= $ficha->fechainicio?></td>
+            <td><?= $ficha->fechafinal?></td>
             <td><a href="<?= base_url('Administrador/FrmEditarFicha/' . $ficha->nroficha); ?>" class="btn bg-sena">Editar</a></td>
             <td>
               <button type="button" class="btn btn-danger eliminarFicha" data-toggle="modal">
@@ -36,6 +41,7 @@
         <?php endforeach; ?>
       </tbody>
     </table>
+    </div>
   </div>
 </div>
 
