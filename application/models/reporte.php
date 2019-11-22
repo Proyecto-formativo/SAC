@@ -26,14 +26,13 @@ class reporte extends CI_Model{
 	public function Consult_general_coor(){
 
 		$sql = $this->db->query("SELECT af.numFicha,p.nombre,r.fecha,r.consecutivo
-                          FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar 
-                          ON ar.consReporte=r.consecutivo 
-                          INNER JOIN tblaprendicesficha as af ON af.docIDAprendiz=ar.docIDAprendiz
-                          INNER JOIN tblficha as f ON f.nroFicha=af.numFicha
-                          INNER JOIN tblprograma as p ON p.codigo=f.programa 
-                          GROUP BY r.consecutivo ");
-
-		return $sql->result_object();
+        FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar 
+        ON ar.consReporte=r.consecutivo 
+        INNER JOIN tblaprendicesficha as af ON af.docIDAprendiz=ar.docIDAprendiz
+        INNER JOIN tblficha as f ON f.nroFicha=af.numFicha
+        INNER JOIN tblprograma as p ON p.codigo=f.programa 
+        GROUP BY r.consecutivo ");
+		return $sql;
 	}
 
 	public function Consult_especifica($consec){
