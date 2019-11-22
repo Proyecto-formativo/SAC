@@ -95,7 +95,7 @@ class Instructor extends CI_Controller {
                       
                       Toast.fire({
                         icon: 'error',
-                        title: 'No se puede generar un reporte si no ha selecconado aprendices'
+                        title: 'No se puede generar un reporte si no ha seleccionado aprendices'
                       })",
                 ];
                 $this->reporte($mensaje);
@@ -106,7 +106,7 @@ class Instructor extends CI_Controller {
                 $ruta = 'assets/documentos/';
                 $config = [
                     'upload_path' => './assets/documentos/',
-                    'allowed_types' => 'docx|jpg|png|txt',
+                    'allowed_types' => 'docx|jpg|png|txt|doc',
                 ];
                 $this->load->library('upload',$config);
 

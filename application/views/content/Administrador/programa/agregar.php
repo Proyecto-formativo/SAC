@@ -49,9 +49,7 @@
 
     <div class="form-group">
       <label for="">Proyecto Formativo:</label>
-      <textarea name="proyecto" cols="30" rows="3" class="form-control">
-        <?= set_value('proyecto'); ?>    
-      </textarea>
+      <textarea name="proyecto" cols="30" rows="3" class="form-control"><?= set_value('proyecto'); ?></textarea>
       <?= form_error('proyecto', '<p class="text-danger">', '</p>'); ?>
     </div>
 

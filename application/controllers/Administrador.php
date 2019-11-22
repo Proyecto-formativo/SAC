@@ -2748,6 +2748,242 @@ class Administrador extends CI_Controller {
             show_404();
         }
     }
+
+    public function agregarFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('nro_ficha', 'Nro. Ficha', 'trim|required|numeric|max_length[12]|is_unique[tblficha.nroFicha]');
+            $this->form_validation->set_rules('fecha_inicio', 'Fecha Inicio', 'trim|required');
+            $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'trim|required');
+            $this->form_validation->set_rules('hora_inicio', 'Hora Inicio', 'trim|required');
+            $this->form_validation->set_rules('hora_fin', 'Hora Fin', 'trim|required');
+            
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarFicha();
+            } else {
+                $datos = array(
+                    'nro_ficha' => $this->input->post('nro_ficha'),
+                    'fecha_inicio' => $this->input->post('fecha_inicio'),
+                    'fecha_final' => $this->input->post('fecha_final'),
+                    'programa' => $this->input->post('programa'),
+                    'municipio' => $this->input->post('municipio'),
+                    'hora_inicio' => $this->input->post('hora_inicio'),
+                    'hora_fin' => $this->input->post('hora_fin'),
+                    'etapa_formacion' => $this->input->post('etapa_formacion'),
+                    'etapa_proyecto' => $this->input->post('etapa_proyecto'),
+                    'instructor_lider' => $this->input->post('instructor_lider')
+                );
+
+                $resultado = $this->ficha->agregarFicha($datos);
+
+                if ($resultado) {
+                    $data['fichas'] = $this->ficha->listarFichas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Ficha agregada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['fichas'] = $this->ficha->listarFichas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Ficha no agregada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }         
+            }
+
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+
+            $this->form_validation->set_rules('nro_ficha', 'Nro. Ficha', 'trim|required|numeric|max_length[12]');
+            $this->form_validation->set_rules('fecha_inicio', 'Fecha Inicio', 'trim|required');
+            $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'trim|required');
+            $this->form_validation->set_rules('hora_inicio', 'Hora Inicio', 'trim|required');
+            $this->form_validation->set_rules('hora_fin', 'Hora Fin', 'trim|required');
+
+            if ($this->form_validation->run() == false) {
+                $nroficha = $this->input->post('nro_ficha');
+                $this->FrmEditarFicha($nroficha);
+            } else {
+                $numeroficha = $this->input->post('nro_ficha');
+                $valores = array(
+                    'fechaInicio' => $this->input->post('fecha_inicio'),
+                    'fechaFinal' => $this->input->post('fecha_final'),
+                    'programa' => $this->input->post('programa'),
+                    'municipio' => $this->input->post('municipio'),
+                    'horaInicio' => $this->input->post('hora_inicio'),
+                    'horaFin' => $this->input->post('hora_fin'),
+                    'etapaFormacion' => $this->input->post('etapa_formacion'),
+                    'etapaProyecto' => $this->input->post('etapa_proyecto'),
+                    'instructorLider' => $this->input->post('instructor_lider')
+                );
+
+                $resultado = $this->ficha->editarFicha($numeroficha, $valores);
+
+                if ($resultado) {
+                    $data['fichas'] = $this->ficha->listarFichas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Ficha editada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['fichas'] = $this->ficha->listarFichas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Ficha no editada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+
+            }
+            
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $nroficha = $this->input->post('codigo');
+            $resultado = $this->ficha->eliminarFicha($nroficha);
+
+            if ($resultado) {
+                    $data['fichas'] = $this->ficha->listarFichas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Ficha eliminada'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['fichas'] = $this->ficha->listarFichas();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'No se puede eliminar la Ficha porque hay registros asociados a esta'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Fichas
+    public function FrmAgregarFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['programas'] = $this->programa->mostrarProgramas();
+            $data['municipios'] = $this->municipio->mostrarMunicipios();
+            $data['etapasformacion'] = $this->etapaformacion->mostrarEtapaFormacion();
+            $data['etapasproyecto'] = $this->etapaproyecto->mostrarEtapaProyecto();
+            $data['instructores'] = $this->usuario->getInstructores();
+            $dinamica = $this->load->view('content/Administrador/ficha/agregar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarFicha($nroficha) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['ficha'] = $this->ficha->getFicha($nroficha);
+            $data['programas'] = $this->programa->mostrarProgramas();
+            $data['municipios'] = $this->municipio->mostrarMunicipios();
+            $data['etapasformacion'] = $this->etapaformacion->mostrarEtapaFormacion();
+            $data['etapasproyecto'] = $this->etapaproyecto->mostrarEtapaProyecto();
+            $data['instructores'] = $this->usuario->getInstructores();
+            $dinamica = $this->load->view('content/Administrador/ficha/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
     /*==== Fin Control Administracion Fichas ==== */
 
 }

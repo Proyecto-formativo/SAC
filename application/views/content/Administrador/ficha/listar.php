@@ -1,39 +1,42 @@
 <div class="container">
   <a href="<?= base_url('Administrador/FrmAgregarFicha'); ?>" class="btn bg-sena">Agregar</a>
-
-  <table id="ficha" class="table table-striped table-bordered mt-3" style="width: 100%;">
-    <thead>
-      <tr>
-        <th>Nro. Ficha</th>
-        <th>Programa</th>
-        <th>Municipio</th>
-        <th>Etapa Formación</th>
-        <th>Etapa Proyecto</th>
-        <th>Mas Información</th>
-        <th>Editar</th>
-        <th>Eliminar</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <?php foreach ($fichas->result() as $ficha) : ?>
+  <div>
+    <table id="ficha" class="table table-striped table-bordered mt-3" style="width: 100%; overflow-x: scroll;">
+      <thead>
         <tr>
-          <td><?= $ficha->nroficha; ?></td>
-          <td><?= $ficha->programa; ?></td>
-          <td><?= $ficha->municipio; ?></td>
-          <td><?= $ficha->etapaformacion; ?></td>
-          <td><?= $ficha->etapaproyecto; ?></td>
-          <td><a href="" class="btn bg-sena">Ver mas</a></td>
-          <td><a href="<?= base_url('Administrador/FrmEditarFicha/' . $ficha->nroficha); ?>" class="btn bg-sena">Editar</a></td>
-          <td>
-            <button type="button" class="btn btn-danger eliminarFicha" data-toggle="modal">
-              Eliminar
-            </button>
-          </td>
+          <th>Nro. Ficha</th>
+          <th>Programa</th>
+          <th>Municipio</th>
+          <th>Etapa Formación</th>
+          <th>Etapa Proyecto</th>
+          <th>Instructor Lider</th>
+          <th>Horario</th>
+          <th>Editar</th>
+          <th>Eliminar</th>
         </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+      </thead>
+
+      <tbody>
+        <?php foreach ($fichas->result() as $ficha) : ?>
+          <tr>
+            <td><?= $ficha->nroficha; ?></td>
+            <td><?= $ficha->programa; ?></td>
+            <td><?= $ficha->municipio; ?></td>
+            <td><?= $ficha->etapaformacion; ?></td>
+            <td><?= $ficha->etapaproyecto; ?></td>
+            <td><?= $ficha->instructorlider ?></td>
+            <td><?= $ficha->horainicio; ?> a <?=$ficha->horafin; ?></td>
+            <td><a href="<?= base_url('Administrador/FrmEditarFicha/' . $ficha->nroficha); ?>" class="btn bg-sena">Editar</a></td>
+            <td>
+              <button type="button" class="btn btn-danger eliminarFicha" data-toggle="modal">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- Modal -->
