@@ -516,5 +516,45 @@ $(document).ready(function () {
 
   });
 
+  $("#administradores").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  //Boton Eliminar Ficha
+  $("#administradores").on("click", ".eliminarAdministrador", function () {
+
+    $("#eliminarAdministradorModal").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(datos);
+
+    $("#documento_administrador").val(datos[0]);
+
+  });
+
+
   // Fin del Document Ready()
 });

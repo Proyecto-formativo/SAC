@@ -5,7 +5,7 @@ class Administrador extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         //Carga de los Modelos Requeridos en el perfil de Administrador
-        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha']);
+        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil']);
         
         //Carga de la libreria para la validación de formularios
         $this->load->library(['form_validation']);
@@ -1857,14 +1857,13 @@ class Administrador extends CI_Controller {
             $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
 
             if ($this->form_validation->run() == false) {
-                $data['centros'] = $this->centro->mostrarCentros();
-                $dinamica = $this->load->view('content/Administrador/sede/agregar', $data, true);
-                $this->Plantilla_Administrador($dinamica);
+                $this->FrmAgregarSede();
             } else {
                 $datos = array(
                     'codigo_sede' => $this->input->post('codigo'),
                     'nombre' => $this->input->post('nombre'),
-                    'codigo_centro' => $this->input->post('centro')
+                    'codigo_centro' => $this->input->post('centro'),
+                    'municipio' => $this->input->post('municipio')
                 );
 
                 $resultado = $this->sede->agregarSede($datos);
@@ -1926,15 +1925,13 @@ class Administrador extends CI_Controller {
 
             if ($this->form_validation->run() == false) {
                 $codigo = $this->input->post('codigo');
-                $data['sede'] = $this->sede->getSede($codigo);
-                $data['centros'] = $this->centro->mostrarCentros();
-                $dinamica = $this->load->view('content/Administrador/sede/editar', $data, true);
-                $this->Plantilla_Administrador($dinamica);
+                $this->FrmEditarSede($codigo);
             } else {
                 $datos = array(
                     'codigo_sede' => $this->input->post('codigo'),
                     'nombre' => $this->input->post('nombre'),
-                    'codigo_centro' => $this->input->post('centro')
+                    'codigo_centro' => $this->input->post('centro'),
+                    'municipio' => $this->input->post('municipio')
                 );
 
                 $resultado = $this->sede->editarSede($datos);
@@ -2041,6 +2038,7 @@ class Administrador extends CI_Controller {
     public function FrmAgregarSede() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['centros'] = $this->centro->mostrarCentros();
+            $data['municipios'] = $this->municipio->mostrarMunicipios();
             $dinamica = $this->load->view('content/Administrador/sede/agregar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -2052,6 +2050,7 @@ class Administrador extends CI_Controller {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['sede'] = $this->sede->getSede($codigo);
             $data['centros'] = $this->centro->mostrarCentros();
+            $data['municipios'] = $this->municipio->mostrarMunicipios();
             $dinamica = $this->load->view('content/Administrador/sede/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -2997,6 +2996,123 @@ class Administrador extends CI_Controller {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['administradores'] = $this->usuario->mostrarAdministradores();
             $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarAdministrador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('docid', 'Documento Identidad', 'trim|required|numeric|is_unique[tblusuario.docID]|max_length[12]');
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email|is_unique[tblusuario.correoPersonal]');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email|is_unique[tblusuario.correoCorporativo]');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarAdministrador();
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'password_one' => $this->input->post('password_one')
+                );
+
+                $resultado = $this->usuario->agregarAdministrador($datos);
+
+                if ($resultado) {
+                    $data['administradores'] = $this->usuario->mostrarAdministradores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Administrador agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['administradores'] = $this->usuario->mostrarAdministradores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Administrador no agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+            }
+
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarAdministrador() {
+
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('docid');
+                $this->FrmEditarAdministrador($documento);
+            }
+        } else {
+            show_404();
+        }
+       
+    }
+
+    //Carga de Vistas Formularios Administradores
+    public function FrmAgregarAdministrador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/usuarios/administradores/agregar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarAdministrador($documento) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['administrador'] = $this->usuario->getAdministrador($documento);
+            $dinamica = $this->load->view('content/Administrador/usuarios/administradores/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
             show_404();
