@@ -125,8 +125,7 @@ class Coordinador extends CI_Controller {
 
     public function reportes(){
         if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
-            $datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
-            $dinamica = $this->load->view('content/Coordinador/reportes',['datos'=>$datos],true);
+            $dinamica = $this->load->view('content/Coordinador/reportes',"",true);
             $this->Plantilla_Coordinador($dinamica);
         }else{
             show_404();

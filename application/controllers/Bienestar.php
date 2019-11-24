@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Bienestar extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso']);
+		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 	}
@@ -122,10 +122,115 @@ class Bienestar extends CI_Controller {
         }
     }
 
-    public function ActaComite(){
+    public function ActaComite($mensaje = null){
         if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {
-            $dinamica = $this->load->view('content/Bienestar/actaComite','',true);
+            $datos  =  $this->area->mostrarAreas();
+            
+            $dinamica = $this->load->view('content/Bienestar/listaArea',['datos'=>$datos,'mensaje'=>$mensaje],true);
 		    $this->Plantilla_Bienestar($dinamica);
+        }else{
+            show_404();
+        }
+    }
+
+    public function crearActa(){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {
+
+            
+            /**
+             * 
+             * se valida el codigo del area con el if
+             * 
+             */
+            
+            $codigo = $this->input->post("codigoArea");
+            $area = $this->input->post("nombreArea");
+            $coordinador = $this->input->post("coordinador");
+            if ($codigo == 0 || $codigo == "") {
+                return show_404();
+            }
+
+            /**
+             * validar si hay reportes aprobados por el coordinador
+             * $sql = $this->reporte->MostrarReporteAprobado($codigo);
+             *var_export($sql);
+             */
+            
+            
+
+            if($valoresDeLosReportes = $this->reporte->MostrarReporteAprobado($codigo)){
+                $municipio = $this->municipio->mostrarMunicipios();
+
+
+                /**
+                 * 
+                 * crear la vista de los descargos de los aprendices
+                 */
+                $datos = [];
+                foreach ($valoresDeLosReportes as $valoresReportes) {
+                    $valores = $this->aprendicesreportados->MostrarAprendicesPorReporte($valoresReportes->consecutivo);
+                    array_push($datos , $valores);
+                }
+                //var_export($datos);
+                foreach ($datos as $key) {
+                    //var_dump($key);
+                    $clave = "";
+                    foreach($key as $valors){
+                        
+                        echo "<br> nombre    ".$valors->nombre;
+                        echo "<br> consecutivoAprendizReporte   ".$valors->consecutivoAprendizReporte;
+                        echo "<br> consReporte    ".$valors->consReporte;
+                        echo "<br> docID    ".$valors->docID;
+                        echo "<br> nombres    ".$valors->nombres;
+                        echo "<br> ficha    ".$valors->ficha;
+
+                        echo"<br>";
+                        echo"<br>";
+                        echo"<br>";
+                            
+                        
+                    }
+                }
+
+                // $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes],true);
+                // $this->Plantilla_Bienestar($dinamica);
+            }else{
+                $mensaje ="const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                Toast.fire({
+                    icon: 'info',
+                    title: 'No se puede generar el acta ya que los reportes no fueron aprobados por el coordinador o no hay generados por el mes '
+                })";
+                $this->ActaComite($mensaje);
+            }
+        }else{
+            show_404();
+        }
+    }
+
+
+    public function filtroMunicipio(){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
+            $municipio =  $_POST["municipio"];
+            $datos = $this->municipio->filtroMostrarsedeYcentro($municipio);
+            //var_export($datos->result());
+            if ($municipio = null){
+                $this->load->view("content/Bienestar/vista_municipio_filtro");
+            }elseif ($datos){
+                $this->load->view("content/Bienestar/vista_municipio_filtro",['datos'=>$datos]);
+            }else{
+                $this->load->view("content/Bienestar/vista_municipio_filtro");   
+            }    
         }else{
             show_404();
         }
