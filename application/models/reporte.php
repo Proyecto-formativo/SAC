@@ -72,18 +72,12 @@ class reporte extends CI_Model{
 	}
 
 	//peticion a la base de dato
-	public  function getPostByName(){
-		$query=$this->db->query("SELECT af.numFicha,p.nombre,r.fecha,r.consecutivo
-                          FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar 
-                          ON ar.consReporte=r.consecutivo 
-                          INNER JOIN tblaprendicesficha as af ON af.docIDAprendiz=ar.docIDAprendiz
-                          INNER JOIN tblficha as f ON f.nroFicha=af.numFicha
-                          INNER JOIN tblprograma as p ON p.codigo=f.programa
-                          GROUP BY r.consecutivo");
-		if ($query->num_rows()>0){
-			return $query;
+	public  function aprobarRep($consec){
+		$query=$this->db->query("UPDATE `tblreporte` SET `estado` = 'Aprobado' WHERE `tblreporte`.`consecutivo` =$consec ");
+		if ($query){
+			return "reporte aprobado";
 		}else{
-			return false;
+			return "no se pudo realizar la solicitud";
 		}
 	}
 }

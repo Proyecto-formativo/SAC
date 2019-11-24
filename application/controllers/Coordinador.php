@@ -38,6 +38,8 @@ class Coordinador extends CI_Controller {
 		}
 
 	}
+
+
 	/**
 	 * configuraciones
 	 *
@@ -47,7 +49,7 @@ class Coordinador extends CI_Controller {
 	public function configuraciones(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
-			$dinamica = $this->load->view('content/defecto/configuraciones',['datos'=>$datos],true);
+			$dinamica[] = $this->load->view('content/defecto/configuraciones',['datos'=>$datos],true);
 			$this->Plantilla_Coordinador($dinamica);
 		}else{
 			show_404();
@@ -84,7 +86,7 @@ class Coordinador extends CI_Controller {
 					'valor_Celular' => $Celular,
 					'valor_password' => $password,
 				];
-				$dinamica = $this->load->view('content/defecto/configuraciones',$datos,true);
+				$dinamica[] = $this->load->view('content/defecto/configuraciones',$datos,true);
 				$this->Plantilla_Coordinador($dinamica);
 			}else{
 				$valores = [
@@ -113,7 +115,7 @@ class Coordinador extends CI_Controller {
                     icon: 'success',
                     title: 'Actualizacion Exitosa'
                 })";
-				$dinamica = $this->load->view('content/defecto/configuraciones',['datos'=>$datos,'mensaje'=>$mensaje],true);
+				$dinamica[] = $this->load->view('content/defecto/configuraciones',['datos'=>$datos,'mensaje'=>$mensaje],true);
 				$this->Plantilla_Coordinador($dinamica);
 			}
 
@@ -126,9 +128,10 @@ class Coordinador extends CI_Controller {
 	public function reportes(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$reporte=$this->reporte->Consult_general_coor();
-			$dinamica = $this->load->view('content/Coordinador/reportes',['reporte'=>$reporte],true);
-
-			$this->Plantilla_Coordinador($dinamica);
+			$dinamica= $this->load->view('content/Coordinador/reportes',['reporte'=>$reporte],true);
+			$menu=$this->load->view('content/Coordinador/menu',[],true);
+			$c=array($dinamica,$menu);
+			$this->Plantilla_Coordinador($c);
 
 		}else{
 			show_404();
@@ -145,9 +148,22 @@ class Coordinador extends CI_Controller {
 			$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);
 			$noms=$this->aprendicesreportados->getFilasAp($consec);
 
-			$dinamica = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
+			$dinamica[] = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
 				'filas'=>$noms,'ver'=>$ar],true);
 
+			$this->Plantilla_Coordinador($dinamica);
+		}
+	}
+
+
+	public function aprobarReporte($consec){
+		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
+			//$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
+			//$consec =  $_POST["id"];
+
+			$aprobar=$this->reporte->aprobarRep($consec);
+
+			$dinamica[] = $this->load->view('content/Coordinador/reporteAprobado',['reporte'=>$aprobar,'n'=>$consec],true);
 			$this->Plantilla_Coordinador($dinamica);
 		}
 	}

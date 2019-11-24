@@ -97,8 +97,9 @@
 
 <section>
     <div class="style-change" id="change"></div>
-    <div class="style-float">      
-        <?=$dinamica?>
+    <div class="style-float">
+		<?php if (!empty($dinamica[1])){echo $dinamica[1];}?>
+		<?=$dinamica[0];?>
     </div>
 </section>
 

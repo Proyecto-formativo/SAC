@@ -6,8 +6,8 @@ class aprendicesreportados extends CI_Model{
     }
 
     public function IngresarAprencides($consecutivo,$aprendiz){
-        $sql = $this->db->insert('tblaprendicesreportados',['consReporte'=>$consecutivo,'docIDAprendiz' =>$aprendiz]);
-    }
+$sql = $this->db->insert('tblaprendicesreportados',['consReporte'=>$consecutivo,'docIDAprendiz' =>$aprendiz]);
+}
 
 
 	public function mostrarAprendicesReporte($consec){

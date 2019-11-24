@@ -107,26 +107,26 @@
 </div>
 
 	<div class="row">
-		<div class="col-6" style="padding:0;">
-			<input type="text" name="consecut" value="SUGERENCIA"  class="bg-sena" style="width:100%; text-align:center;"  readonly="readonly" >
-		</div>
-		<div class="col-6" style="padding:0;">
-			<input type="text" name="sugerencia" value="<?=$reporte[0]->sugerencia;?>"  id="instructor reporte" style="width:97.5%;"  readonly="readonly">
 
-		</div>
 	</div>
 
 <div class="row">
-	<div class="col-3" style="padding:0;">
+	<div class="col-6" style="padding:0;">
+		<input type="text" name="consecut" value="SUGERENCIA"  class="bg-sena" style="width:100%; text-align:center;"  readonly="readonly" >
+	</div>
+	<div class="col-6" style="padding:0;">
+		<input type="text" name="calificacionFalta"  value="<?=$reporte[0]->sugerencia;?>" id="calificacionFalta" style="width:100%; text-align:center;"   readonly="readonly">
+	</div>
+	<div class="col-6" style="padding:0;">
 		<input type="text" name="consecut" value="TIPO FALTA" style="width:100%; text-align:center;"  class="bg-sena" readonly="readonly">
 	</div>
-	<div class="col-3" style="padding:0;">
+	<div class="col-6" style="padding:0;">
 		<input type="text" name="tipoFalta" value="<?=$reporte[0]->tipoFalta;?>" id="tipoFalta" style="width:100%; text-align:center;"   readonly="readonly">
 	</div>
-	<div class="col-3" style="padding:0;">
+	<div class="col-6" style="padding:0;">
 		<input type="text" name="consecut" value="CALIF. FALTA" style="width:100%; text-align:center;" class="bg-sena"  readonly="readonly">
 	</div>
-	<div class="col-3" style="padding:0;">
+	<div class="col-6" style="padding:0;">
 		<input type="text" name="calificacionFalta"  value="<?=$reporte[0]->tipoCalificacion;?>" id="calificacionFalta" style="width:100%; text-align:center;"   readonly="readonly">
 	</div>
 </div>
@@ -184,12 +184,12 @@
 
 	?>
 
-	<div class="modal-footer" style="margin-top:60px ">
-		<button type="button" class="btn btn-primary" id="btnsave">Citar A Comite</button>
+	<p align="right"><a class="modal-footer" style="margin-top:60px ">
+		<a href="<?=base_url('Coordinador/aprobarReporte/') . $reporte[0]->consecutivo;?>"><button type="button" class="btn btn-primary" id="btnsave">Citar A Comite</button></a>
 		<button type="button" class="btn btn-primary" id="btnsave">Generar Pdf</button>
-		<br>
-		<a href="<?=base_url('Coordinador/reportes/');?>"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button></a>
 
+		<a href="<?=base_url('Coordinador/reportes/');?>"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button></a>
+	</p>
 	</div>
 </div>
 </div>
