@@ -3087,17 +3087,72 @@ class Administrador extends CI_Controller {
             $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email');
             $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
             $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
-            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
-
+    
             if ($this->form_validation->run() == false) {
                 $documento = $this->input->post('docid');
                 $this->FrmEditarAdministrador($documento);
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo')
+                );
+
+                $resultado = $this->usuario->editarUsuario($datos);
+
+                if ($resultado) {
+                    $data['administradores'] = $this->usuario->mostrarAdministradores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Administrador editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['administradores'] = $this->usuario->mostrarAdministradores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Administrador no editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
             }
         } else {
             show_404();
         }
        
     }
+
 
     //Carga de Vistas Formularios Administradores
     public function FrmAgregarAdministrador() {
@@ -3111,9 +3166,999 @@ class Administrador extends CI_Controller {
 
     public function FrmEditarAdministrador($documento) {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
-            $data['administrador'] = $this->usuario->getAdministrador($documento);
+            $data['administrador'] = $this->usuario->getUsuario($documento);
             $dinamica = $this->load->view('content/Administrador/usuarios/administradores/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    /* 
+    
+        ==================================================================================================
+
+    */
+
+    /*==== Control Administracion Usuarios Coordinadores ==== */
+    public function coordinadores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+            $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarCoordinador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('docid', 'Documento Identidad', 'trim|required|numeric|is_unique[tblusuario.docID]|max_length[12]');
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email|is_unique[tblusuario.correoPersonal]');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email|is_unique[tblusuario.correoCorporativo]');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarCoordinador();
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'password_one' => $this->input->post('password_one')
+                );
+
+                $resultado = $this->usuario->agregarCoordinador($datos);
+
+                if ($resultado) {
+                    $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Coordinador agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Coordinador no agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+            }
+
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarCoordinador() {
+
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+    
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('docid');
+                $this->FrmEditarCoordinador($documento);
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'perfil' => $this->input->post('perfil')
+                );
+
+                $resultado = $this->usuario->editarUsuarios($datos);
+
+                if ($resultado) {
+                    $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Coordinador no editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+            }
+        } else {
+            show_404();
+        }
+       
+    }
+    //Carga de Vistas Formularios Coordinador
+    public function FrmAgregarCoordinador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/agregar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarCoordinador($documento) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['perfiles'] = $this->perfil->mostrarPerfiles();
+            $data['coordinador'] = $this->usuario->getUsuario($documento);
+            $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Usuarios Coordinadores ==== */
+
+    /*==== Control Administracion Usuarios Instructores ==== */
+    public function instructores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['instructores'] = $this->usuario->mostrarInstructores();
+            $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarInstructor() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('docid', 'Documento Identidad', 'trim|required|numeric|is_unique[tblusuario.docID]|max_length[12]');
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email|is_unique[tblusuario.correoPersonal]');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email|is_unique[tblusuario.correoCorporativo]');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarInstructor();
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'password_one' => $this->input->post('password_one')
+                );
+
+                $resultado = $this->usuario->agregarInstructor($datos);
+
+                if ($resultado) {
+                    $data['instructores'] = $this->usuario->mostrarInstructores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Instructor agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['instructores'] = $this->usuario->mostrarInstructores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Instructor no agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarInstructor() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('docid');
+                $this->FrmEditarInstructor($documento);
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'perfil' => $this->input->post('perfil')
+                );
+
+                $resultado = $this->usuario->editarUsuarios($datos);
+
+                if ($resultado) {
+                    $data['instructores'] = $this->usuario->mostrarInstructores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Instructor editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                } else {
+                    $data['instructores'] = $this->usuario->mostrarInstructores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Instructor no editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+            }
+            
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Instructor
+    public function FrmAgregarInstructor() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/usuarios/instructores/agregar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarInstructor($documento) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['perfiles'] = $this->perfil->mostrarPerfiles();
+            $data['instructor'] = $this->usuario->getUsuario($documento);
+            $dinamica = $this->load->view('content/Administrador/usuarios/instructores/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Usuarios Instructores ==== */
+    
+    /*==== Control Administracion Usuarios Bienestar ==== */
+    public function bienestar() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['bienestar'] = $this->usuario->mostrarBienestar();
+            $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarBienestar() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('docid', 'Documento Identidad', 'trim|required|numeric|is_unique[tblusuario.docID]|max_length[12]');
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email|is_unique[tblusuario.correoPersonal]');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email|is_unique[tblusuario.correoCorporativo]');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarBienestar();  
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'password_one' => $this->input->post('password_one')
+                );
+
+                $resultado = $this->usuario->agregarBienestar($datos); 
+
+                if ($resultado) {
+                    $data['bienestar'] = $this->usuario->mostrarBienestar();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Instructor agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                } else {
+                    $data['bienestar'] = $this->usuario->mostrarBienestar();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Bienestar no agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarBienestar() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('docid');
+                $this->FrmEditarBienestar($documento);
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'perfil' => $this->input->post('perfil')
+                );
+
+                $resultado = $this->usuario->editarUsuarios($datos);
+
+                if ($resultado) {
+                    $data['bienestar'] = $this->usuario->mostrarBienestar();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Bienestar editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                } else {
+                    $data['bienestar'] = $this->usuario->mostrarBienestar();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Bienestar no editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+            }
+        } else {
+            show_404();
+        }
+    }
+    //Carga de Vistas Formularios Bienestar
+    public function FrmAgregarBienestar() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/agregar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarBienestar($documento) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['bien'] = $this->usuario->getUsuario($documento);
+            $data['perfiles'] = $this->perfil->mostrarPerfiles();
+            $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+        
+    }
+    /*==== Fin Control Administracion Usuarios Instructores ==== */
+
+    /*==== Fin Control Administracion Usuarios Aprendices ==== */
+    public function aprendices() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendices'] = $this->usuario->mostrarAprendices();
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarAprendiz() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('docid', 'Documento Identidad', 'trim|required|numeric|is_unique[tblusuario.docID]|max_length[12]');
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email|is_unique[tblusuario.correoPersonal]');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email|is_unique[tblusuario.correoCorporativo]');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+
+            if ($this->form_validation->run() == false) {
+                $this->FrmAgregarAprendiz();
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo')
+                );
+
+                $resultado = $this->usuario->agregarAprendiz($datos);
+
+                if ($resultado) {
+                    $data['aprendices'] = $this->usuario->mostrarAprendices();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Aprendiz agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                } else {
+                    $data['aprendices'] = $this->usuario->mostrarAprendices();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Aprendiz no agregado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function editarAprendiz() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+
+            $this->form_validation->set_rules('nombres', 'Nombres', 'trim|required');
+            $this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|required');            $this->form_validation->set_rules('correo_personal', 'Correo Personal', 'trim|required|valid_email');
+            $this->form_validation->set_rules('correo_corporativo', 'Correo Corporativo', 'trim|valid_email');
+            $this->form_validation->set_rules('tel_movil', 'Telefono Movil', 'trim|numeric|max_length[15]');
+            $this->form_validation->set_rules('tel_fijo', 'Telefono Fijo', 'trim|numeric|max_length[15]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('docid');
+                $this->FrmEditarAprendiz($documento);
+            } else {
+                $datos = array(
+                    'docid' => $this->input->post('docid'),
+                    'nombres' => $this->input->post('nombres'),
+                    'apellidos' => $this->input->post('apellidos'),
+                    'correo_personal' => $this->input->post('correo_personal'),
+                    'correo_corporativo' => $this->input->post('correo_corporativo'),
+                    'tel_movil' => $this->input->post('tel_movil'),
+                    'tel_fijo' => $this->input->post('tel_fijo'),
+                    'perfil' => $this->input->post('perfil')
+                );
+
+                $resultado = $this->usuario->editarUsuarios($datos);
+
+                if ($resultado) {
+                    $data['aprendices'] = $this->usuario->mostrarAprendices();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario Aprendiz editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                } else {
+                    $data['aprendices'] = $this->usuario->mostrarAprendices();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Usuario Aprendiz no editado'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Aprendices
+    public function FrmAgregarAprendiz() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/agregar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarAprendiz($documento) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendiz'] = $this->usuario->getUsuario($documento);
+            $data['perfiles'] = $this->perfil->mostrarPerfiles();
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Usuarios Aprendices ==== */
+    /* 
+    =========================================================================================================
+    ELIMINACION DE USUARIOS
+    =========================================================================================================
+    */
+    public function eliminarAdministrador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->eliminarUsuario($documento);
+
+            if ($resultado) {
+                $data['administradores'] = $this->usuario->mostrarAdministradores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario Administrador eliminado'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['administradores'] = $this->usuario->mostrarAdministradores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar el Administrador porque hay registros asociados a este'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404_();
+        }
+    }
+
+    public function eliminarCoordinador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->eliminarUsuario($documento);
+
+            if ($resultado) {
+                $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario Coordinador eliminado'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar el Coordinador porque hay registros asociados a este'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404_();
+        }
+    }
+
+    public function eliminarInstructor() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->eliminarUsuario($documento);
+
+            if ($resultado) {
+                $data['instructores'] = $this->usuario->mostrarInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario Instructor eliminado'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['instructores'] = $this->usuario->mostrarInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar el Instructor porque hay registros asociados a este'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarBienestar() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->eliminarUsuario($documento);
+
+            if ($resultado) {
+                $data['bienestar'] = $this->usuario->mostrarBienestar();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario Bienestar eliminado'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['bienestar'] = $this->usuario->mostrarBienestar();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar el usuario de Bienestar porque hay registros asociados a este'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarAprendiz() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->eliminarUsuario($documento);
+
+            if ($resultado) {
+                $data['aprendices'] = $this->usuario->mostrarAprendices();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario Aprendiz eliminado'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['aprendices'] = $this->usuario->mostrarAprendices();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar el usuario de Aprendiz porque hay registros asociados a este'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
         } else {
             show_404();
         }

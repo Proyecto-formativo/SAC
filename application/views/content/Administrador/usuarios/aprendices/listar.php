@@ -1,7 +1,7 @@
 <div class="container">
-  <a href="<?= base_url('Administrador/FrmAgregarAdministrador'); ?>" class="btn bg-sena">Agregar</a>
+  <a href="<?= base_url('Administrador/FrmAgregarAprendiz'); ?>" class="btn bg-sena">Agregar</a>
   <div class="table-responsive">
-    <table id="administradores" class="table table-striped table-bordered mt-3" style="width: 100%;">
+    <table id="aprendices" class="table table-striped table-bordered mt-3" style="width: 100%;">
       <thead>
         <tr>
           <th>Documento</th>
@@ -17,18 +17,18 @@
       </thead>
 
       <tbody>
-        <?php foreach ($administradores->result() as $administrador) : ?>
+        <?php foreach ($aprendices->result() as $aprendiz) : ?>
           <tr>
-            <td><?= $administrador->documento; ?></td>
-            <td><?= $administrador->usuario; ?></td>
-            <td><?= $administrador->correopersonal; ?></td>
-            <td><?= $administrador->correocorporativo; ?></td>
-            <td><?= $administrador->telmovil; ?></td>
-            <td><?= $administrador->telfijo; ?></td>
-            <td><?= $administrador->perfil; ?></td>
-            <td><a href="<?= base_url('Administrador/FrmEditarAdministrador/' . $administrador->documento); ?>" class="btn bg-sena">Editar</a></td>
+            <td><?= $aprendiz->documento; ?></td>
+            <td><?= $aprendiz->usuario; ?></td>
+            <td><?= $aprendiz->correopersonal; ?></td>
+            <td><?= $aprendiz->correocorporativo; ?></td>
+            <td><?= $aprendiz->telmovil; ?></td>
+            <td><?= $aprendiz->telfijo; ?></td>
+            <td><?= $aprendiz->perfil; ?></td>
+            <td><a href="<?= base_url('Administrador/FrmEditarAprendiz/' . $aprendiz->documento); ?>" class="btn bg-sena">Editar</a></td>
             <td>
-              <button type="button" class="btn btn-danger eliminarAdministrador" data-toggle="modal">
+              <button type="button" class="btn btn-danger eliminarAprendiz" data-toggle="modal">
                 Eliminar
               </button>
             </td>
@@ -40,7 +40,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="eliminarAdministradorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="eliminarAprendizModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -49,8 +49,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="<?php echo base_url('Administrador/eliminarUsuario'); ?>" method="POST">
-        <input type="hidden" id="documento_administrador" name="documento">
+      <form action="<?php echo base_url('Administrador/eliminarAprendiz'); ?>" method="POST">
+        <input type="hidden" id="documento_aprendiz" name="documento">
         <div class="modal-body">
           Esta seguro de eliminar este Usuario?
         </div>

@@ -96,6 +96,22 @@
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/administradores'); ?>" id="btn-2" class="dropdown-item">Administradores</a>
                     </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/coordinadores'); ?>" id="btn-2" class="dropdown-item">Coordinadores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/instructores'); ?>" id="btn-2" class="dropdown-item">Instructores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/bienestar'); ?>" id="btn-2" class="dropdown-item">Bienestar</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/aprendices'); ?>" id="btn-2" class="dropdown-item">Aprendices</a>
+                    </div>
                 </div>
             </div>
             <!-- Fin Administración de Usuarios -->

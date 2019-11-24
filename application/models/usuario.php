@@ -24,16 +24,6 @@ class usuario extends CI_Model{
         $this->db->update('tblusuario',$valores);
     }
 
-    //Actualizar Usuario Independiente del Perfil
-    public function editarUsuario($datos) {
-        $this->db->set('nombres', $datos['nombres']);
-        $this->db->set('nombres', $datos['nombres']);
-        $this->db->set('nombres', $datos['nombres']);
-        $this->db->set('nombres', $datos['nombres']);
-        $this->db->set('nombres', $datos['nombres']);
-        $this->db->set('nombres', $datos['nombres']);
-    }
-
 
     public function MostrarAprendicesDeFicha($ficha){
         $sql = $this->db->query("SELECT u.docId,u.nombres, u.apellidos,af.numFicha from tblaprendicesficha as af inner join tblusuario as u on u.docID = af.docIDaprendiz where numficha = $ficha");
@@ -58,14 +48,32 @@ class usuario extends CI_Model{
         return $sql;
     }
 
-    //Mostrar Administrador para edición
-    public function getAdministrador($documento) {
-        $sql = $this->db->query("SELECT u.docId AS documento, u.nombres AS nombres, u.apellidos AS apellidos, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, u.perfil AS perfil, a.clave AS clave FROM tblusuario AS u INNER JOIN tblacceso AS a ON u.docID = a.docIDUsuario WHERE u.docID = $documento");
+    //Mostrar Usuarios que tengan el perfil de Aprendiz
+    public function mostrarAprendices() {
+        $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo WHERE u.perfil = 4 ORDER BY p.nombre");
+        return $sql;
+    }
+    //Mostrar Usuario para edición
+    public function getUsuario($documento) {
+        $sql = $this->db->query("SELECT docId AS documento, nombres AS nombres, apellidos AS apellidos, correoPersonal AS correopersonal, correoCorporativo AS correocorporativo, telefonoMovil AS telmovil, telefonoFijo AS telfijo, perfil AS perfil FROM tblusuario WHERE docID = $documento");
         return $sql->row();
     }
+
     //Mostrar Usuarios que tengan el perfil de Coordinador
+    public function mostrarCoordinadores() {
+        $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo WHERE u.perfil = 2 ORDER BY p.nombre");
+        return $sql;
+    }
     //Mostrar Usuarios que tengan el perfil de Instructor
-    //Mostrar Usuarios que tengan el perfil de Aprendiz
+    public function mostrarInstructores() {
+        $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo WHERE u.perfil = 1 ORDER BY p.nombre");
+        return $sql;
+    }
+    //Mostrar Usuarios que tengan el perfil de Bienestar
+    public function mostrarBienestar() {
+        $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo WHERE u.perfil = 3 ORDER BY p.nombre");
+        return $sql;
+    }
 
     //Agregar Administrador
     public function agregarAdministrador($datos) {
@@ -78,8 +86,51 @@ class usuario extends CI_Model{
         return false;
     }
 
-    //Editar Administrador
-    public function editarAdministrador($datos) {
+    //Agregar Coordinador
+    public function agregarCoordinador($datos) {
+        $sql = $this->db->insert('tblusuario', ['docID' => $datos['docid'], 'nombres' => $datos['nombres'], 'apellidos' => $datos['apellidos'], 'correoPersonal' => $datos['correo_personal'], 'correoCorporativo' => $datos['correo_corporativo'], 'telefonoMovil' => $datos['tel_movil'], 'telefonoFijo' => $datos['tel_fijo'], 'perfil' => 2]);
+
+        if ($sql) {
+            $acceso = $this->db->insert('tblacceso', ['docIDUsuario' => $datos['docid'], 'clave' => $datos['password_one']]);
+            return $acceso;
+        }
+
+        return false;
+    }
+
+    //Agregar Instructor
+    public function agregarInstructor($datos) {
+        $sql = $this->db->insert('tblusuario', ['docID' => $datos['docid'], 'nombres' => $datos['nombres'], 'apellidos' => $datos['apellidos'], 'correoPersonal' => $datos['correo_personal'], 'correoCorporativo' => $datos['correo_corporativo'], 'telefonoMovil' => $datos['tel_movil'], 'telefonoFijo' => $datos['tel_fijo'], 'perfil' => 1]);
+
+        if ($sql) {
+            $acceso = $this->db->insert('tblacceso', ['docIDUsuario' => $datos['docid'], 'clave' => $datos['password_one']]);
+            return $acceso;
+        }
+
+        return false;
+    }
+
+    //Agregar Bienestar
+    public function agregarBienestar($datos) {
+        $sql = $this->db->insert('tblusuario', ['docID' => $datos['docid'], 'nombres' => $datos['nombres'], 'apellidos' => $datos['apellidos'], 'correoPersonal' => $datos['correo_personal'], 'correoCorporativo' => $datos['correo_corporativo'], 'telefonoMovil' => $datos['tel_movil'], 'telefonoFijo' => $datos['tel_fijo'], 'perfil' => 3]);
+
+        if ($sql) {
+            $acceso = $this->db->insert('tblacceso', ['docIDUsuario' => $datos['docid'], 'clave' => $datos['password_one']]);
+            return $acceso;
+        }
+
+        return false;
+    }
+
+    //Agregar Aprendiz
+    public function agregarAprendiz($datos) {
+        $sql = $this->db->insert('tblusuario', ['docID' => $datos['docid'], 'nombres' => $datos['nombres'], 'apellidos' => $datos['apellidos'], 'correoPersonal' => $datos['correo_personal'], 'correoCorporativo' => $datos['correo_corporativo'], 'telefonoMovil' => $datos['tel_movil'], 'telefonoFijo' => $datos['tel_fijo'], 'perfil' => 4]);
+
+        return $sql;
+    }
+
+    //Editar Usuario que tenga perfil Administrador
+    public function editarUsuario($datos) {
         $this->db->set('nombres', $datos['nombres']);
         $this->db->set('apellidos', $datos['apellidos']);
         $this->db->set('correoCorporativo', $datos['correo_corporativo']);
@@ -88,15 +139,30 @@ class usuario extends CI_Model{
         $this->db->set('telefonoFijo', $datos['tel_fijo']);
         $this->db->where('docID', $datos['docid']);
         $sql = $this->db->update('tblusuario');
-        
-        if ($sql) {
-            $this->db->where('docIDUsuario', $datos['docid']);
-            $acceso = $this->db->update('tblacesso', ['clave' => $datos['password_one']]);
-            return true;
-        }
-
-        return false;
+        return $sql;
     }
 
-    
+    //Editar Usuario Coordinador, Instructor, Bienestar, Aprendiz
+    public function editarUsuarios($datos) {
+        $this->db->set('nombres', $datos['nombres']);
+        $this->db->set('apellidos', $datos['apellidos']);
+        $this->db->set('correoCorporativo', $datos['correo_corporativo']);
+        $this->db->set('correoPersonal', $datos['correo_personal']);
+        $this->db->set('telefonoMovil', $datos['tel_movil']);
+        $this->db->set('telefonoFijo', $datos['tel_fijo']);
+        $this->db->set('perfil', $datos['perfil']);
+        $this->db->where('docID', $datos['docid']);
+        $sql = $this->db->update('tblusuario');
+        return $sql;
+    }
+
+    //Eliminación de Usuarios Independiente del Perfil
+    public function eliminarUsuario($documento) {
+
+        if (!$this->db->simple_query("DELETE FROM tblusuario WHERE docID = $documento")) {
+            return false;
+        } 
+
+        return true;
+    }
 }
