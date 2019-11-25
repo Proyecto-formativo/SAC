@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Bienestar extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados']);
+		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','sugerencia']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 	}
@@ -159,7 +159,15 @@ class Bienestar extends CI_Controller {
             
 
             if($valoresDeLosReportes = $this->reporte->MostrarReporteAprobado($codigo)){
+                /**
+                 * lista de los municipios para mostrar en la acta
+                 */
                 $municipio = $this->municipio->mostrarMunicipios();
+
+                /**
+                 * la sugerencia es para los descargos del aprendiz
+                 */
+                $sugerencia = $this->sugerencia->MostrarSuegerencia();
 
 
                 /**
@@ -175,7 +183,7 @@ class Bienestar extends CI_Controller {
                 
                 $descargos = $this->load->view("content/bienestar/vistaDescargosAprendices",['datos'=>$datos],true);
 
-                $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes,'descargos'=>$descargos],true);
+                $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes,'descargos'=>$descargos,'sugerencia'=>$sugerencia],true);
                 $this->Plantilla_Bienestar($dinamica);
             }else{
                 $mensaje ="const Toast = Swal.mixin({

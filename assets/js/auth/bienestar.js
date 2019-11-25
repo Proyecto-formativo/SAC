@@ -49,5 +49,6 @@ $(".descargos").click(function (e) {
     
   let valor = $("#descargos");
 
-  console.log(valor.children("#consecutivoaprendiz"));
+  $("#consecutivoAprendizReporte").val(datos[0]);
+  $("#consReporte").val(datos[1]);
 });

@@ -24,8 +24,8 @@ foreach ($datos as $key):
             <table class="table">
             <thead>
                 <tr>
-                    <th scope="col"><strong>consecutivoAprendizReporte:</strong></th>
-                    <th scope="col"><strong>consReporte:</strong> </th>
+                    <!-- <th scope="col" ><strong>consecutivoAprendizReporte:</strong></th> -->
+                    <!-- <th scope="col"><strong>consReporte:</strong> </th> -->
                     <th scope="col"><strong>Documento:</strong></th>
                     <th scope="col"><strong>Nombre Aprendiz:</strong> </th>
                     <th scope="col"><strong>Generar Descargos:</strong> </th>
@@ -35,10 +35,10 @@ foreach ($datos as $key):
         endif;
         ?>
         <tr>
-            <td>
+            <td style="display:none;">
                 <div class="mr-5"> <?=$valores->consecutivoAprendizReporte?> </div>
             </td>
-            <td>
+            <td  style="display:none;">
                 <div class="mr-5"> <?=$valores->consReporte?> </div>
             </td>
             <td>

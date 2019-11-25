@@ -146,6 +146,10 @@ textarea{
   height: 58px!important;
 }
 
+.style-textareaficha-descargos{
+  height: 100px!important;
+}
+
 .bg-sena {
 	background: #249784 !important;
 	color: #fff !important;

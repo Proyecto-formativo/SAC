@@ -306,17 +306,30 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
         <div class="container">
             <form>
                 <div class="form-group">
-                    <label for="consecutivoaprendiz">Email address</label>
-                    <input type="email" class="form-control" id="consecutivoaprendiz" aria-describedby="emailHelp" placeholder="Enter email">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    <input type="hidden" id="consecutivoAprendizReporte" class="form-control" id="consecutivoaprendiz" aria-describedby="emailHelp" placeholder="Enter email">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <input type="hidden" id="consReporte" class="form-control" id="exampleInputPassword1" placeholder="Password">
                 </div>
+
+
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    <textarea  class="form-control style-textareaficha-descargos" name="Desarrollo" id="informeEquipoEjecutor" cols="20" row="10" rows=""></textarea>
+                </div>
+
+
+                <div class="form-group form-check">
+                    <textarea  class="form-control style-textareaficha-descargos" name="Desarrollo" id="descarosAprendiz" cols="20" rows=""></textarea>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Recomendacion">Recomendacion:</label>
+                    <select name="Recomendacion" class="form-control"  id="Recomendacion" required >
+                        <?php foreach ($sugerencia->result() as $valores): ?>
+                        <option value="<?=$valores->codigo?>"><?=$valores->nombre?></option>
+                        <?php endforeach; ?>    
+                    </select>
                 </div>
                 <div class="mb-2 d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary ">enviar</button>
