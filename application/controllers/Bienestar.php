@@ -172,28 +172,11 @@ class Bienestar extends CI_Controller {
                     array_push($datos , $valores);
                 }
                 //var_export($datos);
-                foreach ($datos as $key) {
-                    //var_dump($key);
-                    $clave = "";
-                    foreach($key as $valors){
-                        
-                        echo "<br> nombre    ".$valors->nombre;
-                        echo "<br> consecutivoAprendizReporte   ".$valors->consecutivoAprendizReporte;
-                        echo "<br> consReporte    ".$valors->consReporte;
-                        echo "<br> docID    ".$valors->docID;
-                        echo "<br> nombres    ".$valors->nombres;
-                        echo "<br> ficha    ".$valors->ficha;
+                
+                $descargos = $this->load->view("content/bienestar/vistaDescargosAprendices",['datos'=>$datos],true);
 
-                        echo"<br>";
-                        echo"<br>";
-                        echo"<br>";
-                            
-                        
-                    }
-                }
-
-                // $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes],true);
-                // $this->Plantilla_Bienestar($dinamica);
+                $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes,'descargos'=>$descargos],true);
+                $this->Plantilla_Bienestar($dinamica);
             }else{
                 $mensaje ="const Toast = Swal.mixin({
                     toast: true,

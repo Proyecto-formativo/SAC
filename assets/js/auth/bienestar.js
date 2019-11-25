@@ -29,3 +29,25 @@ $("#municipio").bind("change", function() {
     }
   }); //fin del ajax
 }); //fin de bind keyup
+
+$(".descargos").click(function (e) { 
+  e.preventDefault();
+  $("#descargos").modal("show");
+
+  
+  $tr = $(this).closest("tr");
+  
+  let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(datos);
+
+    
+  let valor = $("#descargos");
+
+  console.log(valor.children("#consecutivoaprendiz"));
+});

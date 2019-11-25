@@ -1,4 +1,4 @@
-<?=$codigo?>
+
 
 <?php
 
@@ -8,7 +8,6 @@ date_default_timezone_set('America/Bogota');
 
     <div class="container">
         <form action="libs/enviarFicha.php" method="post">
-
             <!-- Row 1 -->
             <div class="row">
                 <!-- municipio -->
@@ -46,7 +45,6 @@ date_default_timezone_set('America/Bogota');
                         <div class="form-group">
                             <label for="centro">centro:</label>
                             <select name="centro" class="form-control"  id="centro" >
-                                <option value="0">Seleccionar centro</option>     
                                 
                             </select>
                         </div>
@@ -95,7 +93,7 @@ date_default_timezone_set('America/Bogota');
                     <div class="col-6">
                         <div class="form-group">
                             <label for="temas">temas:</label>
-                            <input type="text" class="form-control" id="area"  value="Comité de Evaluación y Seguimiento" required disabled>                                  
+                            <input type="text" class="form-control" id="temas"  value="Comité de Evaluación y Seguimiento" required disabled>                                  
                         </div>
                     </div>
                     <!-- Área -->
@@ -176,17 +174,10 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <!-- Descargos Aprendiz -->
                 <div class="col-12">
                     <div class="form-group">
-                        <label for="descargos-Aprendiz">Descargos Aprendiz:</label>
-                        <textarea class="form-control style-textareaficha-bienestar" name="descargos-Aprendiz" id="descargos-Aprendiz" cols="20" rows=""></textarea>
-
-                        <?php 
-                          foreach ($valoresDeLosReportes as $valoresReportes) {
-                              echo $valoresReportes->consecutivo;
-                          }
-                        ?>
+                        <h3>Descargos Aprendiz:</h3>
+                        <?=$descargos?>
                     </div>
                 </div>
-
             </div>
 
             <!-- Row 8 -->
@@ -200,21 +191,9 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 </div>
             </div>
 
-            <!-- Row 9 -->
-            <div class="row">
-                <!-- Recomendaciones -->
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="recomendaciones">Recomendaciones:</label>
-                        <select class="form-control" name="recomendaciones" id="recomendaciones">
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+            
 
-            <!-- Row 10 -->
+            <!-- Row 9 -->
             <div class="row">
 
                 <!-- Nombre Asistentes -->
@@ -234,60 +213,9 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 </div>
             </div>
 
-
-            <div class="titulo-desarrollo mb-4 mt-4" align="center" p-5>
-                <!-- <h2>Compromisos</h2> -->
-                <!-- Ventana Modal -->
+            <div class="text-center mb-3">
                 <button type="button" class="btn bg-success text-white" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">AÑADIR COMPROMISOS</button>
-
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Compromisos</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <label for="Actividad">actividad</label>
-                                            <textarea class="form-control" name="Actividad" id="actividad_text" cols="20" rows=""></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-5">
-                                        <div class="col-6">
-                                            <label for="Responsable">Responsable</label>
-                                            <input class="form-control" type="text" id="responsable">
-                                        </div>
-
-                                        <div class="col-6">
-                                            <label for="Fecha">Fecha Compromiso</label>
-                                            <input class="form-control" type="date" id="fecha-compromiso">
-                                        </div>
-                                    </div>
-
-                                    <div class="w-100 d-flex justify-content-center mb-5">
-                                        <input type="button" class="btn btn-success" id="botton-list" value="Agregar Compromiso" >
-                                        <!-- <button type="submit" class="FormularioCompromisos" >enviar</button> -->
-                                    </div>
-
-                                </form>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button"  class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-                
-
             <table class="table">
                 <thead>
                     <tr>
@@ -305,9 +233,96 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
             <input type="hidden" id="listaCompromisos" name="Listas_Compromisos">
 
             <div class="w-100 d-flex justify-content-center  mt-5 mb-5">
-                <button type="submit" class="btn btn bg-success text-white">Enviar Reporte</button>
+                <!-- <button type="submit" class="btn btn bg-success text-white">Enviar Reporte</button> -->
+                <input type="submit" class="btn btn bg-success text-white">
             </div>
-
         </form>
     </div>
 
+
+
+        <!-- modal de compromisos mejorar este modal y adaptar al evento ajax que se le va a generar -->
+    <div class="titulo-desarrollo mb-4 mt-4" align="center" p-5>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Compromisos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="Actividad">actividad</label>
+                                    <textarea class="form-control" name="Actividad" id="actividad_text" cols="20" rows=""></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row mb-5">
+                                <div class="col-6">
+                                    <label for="Responsable">Responsable</label>
+                                    <input class="form-control" type="text" id="responsable">
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="Fecha">Fecha Compromiso</label>
+                                    <input class="form-control" type="date" id="fecha-compromiso">
+                                </div>
+                            </div>
+
+                            <div class="w-100 d-flex justify-content-center mb-5">
+                                <input type="button" class="btn btn-success" id="botton-list" value="Agregar Compromiso" >
+                                <!-- <button type="submit" class="FormularioCompromisos" >enviar</button> -->
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"  class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal -->
+<div class="modal fade" id="descargos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Descargos Aprendiz:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="container">
+            <form>
+                <div class="form-group">
+                    <label for="consecutivoaprendiz">Email address</label>
+                    <input type="email" class="form-control" id="consecutivoaprendiz" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div>
+                <div class="mb-2 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary ">enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+</div>
