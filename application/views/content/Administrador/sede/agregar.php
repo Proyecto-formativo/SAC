@@ -3,25 +3,44 @@
 
   <form action="<?= base_url('Administrador/agregarSede'); ?>" method="POST">
     
-    <div class="form-group">
-      <label for="">Codigo:</label>
-      <input type="text" name="codigo" class="form-control" value="<?= set_value('codigo'); ?>">
-      <?= form_error('codigo', '<p class="text-danger">', '</p>'); ?>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="">Codigo:</label>
+          <input type="text" name="codigo" class="form-control" value="<?= set_value('codigo'); ?>">
+          <?= form_error('codigo', '<p class="text-danger">', '</p>'); ?>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="">Sede:</label>
+          <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>">
+          <?= form_error('nombre', '<p class="text-danger">', '</p>'); ?>
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="">Sede:</label>
-      <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>">
-      <?= form_error('nombre', '<p class="text-danger">', '</p>'); ?>
-    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="">Centro:</label>
+          <select name="centro" class="form-control">
+            <?php foreach($centros->result() as $centro) : ?>
+              <option value="<?= $centro->codigo; ?>" <?= set_select('centro', $centro->codigo); ?>><?= $centro->nombre; ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="">Centro:</label>
-      <select name="centro" class="form-control">
-        <?php foreach($centros->result() as $centro) : ?>
-          <option value="<?= $centro->codigo; ?>"><?= $centro->nombre; ?></option>
-        <?php endforeach; ?>
-      </select>
+      <div class="col-6">
+        <label for="">Municipio:</label>
+        <select name="municipio" class="form-control">
+          <?php foreach($municipios->result() as $municipio) : ?>
+            <option value="<?= $municipio->codigo; ?>" <?= set_select('municipio', $municipio->codigo); ?>><?= $municipio->nombre; ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
     </div>
     <input type="submit" name="submit" class="btn bg-sena" value="Agregar">
   </form>

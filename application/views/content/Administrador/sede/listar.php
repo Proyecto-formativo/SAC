@@ -7,6 +7,7 @@
         <th>Codigo</th>
         <th>Sede</th>
         <th>Centro</th>
+        <th>Municipio</th>
         <th>Editar</th>
         <th>Eliminar</th>
       </tr>
@@ -18,6 +19,7 @@
           <td><?= $sede->codigo; ?></td>
           <td><?= $sede->nombre; ?></td>
           <td><?= $sede->centro; ?></td>
+          <td><?= $sede->municipio; ?></td>
           <td><a href="<?= base_url('Administrador/FrmEditarSede/' . $sede->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>
             <button type="button" class="btn btn-danger eliminarSede" data-toggle="modal">
@@ -35,7 +37,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar Centro</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Sede</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -43,7 +45,7 @@
       <form action="<?php echo base_url('Administrador/eliminarSede'); ?>" method="POST">
         <input type="hidden" id="codigo_sede" name="codigo">
         <div class="modal-body">
-          Esta seguro de eliminar el Centro?
+          Esta seguro de eliminar el Sede?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn bg-sena" data-dismiss="modal">Cancelar</button>

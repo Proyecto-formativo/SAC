@@ -2,7 +2,7 @@
     <?=$header?>
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
-<!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script>-->
+<!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script> -->
 </head>
 <body>
 
@@ -30,15 +30,15 @@
 
                 <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/sugerencia'); ?>" id="btn-2" class="dropdown-item">Sugerencia</a>
+                        <a href="<?= base_url('Administrador/sugerencia'); ?>" id="btn-2" class="dropdown-item">Sugerencias</a>
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/recomendacion'); ?>" id="btn-2" class="dropdown-item">Recomendación</a>
+                        <a href="<?= base_url('Administrador/recomendacion'); ?>" id="btn-2" class="dropdown-item">Recomendaciónes</a>
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/municipio'); ?>" id="btn-2" class="dropdown-item">Municipio</a>
+                        <a href="<?= base_url('Administrador/municipio'); ?>" id="btn-2" class="dropdown-item">Municipios</a>
                     </div>
 
                     <div class="style-botones-dropdown">
@@ -58,22 +58,67 @@
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/centros'); ?>" id="btn-2" class="dropdown-item">Centro</a>
+                        <a href="<?= base_url('Administrador/centros'); ?>" id="btn-2" class="dropdown-item">Centros</a>
                     </div>
 
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/sedes'); ?>" id="btn-2" class="dropdown-item">Sede</a>
                     </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/niveles'); ?>" id="btn-2" class="dropdown-item">Niveles</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/areas'); ?>" id="btn-2" class="dropdown-item">Área</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/programas'); ?>" id="btn-2" class="dropdown-item">Programas</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/fichas'); ?>" id="btn-2" class="dropdown-item">Fichas</a>
+                    </div>
+
                 </div>
             </div>
 
             <!-- Fin Boton Administrar -->
 
-            <a href="<?=base_url('Administrador/lodelsebas')?>" id="btn-4" class="btn botoncito btn4">
-                <div class="style-botones ">
-                <button type="button" id="btn-1" class="btn botoncito">Acta comite </button> <i class="far fa-bell"></i>
+            <!-- Administración de Usuarios -->
+            <div class="dbtn-group dropright style-botones botoncito">
+                <button class="btn botoncito dropdown-toggle " type="button" id="dropdownMenuUsuarios" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Usuarios
+                </button>
+
+                <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuUsuarios">
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/administradores'); ?>" id="btn-2" class="dropdown-item">Administradores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/coordinadores'); ?>" id="btn-2" class="dropdown-item">Coordinadores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/instructores'); ?>" id="btn-2" class="dropdown-item">Instructores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/bienestar'); ?>" id="btn-2" class="dropdown-item">Bienestar</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/aprendices'); ?>" id="btn-2" class="dropdown-item">Aprendices</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/equipoinstructores'); ?>" id="btn-2" class="dropdown-item">Equipo Instructores Ficha</a>
+                    </div>
                 </div>
-            </a>
+            </div>
+            <!-- Fin Administración de Usuarios -->
 
             <a href="<?=base_url('Administrador/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">
