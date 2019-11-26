@@ -7,8 +7,17 @@ date_default_timezone_set('America/Bogota');
 ?>
 
     <div class="container">
-        <form action="libs/enviarFicha.php" method="post">
+        <form action="<?=base_url('Bienestar/ingresarActa')?>" method="post" enctype="multipart/form-data">
             <!-- Row 1 -->
+            <div class="row">
+                <!-- municipio -->
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="NumroActa">Numero Acta:</label>
+                        <input type="text" class="form-control" id="NumroActa" name="NumroActa"  value="<?=date("Y")."-".date("m")."-";?>Numero_acta">
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <!-- municipio -->
                 <div class="col-6">
@@ -27,7 +36,7 @@ date_default_timezone_set('America/Bogota');
                 <div class="col-6">
                     <div class="form-group">
                         <label for="fecha">Fecha:</label>
-                        <input type="text" class="form-control" id="fecha" name="date"  value="<?= date("d")."-".date("m")."-".date("Y");?>" disabled >
+                        <input type="text" class="form-control" id="fecha" name="date"  value="<?= date("d")."-".date("m")."-".date("Y");?>" readonly >
                     </div>
                 </div>
 
@@ -69,16 +78,16 @@ date_default_timezone_set('America/Bogota');
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="hora-inicio">hora inicio:</label>
-                        <input type="text" name="hora-inicio"class="form-control" id="hora-inicio" value="<?= date('h:i:s')?>" required disabled>
+                        <label for="hora_inicio">hora inicio:</label>
+                        <input type="text" name="hora_inicio"class="form-control" id="hora-inicio" value="<?= date('h:i:s')?>" required readonly>
                     </div>
                 </div>
 
 
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="hora-inicio">hora Fin:</label>
-                        <input type="time" name="hora-fin"class="form-control" id="hora-fin" value="<?= date('h:i:s')?>" required>
+                        <label for="hora_fin">hora Fin:</label>
+                        <input type="time" name="hora_fin"class="form-control" id="hora_fin" value="<?= date('h:i:s')?>" required>
                     </div>
                 </div>
 
@@ -93,14 +102,14 @@ date_default_timezone_set('America/Bogota');
                     <div class="col-6">
                         <div class="form-group">
                             <label for="temas">temas:</label>
-                            <input type="text" class="form-control" id="temas"  value="Comité de Evaluación y Seguimiento" required disabled>                                  
+                            <input type="text" name="temas"class="form-control" id="temas"  value="Comité de Evaluación y Seguimiento" required readonly>                                  
                         </div>
                     </div>
                     <!-- Área -->
                     <div class="col-6">
                         <div class="form-group">
                             <label for="Area">Area:</label>
-                            <input type="text" class="form-control" id="area"required value="<?=$nombreArea?>">
+                            <input type="text" name="area"class="form-control" id="area"required value="<?=$nombreArea?>">
                         </div>
                     </div>
             </div>
@@ -113,7 +122,7 @@ date_default_timezone_set('America/Bogota');
                     <div class="form-group">
                         <label for="Objetivos">Objetivos De La Reunión:</label>
                         <!-- <input type="text"name="Objetivos" class="form-control" id="Objetivos"  required> -->
-                        <textarea disabled class="form-control style-textareaficha" name="ObjetivosReunion" id="objetivos" cols="20" rows="">Analizar los informes académicos y disciplinarios de los aprendices que fueron citados al Comité, y realizar las recomendaciones al Subdirector.</textarea>
+                        <textarea readonly class="form-control style-textareaficha" name="ObjetivosReunion" id="objetivos" cols="20" rows="">Analizar los informes académicos y disciplinarios de los aprendices que fueron citados al Comité, y realizar las recomendaciones al Subdirector.</textarea>
                     </div>
                 </div>
             </div>
@@ -130,7 +139,7 @@ date_default_timezone_set('America/Bogota');
                     <div class="form-group">
                         <label for="Temas-a-tratar">Temas A Tratar:</label>
 
-                        <textarea readonly class="form-control style-textareaficha-bienestar" name="Temas-a-Tratar" id="temasTratar" cols="100" rows="">
+                        <textarea  class="form-control style-textareaficha-bienestar" name="Temas_a_Tratar" id="temasTratar" cols="100" rows="">
 A. Presentación de Asistentes al Comité.
 
 B. Verificación Quórum, teniendo en cuenta Capitulo 10 
@@ -149,7 +158,7 @@ D. Proposiciones y varios.
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Desarrollo-reunion">Desarrollo:</label>
-                        <textarea readonly class="form-control style-textareaficha-bienestar" name="Desarrollo" id="desarollo" cols="20" rows="">
+                        <textarea  class="form-control style-textareaficha-bienestar" name="Desarrollo" id="desarollo" cols="20" rows="">
 A. Se realizó presentación por cada uno de los asistentes al Comité de  
     Evaluación y seguimiento, conformado por:
     Coordinador Académico: <?=$coordinador?>.
@@ -186,7 +195,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <div class="col-12">
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Conclusiones:</label>
-                        <textarea class="form-control style-textareaficha-bienestarho2" id="conclusiones" rows="3" cols="10">Realizar entrega del plan de mejora desde lo académico y actitudinal con el respectivo acompañamiento a los aprendices citados. Reportar oportunamente el cumplimiento del plan de mejora.</textarea>
+                        <textarea class="form-control style-textareaficha-bienestarho2" name="concluciones" id="conclusiones" rows="3" cols="10">Realizar entrega del plan de mejora desde lo académico y actitudinal con el respectivo acompañamiento a los aprendices citados. Reportar oportunamente el cumplimiento del plan de mejora.</textarea>
                     </div>
                 </div>
             </div>
@@ -200,7 +209,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Asistentes">Nombres Asistentes:</label>
-                        <input type="file"name="evidencia" class="form-control-file" id="asistentes" required>
+                        <input type="file"name="NombresAsistentes" class="form-control-file" id="asistentes" required>
                     </div>
                 </div>
 
@@ -208,7 +217,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Invitados">Nombres Invitados:</label>
-                        <input type="file"name="evidencia" class="form-control-file" id="invitados" required>
+                        <input type="file"name="NombreInvitados" class="form-control-file" id="invitados" required>
                     </div>
                 </div>
             </div>
@@ -219,10 +228,10 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
             <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">consecutivo</th>
+                    <th scope="col">Actividad</th>
+                    <th scope="col">Responsable</th>
+                    <th scope="col">Fecha Compromiso</th>
                     </tr>
                 </thead>
                 <tbody id="listar-compromisos-tabla">
@@ -258,25 +267,24 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                             <div class="row">
                                 <div class="col-12">
                                     <label for="Actividad">actividad</label>
-                                    <textarea class="form-control" name="Actividad" id="actividad_text" cols="20" rows=""></textarea>
+                                    <textarea class="form-control" name="Actividad" id="actividad_text" cols="20" rows="" required></textarea>
                                 </div>
                             </div>
 
                             <div class="row mb-5">
                                 <div class="col-6">
                                     <label for="Responsable">Responsable</label>
-                                    <input class="form-control" type="text" id="responsable">
+                                    <input class="form-control" type="text" id="responsable" required>
                                 </div>
 
                                 <div class="col-6">
                                     <label for="Fecha">Fecha Compromiso</label>
-                                    <input class="form-control" type="date" id="fecha-compromiso">
+                                    <input class="form-control" type="date" id="fecha-compromiso" required>
                                 </div>
                             </div>
 
                             <div class="w-100 d-flex justify-content-center mb-5">
                                 <input type="button" class="btn btn-success" id="botton-list" value="Agregar Compromiso" >
-                                <!-- <button type="submit" class="FormularioCompromisos" >enviar</button> -->
                             </div>
 
                         </form>
@@ -294,14 +302,11 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
 
 
     <!-- Modal -->
-<div class="modal fade" id="descargos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal  jquery-modal blocker current" id="descargos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Descargos Aprendiz:</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
         <div class="container">
             <form>
@@ -314,11 +319,13 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
 
 
                 <div class="form-group form-check">
+                    <label for="informeEquipoEjecutor">informe del EquipoEjecutor:</label>
                     <textarea  class="form-control style-textareaficha-descargos" name="Desarrollo" id="informeEquipoEjecutor" cols="20" row="10" rows=""></textarea>
                 </div>
 
 
                 <div class="form-group form-check">
+                    <label for="descarosAprendiz">Descaros del Aprendiz:</label>
                     <textarea  class="form-control style-textareaficha-descargos" name="Desarrollo" id="descarosAprendiz" cols="20" rows=""></textarea>
                 </div>
 
@@ -332,7 +339,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                     </select>
                 </div>
                 <div class="mb-2 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary ">enviar</button>
+                    <button type="submit" id="agregarDescargos" class="btn btn-primary ">enviar</button>
                 </div>
             </form>
         </div>

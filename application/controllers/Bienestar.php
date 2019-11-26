@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Bienestar extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','sugerencia']);
+		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 	}
@@ -209,6 +209,98 @@ class Bienestar extends CI_Controller {
         }
     }
 
+    public function ingresarActa(){
+        //echo "<br> *******************".$this->input->post('NumroActa');
+        //echo "<br> *******************".$this->input->post('municipio');
+        //echo "<br> *******************".$this->input->post('hora_inicio');
+        //echo "<br> *******************".$this->input->post('hora_fin');
+        //echo "<br> *******************".$this->input->post('sede');
+        //echo "<br> *******************".$this->input->post('date');
+        //echo "<br> *******************".$this->input->post('temas');
+        //echo "<br> *******************".$this->input->post('area');
+        //echo "<br> *******************".$this->input->post('ObjetivosReunion');
+        //echo "<br> *******************".$this->input->post('Temas_a_Tratar');
+        //echo "<br> *******************".$this->input->post('Desarrollo');
+        //echo "<br> *******************".$this->input->post('concluciones');
+        //echo "<br> *******************".$this->input->post('NombresAsistentes');
+        //echo "<br> *******************".$this->input->post('NombreInvitados');
+        // falta no se sabe si se agrega centro a la acta echo "<br> *******************".$this->input->post('centro');
+        
+        $NombresAsistentes = $this->IngresarArchivos('NombresAsistentes');
+        $valore1 = $this->IngresarArchivos('NombreInvitados');
+        if ($NombresAsistentes === false || $valore1 === false) {
+            $mensaje = "
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                Toast.fire({
+                    icon: 'success',
+                    title: 'el archivo es requerido para generar el acta '
+                })";
+            $dinamica = $this->load->view('content/defecto/configuraciones',['datos'=>$datos,'mensaje'=>$mensaje],true);
+            $this->Plantilla_Bienestar($dinamica);
+        }else{
+            $valores = [
+                "consecutivo" => $this->input->post('NumroActa'),
+                "municipio" => $this->input->post('municipio'),
+                "fecha" => $this->input->post('date'),
+                "horaInicio" => $this->input->post('hora_inicio'),
+                "horaFin" => $this->input->post('hora_fin'),
+                "sede" => $this->input->post('sede'),
+                "temas" => $this->input->post('temas'),
+                "area" =>  $this->input->post('area'),
+                "objetivo" => $this->input->post('ObjetivosReunion'),
+                "temasTratar" => $this->input->post('Temas_a_Tratar'),
+                "desarrolloReunion" => $this->input->post('Desarrollo'),
+                "conclusiones" => $this->input->post('concluciones'),
+                "archivoAsistentes" => $NombresAsistentes,
+                "archivoInvitados" => $NombreInvitados
+            ];
+            $this->acta->agregarActa($valores);
+    
+            $array = json_decode($this->input->post('Listas_Compromisos'));
+            var_export($array);
+            echo $NombreInvitados;
+            echo $NombresAsistentes;
+
+        }
+
+        
+        
+    }
+
+    public function IngresarArchivos($archivo){
+        
+        /**
+         * se crea la ruta del fichero para enviar la evidencia del acta
+         */
+        $ruta = 'assets/documentos/';
+        $config = [
+            'upload_path' => './assets/documentos/',
+            'allowed_types' => 'docx|jpg|png|txt|doc|pdf|rar|zip',
+        ];
+        $this->load->library('upload',$config);
+        if ($this->upload->do_upload($archivo)) {
+            $dato = ['upload_data' =>$this->upload->data()];
+            $NombreInvitados = $ruta.$dato['upload_data']['file_name'];
+            //var_export($this->upload->data());
+            //echo $NombreInvitados;
+            return $NombreInvitados;
+            
+        }
+
+        return false;
+    }
+
 
     public function filtroMunicipio(){
         if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
@@ -225,5 +317,23 @@ class Bienestar extends CI_Controller {
         }else{
             show_404();
         }
+    }
+
+    public function ingresoDescargosAprendiz(){
+        $datos = JSON_decode($_POST["valores"]);
+        $valores = [
+            'consReporte' => $datos->consReporte,
+            'consAprendizReporte'=> $datos->consAprendizReporte,
+            'informeEquipoEjecutor'=> $datos->informeEquipoEjecutor,
+            'descargosAprendiz'=> $datos->descarosAprendiz,
+            'recomendacion' => $datos->Recomendacion,
+        ];
+
+        if ($this->reporteseguimientoaprendiz->agregar($valores)) {
+            echo 1;
+        }else{
+            echo 0;
+        }
+        
     }
 }

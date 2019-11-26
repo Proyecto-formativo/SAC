@@ -36,10 +36,10 @@ foreach ($datos as $key):
         ?>
         <tr>
             <td style="display:none;">
-                <div class="mr-5"> <?=$valores->consecutivoAprendizReporte?> </div>
+                <div class="mr-5" valor="<?=$valores->consecutivoAprendizReporte?>"> <?=$valores->consecutivoAprendizReporte?> </div>
             </td>
             <td  style="display:none;">
-                <div class="mr-5"> <?=$valores->consReporte?> </div>
+                <div class="mr-5" valor="<?=$valores->consReporte?>"> <?=$valores->consReporte?> </div>
             </td>
             <td>
                 <div class="mr-5"> <?=$valores->docID?> </div>
@@ -48,7 +48,7 @@ foreach ($datos as $key):
                 <div class="mr-5"><?=$valores->aprendiz?> </div>
             </td>
             <td>
-                <button class="btn btn-warning descargos">Descargos</button>
+                <button class="btn btn-warning descargos" value = "<?=$valores->consecutivoAprendizReporte?>">Descargos</button>
             </td>
         </tr>
         <?php
