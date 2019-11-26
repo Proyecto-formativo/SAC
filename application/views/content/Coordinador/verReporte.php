@@ -13,10 +13,10 @@
 </head>
 <body>
 <p align="right" style="border-block-end-color:   #1f1d1d">
-	<a href="<?=base_url('Coordinador/aprobarReporte/') . $reporte[0]->consecutivo;?>"><button type="button" class="btn btn-primary"  style="background: #fc7323;" id="btnsave">Citar A Comite</button></a>
+	<a href="<?=base_url('Coordinador/aprobarReporte/') . $reporte[0]->consecutivo;?>"><button type="button" class="btn btn-primary"  style="background: #fc7323; border: 1px solid #fc7323;" id="btnsave">Citar A Comite</button></a>
 	<button type="button" style="background: #249762" id="download" class="btn btn-primary" id="btnsave">Generar Pdf</button>
 
-	<a href="<?=base_url('Coordinador/reportes/');?>"><button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button></a>
+	<a href="<?=base_url('Coordinador/reportes/');?>"><button type="button" class="btn btn-secondary" >Volver</button></a>
 </p>
 
 <div id="pdf" style="background-color: white; width: 100%;">
@@ -74,7 +74,7 @@
 				<input type="text" name="consecut" value="SEDE" class="bg-sena"  style="margin-left:10%; width:90%; text-align:center;"   readonly="readonly">
 			</div>
 			<div class="col-8"style="padding:0;" >
-				<input type="text" name="sede" value="<?=$reporte[0]->sede;?>"  id="sede" style="width:97.5%;" >
+				<input type="text" name="sede" value="<?=$reporte[0]->sede;?>"  id="sede" style="width:97.5%;"  readonly="readonly">
 			</div>
 			<div class="col-4" style="padding:0;">
 				<input type="text" name="consecut" value="ETAPA FORMACION" class="bg-sena"  style="margin-left:10%; width:90%; text-align:center;"   readonly="readonly">
@@ -183,35 +183,26 @@
 		</table>
 		<br>
 
-		<h4 class="verh2" >Evidencias</h4>
-
-		<div class="evi" style="width: 95%; margin: auto; height: 130px;border: 2px solid #1f1d1d" >
-			<div class="col-6">
-
-				<?=$reporte[0]->evidencia;
-				$dats=$reporte[0]->evidencia;
-				$archivos="../../../../assets/documentos/";
-
-				//	header('content-type: application/pdf');
-				//	readfile(base_url("assets/documentos/Taller_SGC.docx"));
-				?>
-
-
-			</div>
-			<div class="col-6">
-
-
-			</div>
-
-		</div>
-
 
 
 	</div>
 
 
+	<h4 class="verh2" >Evidencias</h4>
+	<div class="evi" style="width: 95%; margin: auto; height: 130px;border: 2px solid #1f1d1d" >
+		<div class="col-6">
+
+			<?=$reporte[0]->evidencia;
+			$dats=$reporte[0]->evidencia;
+			$archivos="../../../../assets/documentos/";
+
+			//	header('content-type: application/pdf');
+			//	readfile(base_url("assets/documentos/Taller_SGC.docx"));
+			?>
 
 
+		</div>
+	</div>
 
 </body>
 
