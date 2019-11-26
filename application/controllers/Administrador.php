@@ -3167,6 +3167,7 @@ class Administrador extends CI_Controller {
     public function FrmEditarAdministrador($documento) {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['administrador'] = $this->usuario->getUsuario($documento);
+            $data['acceso'] = $this->usuario->verificarAcceso($documento);
             $dinamica = $this->load->view('content/Administrador/usuarios/administradores/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -3356,6 +3357,7 @@ class Administrador extends CI_Controller {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['perfiles'] = $this->perfil->mostrarPerfiles();
             $data['coordinador'] = $this->usuario->getUsuario($documento);
+            $data['acceso'] = $this->usuario->verificarAcceso($documento);
             $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -3538,6 +3540,7 @@ class Administrador extends CI_Controller {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['perfiles'] = $this->perfil->mostrarPerfiles();
             $data['instructor'] = $this->usuario->getUsuario($documento);
+            $data['acceso'] = $this->usuario->verificarAcceso($documento);
             $dinamica = $this->load->view('content/Administrador/usuarios/instructores/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -3717,6 +3720,7 @@ class Administrador extends CI_Controller {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['bien'] = $this->usuario->getUsuario($documento);
             $data['perfiles'] = $this->perfil->mostrarPerfiles();
+            $data['acceso'] = $this->usuario->verificarAcceso($documento);
             $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -4158,6 +4162,489 @@ class Administrador extends CI_Controller {
                 })";
                 $dinamica = $this->load->view('content/Administrador/usuarios/aprendices/listar', $data, true);
                 $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    /*
+    ==============================================================================================================
+    */
+
+    //Modulo Equipo de Instructores
+    public function equipoinstructores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['fichas'] = $this->ficha->listarFichas();
+            $data['instructores'] = $this->usuario->getInstructores();
+            $data['estados_instructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data,true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    //Fin Modulo Equipo de Instructores
+    /*
+    ==============================================================================================================
+    */
+
+    //Denegar Acceso Usuarios
+    public function denegarAccesoCoordinador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->denegarAcceso($documento);
+
+            if ($resultado) {
+                $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se ha denegado el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido denegar el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function darAccesoCoordinador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('documento');
+                $this->FrmEditarCoordinador($documento);
+            } else {
+                $documento = $this->input->post('documento');
+                $password = $this->input->post('password_one');
+                
+                $resultado = $this->usuario->darAcceso($documento, $password);
+
+                if ($resultado) {
+                    $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El Usuario ahora tiene acceso a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['coordinadores'] = $this->usuario->mostrarCoordinadores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'No se ha podido dar acceso al usuario a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/coordinadores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //===========================================================================================================
+    public function denegarAccesoAdministrador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->denegarAcceso($documento);
+
+            if ($resultado) {
+                $data['administradores'] = $this->usuario->mostrarAdministradores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se ha denegado el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['administradores'] = $this->usuario->mostrarCoordinadores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido denegar el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function darAccesoAdministrador() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('documento');
+                $this->FrmEditarAdministrador($documento);
+            } else {
+                $documento = $this->input->post('documento');
+                $password = $this->input->post('password_one');
+                
+                $resultado = $this->usuario->darAcceso($documento, $password);
+
+                if ($resultado) {
+                    $data['administradores'] = $this->usuario->mostrarAdministradores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El Usuario ahora tiene acceso a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['administradores'] = $this->usuario->mostrarAdministradores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'No se ha podido dar acceso al usuario a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/administradores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //============================================================================================================
+
+    public function denegarAccesoInstructor() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->denegarAcceso($documento);
+
+            if ($resultado) {
+                $data['instructores'] = $this->usuario->mostrarInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se ha denegado el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['instructores'] = $this->usuario->mostrarInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido denegar el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function darAccesoInstructor() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('documento');
+                $this->FrmEditarInstructor($documento);
+            } else {
+                $documento = $this->input->post('documento');
+                $password = $this->input->post('password_one');
+                
+                $resultado = $this->usuario->darAcceso($documento, $password);
+
+                if ($resultado) {
+                    $data['instructores'] = $this->usuario->mostrarInstructores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El Usuario ahora tiene acceso a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['instructores'] = $this->usuario->mostrarInstructores();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'No se ha podido dar acceso al usuario a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/instructores/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //============================================================================================================
+
+    public function denegarAccesoBienestar() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $resultado = $this->usuario->denegarAcceso($documento);
+
+            if ($resultado) {
+                $data['bienestar'] = $this->usuario->mostrarBienestar();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Se ha denegado el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['bienestar'] = $this->usuario->mostrarBienestar();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido denegar el Acceso al Usuario'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+     public function darAccesoBienestar() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
+            $this->form_validation->set_rules('password_two', 'Confirmar Contraseña', 'trim|required|max_length[15]|matches[password_one]');
+
+            if ($this->form_validation->run() == false) {
+                $documento = $this->input->post('documento');
+                $this->FrmEditarBienestar($documento);
+            } else {
+                $documento = $this->input->post('documento');
+                $password = $this->input->post('password_one');
+                
+                $resultado = $this->usuario->darAcceso($documento, $password);
+
+                if ($resultado) {
+                    $data['bienestar'] = $this->usuario->mostrarBienestar();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El Usuario ahora tiene acceso a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+
+                } else {
+                    $data['bienestar'] = $this->usuario->mostrarBienestar();
+                    $data['mensaje'] = "const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+            
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'No se ha podido dar acceso al usuario a la plataforma'
+                    })";
+                    $dinamica = $this->load->view('content/Administrador/usuarios/bienestar/listar', $data, true);
+                    $this->Plantilla_Administrador($dinamica);
+                }            
             }
         } else {
             show_404();

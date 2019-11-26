@@ -11,6 +11,7 @@
           <th>Tel. Movil</th>
           <th>Tel. Fijo</th>
           <th>Perfil</th>
+          <th>Acceso</th>
           <th>Editar</th>
           <th>Eliminar</th>
         </tr>
@@ -26,6 +27,11 @@
             <td><?= $bien->telmovil; ?></td>
             <td><?= $bien->telfijo; ?></td>
             <td><?= $bien->perfil; ?></td>
+            <?php if ($bien->docidusuario == null) : ?>
+              <td class="text-danger">Sin Acceso</td>
+            <?php else : ?>
+              <td class="text-success">Con Acceso</td>
+            <?php endif; ?>  
             <td><a href="<?= base_url('Administrador/FrmEditarBienestar/' . $bien->documento); ?>" class="btn bg-sena">Editar</a></td>
             <td>
               <button type="button" class="btn btn-danger eliminarBienestar" data-toggle="modal">

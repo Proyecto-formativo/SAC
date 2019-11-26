@@ -717,5 +717,14 @@ $(document).ready(function () {
     $("#documento_aprendiz").val(datos[0]);
 
   });
+
+  //Boton denegar Acceso a la plataforma
+  $("#denegar").click(function () {
+    var documento = $("#docid").val();
+    console.log(documento);
+    $("#denegarAccesoModal").modal("show");
+    $("#documento_usuario").val(documento);
+  });
+
   // Fin del Document Ready()
 });
