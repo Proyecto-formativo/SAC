@@ -35,10 +35,35 @@ class reporte extends CI_Model{
                                 ON f.programa = p.codigo 
                                 INNER JOIN tblarea AS a 
                                 ON p.area = a.codigo 
-                                WHERE a.codigo = $area AND  YEAR(r.fecha) = $year and MONTH(r.fecha) = $mouth and r.estado = 'aprobado'");
+                                WHERE a.codigo = $area AND  YEAR(r.fecha) = $year and MONTH(r.fecha) = $mouth and r.estado = 'aprobado' and r.nro_acta is null ");
         if ($sql->num_rows() > 0) {
             return $sql->result();
         }
         return false;
+    }
+
+    public function MostrarReportesDelArea($area){
+        $year = date('Y');
+        $mouth = date('m');
+        $sql = $this->db->query("SELECT r.consecutivo as consecutivo
+                                FROM tblreporte AS r INNER JOIN tblusuario AS u 
+                                ON r.instructorReporte = u.docID 
+                                INNER JOIN tblequipoinstructor AS ei 
+                                ON u.docID = ei.docIDInstructor 
+                                INNER JOIN tblficha AS f 
+                                ON ei.numFicha = f.nroFicha 
+                                INNER JOIN tblprograma AS p 
+                                ON f.programa = p.codigo 
+                                INNER JOIN tblarea AS a 
+                                ON p.area = a.codigo 
+                                WHERE a.codigo = $area AND  YEAR(r.fecha) = $year and MONTH(r.fecha) = $mouth and r.estado = 'aprobado'");
+        if ($sql->num_rows() > 0) {
+            return $sql;
+        }
+        return false;
+    }
+
+    public function agregarActa($acta,$consecutivo){
+        $this->db->query("UPDATE tblreporte set nro_acta = '$acta' where consecutivo = $consecutivo");
     }
 }

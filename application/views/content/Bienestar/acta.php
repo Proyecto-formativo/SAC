@@ -14,7 +14,7 @@ date_default_timezone_set('America/Bogota');
                 <div class="col-6">
                     <div class="form-group">
                         <label for="NumroActa">Numero Acta:</label>
-                        <input type="text" class="form-control" id="NumroActa" name="NumroActa"  value="<?=date("Y")."-".date("m")."-";?>Numero_acta">
+                        <input type="text" class="form-control" id="NumroActa" name="NumroActa"  value="Nro_acta">
                     </div>
                 </div>
             </div>
@@ -36,13 +36,11 @@ date_default_timezone_set('America/Bogota');
                 <div class="col-6">
                     <div class="form-group">
                         <label for="fecha">Fecha:</label>
-                        <input type="text" class="form-control" id="fecha" name="date"  value="<?= date("d")."-".date("m")."-".date("Y");?>" readonly >
+                        <input type="text" class="form-control" id="fecha" name="date"  value="<?= date("Y")."-".date("m")."-".date("d");?>" readonly >
                     </div>
                 </div>
 
             </div>
-
-
 
 
             <!-- Row 2 -->
@@ -109,7 +107,8 @@ date_default_timezone_set('America/Bogota');
                     <div class="col-6">
                         <div class="form-group">
                             <label for="Area">Area:</label>
-                            <input type="text" name="area"class="form-control" id="area"required value="<?=$nombreArea?>">
+                            <input type="text" class="form-control" disabled required value="<?=$nombreArea?>">
+                            <input type="hidden" name="area"class="form-control" id="area" required value="<?=$codigo?>">
                         </div>
                     </div>
             </div>

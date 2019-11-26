@@ -8,7 +8,7 @@
                 <th>Nombre Area</th>
                 <th>Centro</th>
                 <th>Coordinador</th>
-                <th>Generar Acta</th>
+                <th>Generar Acta</th> 
             </tr>
         </thead>
         <tbody>

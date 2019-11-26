@@ -18,6 +18,7 @@ $(document).ready(function() {
         }
   });
 
+  
 
 
   $("#municipio").bind("change", function() {
@@ -133,14 +134,16 @@ $(document).ready(function() {
             icon: 'error',
             title: 'ya existe ese registro en la base de datos'
           });//sweet alert
+
        }//fin funcion de error
+
       });//fin ajax
     }//fin el else
   });//fin de agregar descargos
 
   $("#botton-list").bind("click", e => {
     e.preventDeFaut;
-    if ($("#actividad_text").val() != "" || $("#responsable").val() != "" || $("#fecha-compromiso").val() != "" ) {
+    if ($("#actividad_text").val() != "" && $("#responsable").val() != "" && $("#fecha-compromiso").val() != "" ) {
       
       var actividad_text = $("#actividad_text").val(),
       responsable = $("#responsable").val(),

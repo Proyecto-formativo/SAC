@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Bienestar extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta']);
+		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta','compromisos']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 	}
@@ -210,25 +210,25 @@ class Bienestar extends CI_Controller {
     }
 
     public function ingresarActa(){
-        //echo "<br> *******************".$this->input->post('NumroActa');
-        //echo "<br> *******************".$this->input->post('municipio');
-        //echo "<br> *******************".$this->input->post('hora_inicio');
-        //echo "<br> *******************".$this->input->post('hora_fin');
-        //echo "<br> *******************".$this->input->post('sede');
-        //echo "<br> *******************".$this->input->post('date');
-        //echo "<br> *******************".$this->input->post('temas');
-        //echo "<br> *******************".$this->input->post('area');
-        //echo "<br> *******************".$this->input->post('ObjetivosReunion');
-        //echo "<br> *******************".$this->input->post('Temas_a_Tratar');
-        //echo "<br> *******************".$this->input->post('Desarrollo');
-        //echo "<br> *******************".$this->input->post('concluciones');
-        //echo "<br> *******************".$this->input->post('NombresAsistentes');
-        //echo "<br> *******************".$this->input->post('NombreInvitados');
+        // echo "<br> *******************".$this->input->post('NumroActa');
+        // echo "<br> *******************".$this->input->post('municipio');
+        // echo "<br> *******************".$this->input->post('hora_inicio');
+        // echo "<br> *******************".$this->input->post('hora_fin');
+        // echo "<br> *******************".$this->input->post('sede');
+        // echo "<br> *******************".$this->input->post('date');
+        // echo "<br> *******************".$this->input->post('temas');
+        // echo "<br> *******************area ".$this->input->post('area');
+        // echo "<br> *******************".$this->input->post('ObjetivosReunion');
+        // echo "<br> *******************".$this->input->post('Temas_a_Tratar');
+        // echo "<br> *******************".$this->input->post('Desarrollo');
+        // echo "<br> *******************".$this->input->post('concluciones');
+        // echo "<br> *******************".$this->input->post('NombresAsistentes');
+        // echo "<br> *******************".$this->input->post('NombreInvitados');
         // falta no se sabe si se agrega centro a la acta echo "<br> *******************".$this->input->post('centro');
         
         $NombresAsistentes = $this->IngresarArchivos('NombresAsistentes');
-        $valore1 = $this->IngresarArchivos('NombreInvitados');
-        if ($NombresAsistentes === false || $valore1 === false) {
+        $NombreInvitados = $this->IngresarArchivos('NombreInvitados');
+        if ($NombresAsistentes === false || $NombreInvitados === false) {
             $mensaje = "
                     const Toast = Swal.mixin({
                     toast: true,
@@ -246,7 +246,7 @@ class Bienestar extends CI_Controller {
                     icon: 'success',
                     title: 'el archivo es requerido para generar el acta '
                 })";
-            $dinamica = $this->load->view('content/defecto/configuraciones',['datos'=>$datos,'mensaje'=>$mensaje],true);
+            $dinamica = $this->load->view('content/defecto/configuraciones',['mensaje'=>$mensaje],true);
             $this->Plantilla_Bienestar($dinamica);
         }else{
             $valores = [
@@ -268,10 +268,32 @@ class Bienestar extends CI_Controller {
             $this->acta->agregarActa($valores);
     
             $array = json_decode($this->input->post('Listas_Compromisos'));
-            var_export($array);
-            echo $NombreInvitados;
-            echo $NombresAsistentes;
+            foreach ($array as $value) {
+                $this->compromisos->agregar($this->input->post('NumroActa'),$value[0],$value[1],$value[2]);
+            }
 
+            $valores = $this->reporte->MostrarReportesDelArea($this->input->post('area'));
+            foreach ($valores->result() as $reporte) {
+               $this->reporte->agregarActa($this->input->post('NumroActa'),$reporte->consecutivo);
+            }
+            $mensaje = "
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Acta agregada correctamente'
+                })";
+            $this->ActaComite();
         }
 
         
