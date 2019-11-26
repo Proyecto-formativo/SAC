@@ -37,7 +37,6 @@ class Administrador extends CI_Controller {
             show_404();
 
         }
-
     }
     /**
      * configuraciones

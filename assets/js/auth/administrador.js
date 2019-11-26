@@ -80,6 +80,7 @@ $(document).ready(function () {
     $("#codigo_recomendacion").val(datos[0]);
 
   });
+  
   //Fin Opciones Recomendacion
 
   //Plugin Data Table Municipio
@@ -103,7 +104,8 @@ $(document).ready(function () {
   });
 
   //Boton Eliminar Municipio
-  $(".eliminarMunicipio").click(function () {
+  
+  $("#municipio").on("click",".eliminarMunicipio", function () {
 
     $("#eliminarMunicipioModal").modal("show");
 
@@ -121,6 +123,7 @@ $(document).ready(function () {
     $("#codigo_municipio").val(datos[0]);
 
   });
+  
   //Fin Opciones Recomendacion
 
   //Plugin Data Table Etapas Formación
