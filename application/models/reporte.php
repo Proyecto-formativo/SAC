@@ -75,7 +75,7 @@ class reporte extends CI_Model{
 	public  function aprobarRep($consec){
 		$query=$this->db->query("UPDATE `tblreporte` SET `estado` = 'Aprobado' WHERE `tblreporte`.`consecutivo` =$consec ");
 		if ($query){
-			return "reporte aprobado";
+			return "estado del Reporte ha cambiado a Aprobado";
 		}else{
 			return "no se pudo realizar la solicitud";
 		}

@@ -7,11 +7,13 @@ class Coordinador extends CI_Controller {
 		$this->load->model(['usuario','acceso','reporte','aprendicesreportados']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
+		//$this->load->library('pdf');
+
 	}
 
 	public function index(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
-			$dinamica = $this->load->view('content/defecto/informacion_sistema','',true);
+			$dinamica[] = $this->load->view('content/defecto/informacion_sistema','',true);
 			$this->Plantilla_Coordinador($dinamica);
 		}else{
 			show_404();
@@ -167,4 +169,10 @@ class Coordinador extends CI_Controller {
 			$this->Plantilla_Coordinador($dinamica);
 		}
 	}
+
+
+
+
+
+
 }

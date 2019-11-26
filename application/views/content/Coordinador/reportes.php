@@ -13,7 +13,7 @@
 		</tr>
 	</thead>
 
-	<tbody >
+	<tbody style="padding:0px" >
 		<?php foreach ($reporte->result() as $valor): ?>
 			<tr>
 				<td> <?= $valor->consecutivo?></td>
