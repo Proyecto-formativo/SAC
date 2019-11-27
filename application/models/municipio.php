@@ -44,5 +44,13 @@
         
       return true;
     }
+
+    public function filtroMostrarsedeYcentro($id_municipio){
+      $sql = $this->db->query("SELECT m.nombre as 'municipio', s.codigo as 'codigo_sede',s.nombre as 'sede',c.codigo as 'codigo_centro', c.nombre as 'centro' from tblcentro as c inner join tblsede as s on c.codigo = s.centro inner join tblmunicipio as m on s.municipio = m.codigo WHERE s.municipio = $id_municipio");
+      if ($sql->num_rows() > 0) {
+        return $sql;
+      }
+      return false;
+    }
   }
 ?>
