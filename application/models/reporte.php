@@ -18,20 +18,24 @@ class reporte extends CI_Model{
         return $sql->row();
     }
 
-
+https://github.com/Proyecto-formativo/SAC/tree/coordinador
 	/*consultas interfaz de coordinador
   */
 
 
-	public function Consult_general_coor(){
 
-		$sql = $this->db->query("SELECT af.numFicha,p.nombre,r.fecha,r.consecutivo
+	public function Consult_general_coor($doc){
+
+	$sql = $this->db->query("SELECT af.numFicha,p.nombre,r.fecha,r.consecutivo,r.estado
         FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar 
-        ON ar.consReporte=r.consecutivo 
+        ON ar.consReporte=r.consecutivo         
         INNER JOIN tblaprendicesficha as af ON af.docIDAprendiz=ar.docIDAprendiz
         INNER JOIN tblficha as f ON f.nroFicha=af.numFicha
-        INNER JOIN tblprograma as p ON p.codigo=f.programa 
-        GROUP BY r.consecutivo ");
+        INNER JOIN tblprograma as p ON p.codigo=f.programa
+        INNER JOIN tblarea as area ON p.area = area.codigo
+    	INNER JOIN tblarea as acor ON r.docIDCoordinador=acor.docIDCoordinador       
+        WHERE acor.docIDCoordinador=$doc
+        GROUP BY r.consecutivo ORDER BY r.consecutivo DESC ");
 		return $sql;
 	}
 
