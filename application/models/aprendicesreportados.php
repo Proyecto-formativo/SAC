@@ -30,7 +30,7 @@ ON r.consecutivo=a.consReporte WHERE r.consecutivo=$consec");
 
 	}
 
-}
+
         
 
 

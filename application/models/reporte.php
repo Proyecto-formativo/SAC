@@ -82,8 +82,8 @@ class reporte extends CI_Model{
 		}else{
 			return "no se pudo realizar la solicitud";
 		}
-	}
-}
+    }
+    
     public function MostrarReporteAprobado($area){
         $year = date('Y');
         $mouth = date('m');
@@ -130,3 +130,5 @@ class reporte extends CI_Model{
         $this->db->query("UPDATE tblreporte set nro_acta = '$acta' where consecutivo = $consecutivo");
     }
 }
+    
+
