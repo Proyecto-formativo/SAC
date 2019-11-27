@@ -1,5 +1,11 @@
 $(document).ready(function() {
+  /**
+   * la lisa de los compromisos
+   */
   var listCompromisos = [];
+  /**
+   * el data table
+   */
   $('#example').DataTable({
       "language": {
           "lengthMenu": "Mostrar _MENU_ registros",
@@ -20,7 +26,11 @@ $(document).ready(function() {
 
   
 
-
+/**
+ * 
+ * filtro de municipio hace una peticion al servidor para preguntar los centros y sedes del municipio
+ *  que se haya seleccionada
+ */
   $("#municipio").bind("change", function() {
     var municipio = $("#municipio").val();
     $.ajax({
@@ -34,6 +44,13 @@ $(document).ready(function() {
   }); //fin de bind keyup
 
 
+
+  /***
+   * 
+   * se selectiona todos los btn de descargos para asignarle un evento a cada uno
+   * 
+   * 
+   */
   var elementos = document.getElementsByClassName("descargos");
 
   for (let index = 0; index < elementos.length; index++) {
@@ -60,6 +77,14 @@ $(document).ready(function() {
   }
 
 
+  /**
+   * 
+   * 
+   * se valida los descargos de cada estudiante 
+   * 
+   * 
+   * 
+   */
   $("#agregarDescargos").click(function (e) { 
     e.preventDefault();
 
@@ -141,6 +166,16 @@ $(document).ready(function() {
     }//fin el else
   });//fin de agregar descargos
 
+
+
+
+
+  /***
+   * 
+   * 
+   * ente evento agrega los compromisos de la reunion 
+   * 
+   */
   $("#botton-list").bind("click", e => {
     e.preventDeFaut;
     if ($("#actividad_text").val() != "" && $("#responsable").val() != "" && $("#fecha-compromiso").val() != "" ) {
@@ -186,7 +221,42 @@ $(document).ready(function() {
         icon: 'error',
         title: 'Todos los datos son requeridos'
       });//sweet alert
-    }
+    }//fin else
   }); //fin de bind keyup
-});//din de document ready
+
+
+
+  /**
+   * 
+   * 
+   * estod dos eventos es para validad los compromisos que no se genere el acta sin los compromisos
+   * ya que es algo requerido
+   *   
+   * 
+   *      |||||||||
+   *      |||||||||
+   *      |||||||||
+   *      \       /
+   *       \     /
+   *        \   /
+   *         \ /
+   */
+
+  $("#agregarCpompromisos").click(function (e) { 
+    e.preventDefault();
+    $("#compromisos").modal({
+      backdrop:"static"
+    });
+  });
+
+  $("#cerrarCompromisos").click(function (e) { 
+    e.preventDefault();
+    console.log(listCompromisos.length);
+    
+    if (listCompromisos.length > 0) {
+      $("#enviarActa").removeAttr("disabled");
+    }
+  });
+
+});//fin de document ready
 

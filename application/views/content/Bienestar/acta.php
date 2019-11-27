@@ -51,7 +51,7 @@ date_default_timezone_set('America/Bogota');
                     <div class="col-6">
                         <div class="form-group">
                             <label for="centro">centro:</label>
-                            <select name="centro" class="form-control"  id="centro" >
+                            <select name="centro" class="form-control"  id="centro" required>
                                 
                             </select>
                         </div>
@@ -62,7 +62,7 @@ date_default_timezone_set('America/Bogota');
                     <div class="col-6">
                         <div class="form-group">
                             <label for="Sede">Sede:</label>
-                            <select name="sede" class="form-control"  id="sede" >
+                            <select name="sede" class="form-control"  id="sede" required>
                             </select>
                         </div>
                     </div>
@@ -121,7 +121,7 @@ date_default_timezone_set('America/Bogota');
                     <div class="form-group">
                         <label for="Objetivos">Objetivos De La Reunión:</label>
                         <!-- <input type="text"name="Objetivos" class="form-control" id="Objetivos"  required> -->
-                        <textarea readonly class="form-control style-textareaficha" name="ObjetivosReunion" id="objetivos" cols="20" rows="">Analizar los informes académicos y disciplinarios de los aprendices que fueron citados al Comité, y realizar las recomendaciones al Subdirector.</textarea>
+                        <textarea readonly class="form-control style-textareaficha" name="ObjetivosReunion" id="objetivos" cols="20" rows="" required>Analizar los informes académicos y disciplinarios de los aprendices que fueron citados al Comité, y realizar las recomendaciones al Subdirector.</textarea>
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@ date_default_timezone_set('America/Bogota');
                     <div class="form-group">
                         <label for="Temas-a-tratar">Temas A Tratar:</label>
 
-                        <textarea  class="form-control style-textareaficha-bienestar" name="Temas_a_Tratar" id="temasTratar" cols="100" rows="">
+                        <textarea  class="form-control style-textareaficha-bienestar" name="Temas_a_Tratar" id="temasTratar" cols="100" rows="" required>
 A. Presentación de Asistentes al Comité.
 
 B. Verificación Quórum, teniendo en cuenta Capitulo 10 
@@ -157,7 +157,7 @@ D. Proposiciones y varios.
                 <div class="col-6">
                     <div class="form-group">
                         <label for="Desarrollo-reunion">Desarrollo:</label>
-                        <textarea  class="form-control style-textareaficha-bienestar" name="Desarrollo" id="desarollo" cols="20" rows="">
+                        <textarea  class="form-control style-textareaficha-bienestar" name="Desarrollo" id="desarollo" cols="20" rows="" required>
 A. Se realizó presentación por cada uno de los asistentes al Comité de  
     Evaluación y seguimiento, conformado por:
     Coordinador Académico: <?=$coordinador?>.
@@ -194,7 +194,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <div class="col-12">
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Conclusiones:</label>
-                        <textarea class="form-control style-textareaficha-bienestarho2" name="concluciones" id="conclusiones" rows="3" cols="10">Realizar entrega del plan de mejora desde lo académico y actitudinal con el respectivo acompañamiento a los aprendices citados. Reportar oportunamente el cumplimiento del plan de mejora.</textarea>
+                        <textarea class="form-control style-textareaficha-bienestarho2" name="concluciones" id="conclusiones" rows="3" cols="10" required>Realizar entrega del plan de mejora desde lo académico y actitudinal con el respectivo acompañamiento a los aprendices citados. Reportar oportunamente el cumplimiento del plan de mejora.</textarea>
                     </div>
                 </div>
             </div>
@@ -222,7 +222,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
             </div>
 
             <div class="text-center mb-3">
-                <button type="button" class="btn bg-success text-white" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">AÑADIR COMPROMISOS</button>
+                <button type="button" id="agregarCpompromisos" class="btn bg-success text-white" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">AÑADIR COMPROMISOS</button>
             </div>
             <table class="table">
                 <thead>
@@ -242,23 +242,20 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
 
             <div class="w-100 d-flex justify-content-center  mt-5 mb-5">
                 <!-- <button type="submit" class="btn btn bg-success text-white">Enviar Reporte</button> -->
-                <input type="submit" class="btn btn bg-success text-white">
+                <input type="submit" id="enviarActa" class="btn btn bg-success text-white" disabled>
             </div>
         </form>
     </div>
 
 
 
-        <!-- modal de compromisos mejorar este modal y adaptar al evento ajax que se le va a generar -->
     <div class="titulo-desarrollo mb-4 mt-4" align="center" p-5>
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="compromisos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Compromisos</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+
                     </div>
 
                     <div class="modal-body">
@@ -290,7 +287,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button"  class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button"  id="cerrarCompromisos" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
