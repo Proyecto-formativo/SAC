@@ -1,4 +1,5 @@
-$(".ficha").bind("keyup", function() {
+$(document).ready(function () {
+  $(".ficha").bind("keyup", function() {
 
     var ficha = $(".ficha").val();
     $.ajax({
@@ -9,4 +10,7 @@ $(".ficha").bind("keyup", function() {
         $(".infoContent").html(respuesta);
       }
     }); //fin del ajax
-}); //fin de bind keyup
+  }); //fin de bind keyup
+
+});
+
