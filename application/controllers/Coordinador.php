@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Coordinador extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
@@ -8,9 +7,7 @@ class Coordinador extends CI_Controller {
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 		//$this->load->library('pdf');
-
 	}
-
 	public function index(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$dinamica[] = $this->load->view('content/defecto/informacion_sistema','',true);
@@ -18,9 +15,7 @@ class Coordinador extends CI_Controller {
 		}else{
 			show_404();
 		}
-
 	}
-
 	/**
 	 * Plantilla_Coordinador
 	 *
@@ -36,12 +31,8 @@ class Coordinador extends CI_Controller {
 			$this->load->view("coordinador_plantilla",$datos);
 		}else{
 			show_404();
-
 		}
-
 	}
-
-
 	/**
 	 * configuraciones
 	 *
@@ -57,7 +48,6 @@ class Coordinador extends CI_Controller {
 			show_404();
 		}
 	}
-
 	/**
 	 * actualizarPerfil
 	 *
@@ -72,9 +62,7 @@ class Coordinador extends CI_Controller {
 			$Correo = $this->input->post("Correo");
 			$Celular = $this->input->post("Celular");
 			$password = $this->input->post("password");
-
 			$this->form_validation->set_rules(Perfil_rules());
-
 			if($this->form_validation->run() === false){
 				$datos = [
 					'nombre' => form_error('nombre'),
@@ -117,16 +105,19 @@ class Coordinador extends CI_Controller {
                     icon: 'success',
                     title: 'Actualizacion Exitosa'
                 })";
+				$dinamica[] = $this->load->view('content/defecto/configuraciones',['datos'=>$datos,'mensaje'=>$mensaje],true);
+				$this->Plantilla_Coordinador($dinamica);
+			}
+		}else{
+			show_404();
+		}
+	}
 
-
-
- 
-
-		public function reportes(){
+	public function reportes(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$id=$this->session->userdata("documento");
 			$reporte=$this->reporte->Consult_general_coor($id);
-			$dinamica[]= $this->load->view('content/Coordinador/reportes',['reporte'=>$reporte],true);
+			$dinamica= $this->load->view('content/Coordinador/reportes',['reporte'=>$reporte],true);
 			$menu=$this->load->view('content/Coordinador/menu',[],true);
 			$c=array($dinamica,$menu);
 			$this->Plantilla_Coordinador($c);
@@ -134,9 +125,6 @@ class Coordinador extends CI_Controller {
 			show_404();
 		}
 	}
-
-
-
 	public function verReportes($consec){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
 			$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
@@ -144,30 +132,20 @@ class Coordinador extends CI_Controller {
 			$Matriz=$this->reporte->Consult_especifica($consec);
 			$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);
 			$noms=$this->aprendicesreportados->getFilasAp($consec);
-
 			$dinamica[] = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
 				'filas'=>$noms,'ver'=>$ar],true);
-
 			$this->Plantilla_Coordinador($dinamica);
 		}
 	}
-
-
 	public function aprobarReporte($consec){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
 			//$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
 			//$consec =  $_POST["id"];
-
 			$aprobar=$this->reporte->aprobarRep($consec);
-
 			$dinamica[] = $this->load->view('content/Coordinador/reporteAprobado',['reporte'=>$aprobar,'n'=>$consec],true);
 			$this->Plantilla_Coordinador($dinamica);
 		}
 	}
-
-
-
-
-
-
 }
+
+

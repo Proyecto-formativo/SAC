@@ -8,9 +8,9 @@ class reporte extends CI_Model{
 
 
 
-    public function IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$coordinador,$tipofalta,$tipoCalificcion,$sugerencia){
-        $this->db->query("INSERT INTO tblreporte value(null,current_date() ,' $justificacion ',$instructorReporte,'$evidencia ',' $normasReglamentarias',$coordinador,'$tipofalta',' $tipoCalificcion',$sugerencia, 'No aprobado',null)");
-    }
+	public function IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$coordinador,$tipofalta,$tipoCalificcion,$sugerencia){
+		$this->db->query("INSERT INTO tblreporte value(null,current_date() ,' $justificacion ',$instructorReporte,'$evidencia ',' $normasReglamentarias',$coordinador,'$tipofalta',' $tipoCalificcion',$sugerencia, 'No aprobado')");
+	}
 
     public function Actualizarficha($numeroficha,$valores){
         $this->db->where('nroFicha',$numeroficha);
@@ -21,7 +21,7 @@ class reporte extends CI_Model{
         return $sql->row();
     }
 
-<<<<<<< HEAD
+
     public function MostrarReporteAprobado($area){
         $year = date('Y');
         $mouth = date('m');
@@ -67,9 +67,7 @@ class reporte extends CI_Model{
     public function agregarActa($acta,$consecutivo){
         $this->db->query("UPDATE tblreporte set nro_acta = '$acta' where consecutivo = $consecutivo");
     }
-}
-=======
-https://github.com/Proyecto-formativo/SAC/tree/coordinador
+
 	/*consultas interfaz de coordinador
   */
 
@@ -136,4 +134,3 @@ https://github.com/Proyecto-formativo/SAC/tree/coordinador
 		}
 	}
 }
->>>>>>> origin/coordinador
