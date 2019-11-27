@@ -51,6 +51,21 @@ class ficha extends CI_Model{
         return $sql;
     }
 
+    //Mostrar Fichas para el autocomplete
+    public function getFichas($nroficha) {
+        $this->db->get('tblficha');
+
+        //Buscar Dependiendo de los datos ingresados en el input
+        if (!empty($nroficha)) {
+            $this->db->like('tblficha', $nroficha);
+        }
+
+        $sql = $this->db->get('tblficha');
+        $result = ($query->num_rows() > 0) ? $query->result_array() : false ;
+
+        return $result;
+    }
+
 
     //Actualizar Ficha para el Modulo Reporte del perfil Instructores
     public function Actualizarficha($numeroficha,$valores){

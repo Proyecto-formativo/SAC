@@ -4649,6 +4649,27 @@ class Administrador extends CI_Controller {
             show_404();
         }
     }
+
+    public function autoCompleteFichas($nroficha) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $fichas = array();
+            $datosFichas = $this->ficha->getFichas($nroficha);
+
+            if (!empty($datosFichas)) {
+                foreach ($datosFicha as $row) {
+                    $data['nroFicha'] = $row['nroFicha'];
+                    array_push($fichas, $data);
+                }
+            }
+
+            echo json_encode($fichas); die;
+
+
+        } else {
+            show_404();
+        }
+    }
     /*==== Fin Control Administracion Usuarios ==== */
 
 }
