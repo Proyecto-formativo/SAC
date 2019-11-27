@@ -28,7 +28,8 @@
 							<button type="button" id="btn-3" class="btn botoncito  fa fa-pencil-square-o" > </button>
 						</div>
 					</a>
-				</td>
+				</td
+				<td> <?= $valor->estado?></td>
 			</tr>
 		<?php endforeach?>
 	</tbody>
