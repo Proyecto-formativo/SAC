@@ -2,7 +2,7 @@
     <?=$header?>
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
-<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script>
+<!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script> -->
 </head>
 <body>
 
@@ -95,6 +95,26 @@
                 <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuUsuarios">
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/administradores'); ?>" id="btn-2" class="dropdown-item">Administradores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/coordinadores'); ?>" id="btn-2" class="dropdown-item">Coordinadores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/instructores'); ?>" id="btn-2" class="dropdown-item">Instructores</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/bienestar'); ?>" id="btn-2" class="dropdown-item">Bienestar</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/aprendices'); ?>" id="btn-2" class="dropdown-item">Aprendices</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/equipoinstructores'); ?>" id="btn-2" class="dropdown-item">Equipo Instructores Ficha</a>
                     </div>
                 </div>
             </div>

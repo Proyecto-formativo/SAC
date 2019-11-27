@@ -7,6 +7,7 @@
         <th>Codigo</th>
         <th>Sede</th>
         <th>Centro</th>
+        <th>Municipio</th>
         <th>Editar</th>
         <th>Eliminar</th>
       </tr>
@@ -18,6 +19,7 @@
           <td><?= $sede->codigo; ?></td>
           <td><?= $sede->nombre; ?></td>
           <td><?= $sede->centro; ?></td>
+          <td><?= $sede->municipio; ?></td>
           <td><a href="<?= base_url('Administrador/FrmEditarSede/' . $sede->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>
             <button type="button" class="btn btn-danger eliminarSede" data-toggle="modal">

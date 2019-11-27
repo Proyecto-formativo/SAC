@@ -77,6 +77,7 @@ $(document).ready(function () {
     $("#codigo_recomendacion").val(datos[0]);
 
   });
+  
   //Fin Opciones Recomendacion
 
   //Plugin Data Table Municipio
@@ -100,7 +101,9 @@ $(document).ready(function () {
   });
 
   //Boton Eliminar Municipio
-  $("#municipio").on("click", ".eliminarMunicipio", function () {
+  
+  $("#municipio").on("click",".eliminarMunicipio", function () {
+
     $("#eliminarMunicipioModal").modal("show");
 
     $tr = $(this).closest("tr");
@@ -116,7 +119,8 @@ $(document).ready(function () {
 
     $("#codigo_municipio").val(datos[0]);
   });
-  //Fin Opciones Municipio
+  
+  //Fin Opciones Recomendacion
 
   //Plugin Data Table Etapas Formación
   $("#etapasformacion").DataTable({
@@ -515,6 +519,230 @@ $(document).ready(function () {
     $("#codigo_ficha").val(datos[0]);
 
   });
+
+  //Plugin Data Table Administrador
+  $("#administradores").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  $(".eliminarAdministrador").prop('disabled', true);
+
+  //Boton Eliminar Administrador
+  /*$("#administradores").on("click", ".eliminarAdministrador", function () {
+
+    $("#eliminarAdministradorModal").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(datos);
+
+    $("#documento_administrador").val(datos[0]);
+
+  });*/
+
+  //Plugin Data Table Coordinador
+  $("#coordinadores").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  //Boton Eliminar Coordinador
+  $("#coordinadores").on("click", ".eliminarCoordinador", function () {
+
+    $("#eliminarCoordinadorModal").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(datos);
+
+    $("#documento_coordinador").val(datos[0]);
+
+  });
+
+  //Plugin Data Tables Instructor
+  $("#instructores").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  //Boton Eliminar Instructor
+  $("#instructores").on("click", ".eliminarInstructor", function () {
+
+    $("#eliminarInstructorModal").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(datos);
+
+    $("#documento_instructor").val(datos[0]);
+
+  });
+
+  //Plugin Data Tables Bienestar
+  $("#bienestar").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  //Boton Eliminar Bienestar
+  $("#bienestar").on("click", ".eliminarBienestar", function () {
+
+    $("#eliminarBienestarModal").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(datos);
+
+    $("#documento_bienestar").val(datos[0]);
+
+  });
+
+  //Plugin Data Tables Aprendiz
+  $("#aprendices").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  //Boton Eliminar Aprendiz
+  $("#aprendices").on("click", ".eliminarAprendiz", function () {
+
+    $("#eliminarAprendizModal").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(datos);
+
+    $("#documento_aprendiz").val(datos[0]);
+
+  });
+
+  //Boton denegar Acceso a la plataforma
+  $("#denegar").click(function () {
+    var documento = $("#docid").val();
+    console.log(documento);
+    $("#denegarAccesoModal").modal("show");
+    $("#documento_usuario").val(documento);
+  });
+
+  /*
+  ========================================================================================================================
+  */ 
+  
+  //Buscar El Numero de Ficha con Autocomplete JQUERY
+  
+  $("#buscar_ficha").autocomplete({
+    source : "autoCompleteFichas"
+  });
+
+  /*
+  ========================================================================================================================
+  */ 
 
   // Fin del Document Ready()
 });
