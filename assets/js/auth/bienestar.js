@@ -195,6 +195,7 @@ $(document).ready(function() {
        <td>${listCompromisos[i][0]}</td>
        <td>${listCompromisos[i][1]}</td>
        <td>${listCompromisos[i][2]}</td>
+       <td><button class="btn btn-danger eliminarCompromisos" id="${Number(i)}">Eliminar</button></td>
        </tr>
        `;
        $("#listar-compromisos-tabla").html(dato);
@@ -225,6 +226,56 @@ $(document).ready(function() {
       });//sweet alert
     }//fin else
   }); //fin de bind keyup
+
+
+
+  /**
+   * ****este evento elimina los compromisos
+   * 
+   */
+  $("#tableCompromisos ").on("click",".eliminarCompromisos",function (e) {
+    e.preventDefault();
+    let id = this.getAttribute("id"),
+        dato = "";
+
+    /**
+     * con la funcion splice de indicamos en la primera pocicion el indice de que elemento se va a elimiar
+     * el segundo parametro es para decirle cuantos elementos vamos a eliminar
+     */
+    listCompromisos.splice(id,1);
+    
+    /**
+     * si la cantidad de elementos que tenemos en el array es mayor a 0 entonces me los va alistar en la tabla y agregar
+     *  en el id #lisaompromisos y si no es mayor a 0 es por que no hay elemntos le indicamos a este objeto que se remueva
+     * this.parentElement.parentElement.remove();
+     */
+    if (listCompromisos.length > 0) {
+      for (let i = 0; i < listCompromisos.length; i++) {
+        dato += `
+        <tr>
+        <td>${Number(i + 1)}</td>
+        <td>${listCompromisos[i][0]}</td>
+        <td>${listCompromisos[i][1]}</td>
+        <td>${listCompromisos[i][2]}</td>
+        <td><button class="btn btn-danger eliminarCompromisos" id="${Number(i)}">Eliminar</button></td>
+        </tr>
+        `;
+        $("#listar-compromisos-tabla").html(dato);
+      }
+      console.log(listCompromisos);
+      let lista = JSON.stringify(listCompromisos);
+      
+      $("#listaCompromisos").val(lista);
+    }else{
+      this.parentElement.parentElement.remove();
+      $("#enviarActa").attr("disabled", "");
+    }
+  });
+
+
+
+
+
 
   /**
    * 
@@ -257,7 +308,6 @@ $(document).ready(function() {
     
     if (listCompromisos.length > 0) {
       $("#enviarActa").removeAttr("disabled");
-      $("#genrerar_pdf").removeAttr("disabled");
     }
 
   });
