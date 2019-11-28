@@ -255,6 +255,7 @@ $(document).ready(function() {
     
     if (listCompromisos.length > 0) {
       $("#enviarActa").removeAttr("disabled");
+      $("#genrerar_pdf").removeAttr("disabled");
     }
   });
 

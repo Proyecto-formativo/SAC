@@ -241,11 +241,16 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
             <input type="hidden" id="listaCompromisos" name="Listas_Compromisos">
 
             <div class="w-100 d-flex justify-content-center  mt-5 mb-5">
-                <!-- <button type="submit" class="btn btn bg-success text-white">Enviar Reporte</button> -->
                 <input type="submit" id="enviarActa" class="btn btn bg-success text-white" disabled>
             </div>
         </form>
     </div>
+
+
+    <div class="w-100 d-flex justify-content-center  mt-5 mb-5">
+        <button class="btn btn-warning" id="genrerar_pdf" disabled>generar pdf</button>
+    </div>
+
 
 
 
