@@ -91,113 +91,102 @@ date_default_timezone_set('America/Bogota');
                 </div>
 
 
-            <!-- Row 4 -->
-            <div class="row">
-                <!--  Temas -->
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="temas">temas:</label>
-                        <input type="text" name="temas"class="form-control" id="temas"  value="Comité de Evaluación y Seguimiento" required readonly>                                  
+                <!-- Row 4 -->
+                <div class="row">
+                    <!--  Temas -->
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="temas">temas:</label>
+                            <input type="text" name="temas"class="form-control" id="temas"  value="Comité de Evaluación y Seguimiento" required readonly>                                  
+                        </div>
+                    </div>
+                    <!-- Área -->
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="Area">Area:</label>
+                            <input type="text" class="form-control" disabled required value="<?=$nombreArea?>">
+                            <input type="hidden" name="area"class="form-control" id="area" required value="<?=$codigo?>">
+                        </div>
                     </div>
                 </div>
-                <!-- Área -->
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="Area">Area:</label>
-                        <input type="text" class="form-control" disabled required value="<?=$nombreArea?>">
-                        <input type="hidden" name="area"class="form-control" id="area" required value="<?=$codigo?>">
+
+
+
+                <!-- Row 5 -->
+                <div class="row">
+                    <!-- Objetivos Reunión -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="Objetivos">Objetivos De La Reunión:</label>
+                            <textarea readonly class="form-control style-textareaficha" name="ObjetivosReunion" id="objetivos" cols="20" rows="" required>Analizar los informes académicos y disciplinarios de los aprendices que fueron citados al Comité, y realizar las recomendaciones al Subdirector.</textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-
-            <!-- Row 5 -->
-            <div class="row">
-                <!-- Objetivos Reunión -->
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="Objetivos">Objetivos De La Reunión:</label>
-                        <textarea readonly class="form-control style-textareaficha" name="ObjetivosReunion" id="objetivos" cols="20" rows="" required>Analizar los informes académicos y disciplinarios de los aprendices que fueron citados al Comité, y realizar las recomendaciones al Subdirector.</textarea>
-                    </div>
+                <div class="titulo-desarrollo mb-4 text-center p-2 ">
+                    <h2>Desarrollo De la Reunión</h2>
                 </div>
-            </div>
-
-
-            <div class="titulo-desarrollo mb-4 text-center p-2 ">
-                <h2>Desarrollo De la Reunión</h2>
-            </div>
 
 
 
 
-            <!-- Row 6 -->
-            <div class="row">
-                <!-- Temas a Tratar -->
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="Temas-a-tratar">Temas A Tratar:</label>
-                        <textarea  class="form-control style-textareaficha-bienestar" name="Temas_a_Tratar" id="temasTratar" cols="100" rows="" required>
+                <!-- Row 6 -->
+                <div class="row">
+                    <!-- Temas a Tratar -->
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="Temas-a-tratar">Temas A Tratar:</label>
+                            <textarea  class="form-control style-textareaficha-bienestar" name="Temas_a_Tratar" id="temasTratar" cols="100" rows="" required>
 A. Presentación de Asistentes al Comité.
 
 B. Verificación Quórum, teniendo en cuenta Capitulo 10 
-   “PROCEDIMIENTO PARA LA APLICACIÓN DE SANCIONES”,
+“PROCEDIMIENTO PARA LA APLICACIÓN DE SANCIONES”,
     Art. 32 Reglamento del Aprendiz SENA.
 
 C. Exposición de informes y descargos de cada uno de los aprendices
-   del área <?=$nombreArea?>.
+del área <?=$nombreArea?>.
 
 D. Proposiciones y varios.
-                        </textarea>
+                            </textarea>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Desarrollo -->
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="Desarrollo-reunion">Desarrollo:</label>
-                        <textarea  class="form-control style-textareaficha-bienestar" name="Desarrollo" id="desarollo" cols="20" rows="" required>
+                    <!-- Desarrollo -->
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="Desarrollo-reunion">Desarrollo:</label>
+                            <textarea  class="form-control style-textareaficha-bienestar" name="Desarrollo" id="desarollo" cols="20" rows="" required>
 A. Se realizó presentación por cada uno de los asistentes al Comité de  
     Evaluación y seguimiento, conformado por:
     Coordinador Académico: <?=$coordinador?>.
 
     Líder de Bienestar: Silvana Castrillón
-    Trabajador Social Bienestar al Aprendiz: Mauricio Peláez
-    Vocero Representante de los Aprendices: Adriana Echeverri
+    Trabajador Social Bienestar al Aprendiz:
+   Vocero Representante de los Aprendices:
     instructor (es) del programa y aprendices citados.
 
 B. Se verifica si hay quórum, para el desarrollo del Comité,
-   ajustándonos al Reglamento del
-   Aprendiz SENA, punto que queda aprobado.
+    ajustándonos al Reglamento del
+    Aprendiz SENA, punto que queda aprobado.
 
 C. Se da informe de los aprendices citados a Comité de Evaluación.
-                        </textarea>
+                            </textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <!-- Row 7-->
-            <div class="row">
-                <!-- Conclusiones -->
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Conclusiones:</label>
-                        <textarea class="form-control style-textareaficha-bienestarho2" name="concluciones" id="conclusiones" rows="3" cols="10" required>Realizar entrega del plan de mejora desde lo académico y actitudinal con el respectivo acompañamiento a los aprendices citados. Reportar oportunamente el cumplimiento del plan de mejora.</textarea>
+                <!-- Row 7-->
+                <div class="row">
+                    <!-- Conclusiones -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Conclusiones:</label>
+                            <textarea class="form-control style-textareaficha-bienestarho2" name="concluciones" id="conclusiones" rows="3" cols="10" required>Realizar entrega del plan de mejora desde lo académico y actitudinal con el respectivo acompañamiento a los aprendices citados. Reportar oportunamente el cumplimiento del plan de mejora.</textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
                 <div class="text-center mb-3">

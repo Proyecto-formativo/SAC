@@ -26,11 +26,11 @@ $(document).ready(function() {
 
   
 
-/**
- * 
- * filtro de municipio hace una peticion al servidor para preguntar los centros y sedes del municipio
- *  que se haya seleccionada
- */
+  /**
+   * 
+   * filtro de municipio hace una peticion al servidor para preguntar los centros y sedes del municipio
+   *  que se haya seleccionada
+   */
   $("#municipio").bind("change", function() {
     var municipio = $("#municipio").val();
     $.ajax({
