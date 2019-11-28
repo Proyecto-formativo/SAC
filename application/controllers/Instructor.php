@@ -129,8 +129,8 @@ class Instructor extends CI_Controller {
                             })
                             
                             Toast.fire({
-                                icon: 'success',
-                                title: 'Reporte enviado correctamente'
+                                icon: 'error',
+                                title: 'El tamaño del archivo es demaciado grande solo se aceptan '
                             })",
                         ];
                     }else{

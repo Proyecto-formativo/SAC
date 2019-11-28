@@ -5,7 +5,7 @@ class Bienestar extends CI_Controller {
     public $sw = true;
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta','compromisos']);
+		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta','compromisos','recomendacion']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil','validarActa']);
 	}
@@ -169,7 +169,7 @@ class Bienestar extends CI_Controller {
                 /**
                  * la sugerencia es para los descargos del aprendiz
                  */
-                $sugerencia = $this->sugerencia->MostrarSuegerencia();
+                $recomendaciones = $this->recomendacion->mostrarRecomendaciones();
 
 
                 /**
@@ -185,7 +185,7 @@ class Bienestar extends CI_Controller {
                 
                 $descargos = $this->load->view("content/bienestar/vistaDescargosAprendices",['datos'=>$datos],true);
 
-                $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes,'descargos'=>$descargos,'sugerencia'=>$sugerencia],true);
+                $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes,'descargos'=>$descargos,'recomendacion'=>$recomendaciones],true);
                 $this->Plantilla_Bienestar($dinamica);
             }else{
                 $mensaje ="const Toast = Swal.mixin({
@@ -215,11 +215,6 @@ class Bienestar extends CI_Controller {
         // falta no se sabe si se agrega centro a la acta echo "<br> *******************".$this->input->post('centro');
 
 
-        // if (  $this->acta->NumeroActa($this->input->post('NumroActa'))  ) {
-        //     echo "no se puede ya existe";
-        // }else{
-        //     echo "se puede hacer la insercion";
-        // }
 
         $this->form_validation->set_error_delimiters("","");
 

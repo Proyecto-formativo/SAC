@@ -159,11 +159,11 @@ $(document).ready(function() {
             icon: 'error',
             title: 'ya existe ese registro en la base de datos'
           });//sweet alert
-
        }//fin funcion de error
 
       });//fin ajax
     }//fin el else
+    $("#formularioDeDescargos")[0].reset();
   });//fin de agregar descargos
 
 
@@ -185,24 +185,26 @@ $(document).ready(function() {
       fecha = $("#fecha-compromiso").val(),
       array = [actividad_text, responsable, fecha],
       dato = "";
-      
+
       listCompromisos.push(array);
-      
-      for (let i = 0; i < listCompromisos.length; i++) {
-        dato += `
-        <tr>
-        <td>${Number(i + 1)}</td>
-        <td>${listCompromisos[i][0]}</td>
-        <td>${listCompromisos[i][1]}</td>
-        <td>${listCompromisos[i][2]}</td>
-        </tr>
-        `;
-        $("#listar-compromisos-tabla").html(dato);
-      }
-      console.log(listCompromisos);
-      let lista = JSON.stringify(listCompromisos);
-      
-      $("#listaCompromisos").val(lista);
+
+     for (let i = 0; i < listCompromisos.length; i++) {
+       dato += `
+       <tr>
+       <td>${Number(i + 1)}</td>
+       <td>${listCompromisos[i][0]}</td>
+       <td>${listCompromisos[i][1]}</td>
+       <td>${listCompromisos[i][2]}</td>
+       </tr>
+       `;
+       $("#listar-compromisos-tabla").html(dato);
+     }
+     console.log(listCompromisos);
+     let lista = JSON.stringify(listCompromisos);
+     
+     $("#listaCompromisos").val(lista);
+    
+     $("#formularioDeCompromisos")[0].reset();
 
     }else{
       const Toast = Swal.mixin({
@@ -223,8 +225,6 @@ $(document).ready(function() {
       });//sweet alert
     }//fin else
   }); //fin de bind keyup
-
-
 
   /**
    * 
@@ -247,6 +247,8 @@ $(document).ready(function() {
     $("#compromisos").modal({
       backdrop:"static"
     });
+
+
   });
 
   $("#cerrarCompromisos").click(function (e) { 
@@ -257,7 +259,7 @@ $(document).ready(function() {
       $("#enviarActa").removeAttr("disabled");
       $("#genrerar_pdf").removeAttr("disabled");
     }
-  });
 
+  });
 });//fin de document ready
 

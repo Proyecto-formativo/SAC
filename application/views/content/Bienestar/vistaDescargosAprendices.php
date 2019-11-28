@@ -48,7 +48,7 @@ foreach ($datos as $key):
                 <div class="mr-5"><?=$valores->aprendiz?> </div>
             </td>
             <td>
-                <button class="btn btn-warning descargos" value = "<?=$valores->consecutivoAprendizReporte?>">Descargos</button>
+                <button class="btn btn-info descargos text-white" value = "<?=$valores->consecutivoAprendizReporte?>">Descargos</button>
             </td>
         </tr>
         <?php
