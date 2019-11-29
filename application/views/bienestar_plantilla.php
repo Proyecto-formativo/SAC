@@ -26,6 +26,12 @@
                 </div>
             </a>
 
+            <a href="<?=base_url('Bienestar/ActasGeneradas')?>" id="btn-4" class="btn botoncito btn4">
+                <div class="style-botones ">
+                <button type="button" id="btn-1" class="btn botoncito">Actas generadas</button> <i class="far fa-bell"></i>
+                </div>
+            </a>
+
             <div class="dbtn-group dropright style-botones botoncito">
                 <button class="btn botoncito dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Reportes Generales

@@ -254,21 +254,21 @@ class Bienestar extends CI_Controller {
              */
             $mensaje = "
             const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            onOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
-        })
-        
-        Toast.fire({
-            icon: 'error',
-            title: 'Numero de acta ya existente favor volver a intentar con un numero de acta diferente'
-        })";
+            })
+            
+            Toast.fire({
+                icon: 'error',
+                title: 'Numero de acta ya existente favor volver a intentar con un numero de acta diferente'
+            })";
         }else{
 
             $NombresAsistentes = $this->IngresarArchivos('NombresAsistentes');
@@ -316,9 +316,11 @@ class Bienestar extends CI_Controller {
                 }
     
                 $valores = $this->reporte->MostrarReportesDelArea($this->input->post('area'));
+
                 foreach ($valores->result() as $reporte) {
-                   $this->reporte->agregarActa($this->input->post('NumroActa'),$reporte->consecutivo);
+                   $this->reporte->agregarActaAreportes($this->input->post('NumroActa'),$reporte->consecutivo);
                 }
+
                 $mensaje = "
                     const Toast = Swal.mixin({
                     toast: true,
@@ -339,10 +341,15 @@ class Bienestar extends CI_Controller {
             }
         }   
         $this->actaIngresada($mensaje);
+
+
     }
     public function actaIngresada($mensaje){
         $this->ActaComite($mensaje);
     }
+
+
+
 
     public function IngresarArchivos($archivo){
         
@@ -401,5 +408,101 @@ class Bienestar extends CI_Controller {
         $this->reporteseguimientoaprendiz->agregar($valores);
         
         
+    }
+
+    public function ActasGeneradas($mensaje = null){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
+            $datos  =  $this->area->mostrarAreas();
+            
+            $dinamica = $this->load->view('content/Bienestar/listaArea_paraActasGeneradas',['datos'=>$datos,'mensaje'=>$mensaje],true);
+		    $this->Plantilla_Bienestar($dinamica);
+        }else{
+            show_404();
+        }
+    }
+
+
+    public function verActas(){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
+            $valores = $this->acta->mostrarActasPorArea($this->input->post("codigoArea"));
+            if ($valores->num_rows() > 0) {
+                $dinamica = $this->load->view('content/Bienestar/listaActasPorArea',['datos'=>$valores],true);
+		        $this->Plantilla_Bienestar($dinamica);
+            }else{
+                $mensaje = "const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+                
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se encuantran actas generadas en esta area'
+                })";
+                $this->ActasGeneradas($mensaje);
+            }
+        }else{
+            show_404();
+        }
+    }
+
+    public function MostrarActa(){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
+            
+            $datos  =  $this->acta->mostrarDatosActa($this->input->post("consecutivoActa"));
+            
+            $dinamica = $this->load->view('content/Bienestar/verActa',['datos'=>$datos],true);
+		    $this->Plantilla_Bienestar($dinamica);
+        }else{
+            show_404();
+        }
+    }
+
+
+    public function cargarPdf(){
+        $this->load->library('fpdf_gen');
+        $pdf = new FPDF('L','mm','A4');
+
+        $san = "hola muncundo erfreh";
+        //$this->Plantilla_Coordinador($dinamica);
+		$this->fpdf->setAuthor('f de mont');
+		$this->fpdf->SetTitle('biblioteca de codei', 0);
+		$this->fpdf->AliasNbPages('(np)');
+		$this->fpdf->SetAutoPageBreak(false);
+		$this->fpdf->SetMargins(8, 8, 8, 8);
+		$this->fpdf->SetFont('Arial', 'I', 35);
+
+		$this->fpdf->Ln(4);
+		$this->fpdf->Cell(95, 10, '', 0, 0, 'L');
+		$this->fpdf->SetTextColor(0, 0, 255);
+		$this->fpdf->Cell(2, -6, 'Titulo de Documento', 0, 0, 'C');
+
+		$this->fpdf->Ln(34);
+		$this->fpdf->SetFont('Arial', '', 14);
+		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');
+		$this->fpdf->SetTextColor(65, 65, 255);
+		$this->fpdf->Cell(2, -6, 'teste 2',0, 0, 'C');
+
+		$this->fpdf->Ln(15);//salto de linea (especifica altura del salto)
+		$this->fpdf->SetFont('Arial', 'U', 14);//establece fuente,tipo(I=italica,U=subrayada,""=normal),tamaño
+		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');//imprime Una celda : ancho, alto,texto,borde(numero :0=sin borde; 1= marco /cadena: L,T,R,B), posicion(0:derecha/1:comienzo sig linea/ 2:abajo), align(L,C,R), fondo(true/false),
+		$this->fpdf->SetTextColor(65, 65, 255);
+		$this->fpdf->Cell(2, -6, $san, 0, 0, 'C');
+
+		$this->fpdf->Ln(15);//salto de linea (especifica altura del salto)
+		$this->fpdf->SetFont('Arial', '', 14);//establece fuente,tipo(I=italica,U=subrayada,""=normal),tamaño
+		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');//imprime Una celda : ancho, alto,texto,borde(numero :0=sin borde; 1= marco /cadena: L,T,R,B), posicion(0:derecha/1:comienzo sig linea/ 2:abajo), align(L,C,R), fondo(true/false),
+		$this->fpdf->SetTextColor(65, 65, 255);
+		$this->fpdf->Cell(2, -6, 'otra lista de texto', 1, 'C');
+
+
+
+		echo $this->fpdf->Output('Bibliotecafpdf.pdf', 'D');
     }
 }

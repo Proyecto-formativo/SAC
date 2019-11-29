@@ -56,14 +56,14 @@ class reporte extends CI_Model{
                                 ON f.programa = p.codigo 
                                 INNER JOIN tblarea AS a 
                                 ON p.area = a.codigo 
-                                WHERE a.codigo = $area AND  YEAR(r.fecha) = $year and MONTH(r.fecha) = $mouth and r.estado = 'aprobado'");
+                                WHERE a.codigo = $area AND  YEAR(r.fecha) = $year and MONTH(r.fecha) = $mouth and r.estado = 'aprobado' and r.nro_acta is null");
         if ($sql->num_rows() > 0) {
             return $sql;
         }
         return false;
     }
 
-    public function agregarActa($acta,$consecutivo){
+    public function agregarActaAreportes($acta,$consecutivo){
         $this->db->query("UPDATE tblreporte set nro_acta = '$acta' where consecutivo = $consecutivo");
     }
 }
