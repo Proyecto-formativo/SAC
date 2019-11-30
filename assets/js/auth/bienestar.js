@@ -273,6 +273,20 @@ $(document).ready(function() {
   });
 
 
+  $('#generarpdf').click(function() {
+		var options = {
+      // 'width': 800, 
+      // 'height': 500,
+		};
+		var pdf = new jsPDF('p', 'pt', 'letter');
+		//pdf.text("Reporte numero");
+		pdf.addHTML($("#pdf").get(0), 15, 15, options, function() {
+			pdf.save('informe.pdf');
+    });
+    console.log($("#pdf").get(0));
+    
+  });
+  
 
 
 

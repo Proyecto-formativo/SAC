@@ -35,6 +35,7 @@ switch ($this->session->userdata('perfil')) {
         <!-- datatables de listar area -->
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+        <script src="<?=base_url('assets/jspdf/jspdf.min.js')?>"></script>
         <script src="<?=base_url('assets/js/auth/bienestar.js')?>"></script>
         <?php
         break;

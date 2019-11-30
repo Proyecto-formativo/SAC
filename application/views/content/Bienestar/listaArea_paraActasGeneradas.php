@@ -1,7 +1,6 @@
 
 
 <div class="container">
-    <h2>Actas Generadas</h2>
     <table id="example" class="table table-striped table-bordered" style="width:100%;">
         <thead  style=" font-size: 20px;">
             <tr class="bg-sena text-center">

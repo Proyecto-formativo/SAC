@@ -19,11 +19,30 @@ class acta extends CI_Model {
     }
 
     public function mostrarDatosActa($consecutivo){
-        $this->db->select('*');
-        $this->db->from('tblacta');
-        $this->db->where('consecutivo', $consecutivo);
-        $sql = $this->db->get();
-        return $sql->result();
+        $sql = $this->db->query(" SELECT a.consecutivo,
+        m.nombre as municipio,
+        a.fecha,
+        a.horaInicio,
+        a.horaFin,
+        s.nombre as sede,
+        a.temas,
+        are.nombre as area,
+        a.objetivo,
+        a.temasTratar,
+        a.desarrolloReunion,
+        a.conclusiones,
+        c.nombre as centro 
+        from tblacta as a
+        inner join tblmunicipio as m 
+        on m.codigo = a.municipio 
+        inner join tblsede as s
+        on s.codigo = a.sede
+        inner join tblarea as are
+        on are.codigo = a.area
+        inner join tblcentro as c
+        on c.codigo = a.centro
+        where a.consecutivo = '$consecutivo'");
+        return $sql->row();
     }
 
     public function agregarActa($datos){

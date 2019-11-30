@@ -212,7 +212,7 @@ class Bienestar extends CI_Controller {
     }
 
     public function ingresarActa(){
-        // falta no se sabe si se agrega centro a la acta echo "<br> *******************".$this->input->post('centro');
+        
 
 
 
@@ -306,7 +306,8 @@ class Bienestar extends CI_Controller {
                     "desarrolloReunion" => $this->input->post('Desarrollo'),
                     "conclusiones" => $this->input->post('concluciones'),
                     "archivoAsistentes" => $NombresAsistentes,
-                    "archivoInvitados" => $NombreInvitados
+                    "archivoInvitados" => $NombreInvitados,
+                    'centro'=> $this->input->post('centro'),
                 ];
                 $this->acta->agregarActa($valores);
         
@@ -442,7 +443,7 @@ class Bienestar extends CI_Controller {
                 })
                 
                 Toast.fire({
-                    icon: 'error',
+                    icon: 'info',
                     title: 'No se encuantran actas generadas en esta area'
                 })";
                 $this->ActasGeneradas($mensaje);
@@ -455,9 +456,20 @@ class Bienestar extends CI_Controller {
     public function MostrarActa(){
         if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
             
-            $datos  =  $this->acta->mostrarDatosActa($this->input->post("consecutivoActa"));
+            $acta  =  $this->acta->mostrarDatosActa($this->input->post("consecutivoActa"));
+            $compromisos = $this->compromisos->MostrarCompromisosConsecutivoActa($this->input->post("consecutivoActa"));
+
+            $reportes = $this->reporte->MostrarReportePorActa($this->input->post("consecutivoActa"));
+            $datos = [];
+            foreach ($reportes->result() as $datosreporte) {
+                $valores = $this->reporteseguimientoaprendiz->mostrarDstosPorNumeroReporte($datosreporte->consecutivo);
+                array_push($datos,$valores);
+            }
             
-            $dinamica = $this->load->view('content/Bienestar/verActa',['datos'=>$datos],true);
+                        
+            $vistaDatosPoraprendiz = $this->load->view("content/Bienestar/vistaDeDatosPorAprendiz",['datos'=>$datos,'reportes'=>$reportes],true);
+            
+            $dinamica = $this->load->view('content/Bienestar/verActa',['Acta'=>$acta,'compromisos'=>$compromisos,'vistaDatosPoraprendiz'=>$vistaDatosPoraprendiz],true);
 		    $this->Plantilla_Bienestar($dinamica);
         }else{
             show_404();
@@ -500,9 +512,6 @@ class Bienestar extends CI_Controller {
 		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');//imprime Una celda : ancho, alto,texto,borde(numero :0=sin borde; 1= marco /cadena: L,T,R,B), posicion(0:derecha/1:comienzo sig linea/ 2:abajo), align(L,C,R), fondo(true/false),
 		$this->fpdf->SetTextColor(65, 65, 255);
 		$this->fpdf->Cell(2, -6, 'otra lista de texto', 1, 'C');
-
-
-
 		echo $this->fpdf->Output('Bibliotecafpdf.pdf', 'D');
     }
 }
