@@ -726,5 +726,179 @@ $(document).ready(function () {
     $("#documento_usuario").val(documento);
   });
 
+  //=============================================================================================================
+
+  //Plugin Select 2
+  $('.select_fichas').select2();
+
+  //Data tables para ventana modal instructores detalle
+  $("#instructor_detalle").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  //Buscar Instructores y añadir valores a sus respectivos inputs
+  $("#inst_detalle").on("click", ".addInstructor", function () {
+
+    instructor = $(this).val();
+    datosinstructor = instructor.split("*");
+    $("#docid_instructor").val(datosinstructor[0]);
+    $("#campo_instructor").val(datosinstructor[1]);
+
+    equipoinstructor = datosinstructor[0] + "*" + datosinstructor[1] + "*" + $("#nroficha").val() + "*" + $("#estado_instructor").val() + "*" + $("#estado_instructor option:selected").text();
+    $("#addInstructorDetalle").val(equipoinstructor);
+    $("#inst_detalle").modal("hide");
+
+  });
+
+  //Inicializar vector, ir cuando el documento que se ingresa y verificar si esta repetido
+  let documento_repetido = [];
+  let sw = 0;
+  //Agregar instructores en la lista desplegable
+  $("#addInstructorDetalle").on("click", function () {
+    dato = $(this).val();
+
+    if (dato != "") {
+
+      infoinstructor = dato.split("*");
+
+
+      //La primera vez que se carga la pagina se agregara a la tabla la información
+      if (sw == 0) {
+        //Cada documento ingresado se agrega a un vector
+        documento_repetido.push(infoinstructor[0]);
+
+        html = "<tr>";
+        html += "<td><input type='hidden' name='documento[]' value=" + infoinstructor[0] + ">" + infoinstructor[0] + "</td>";
+        html += "<td>" + infoinstructor[1] + "</td>";
+        html += "<td><input type='hidden' name='ficha[]' value=" + infoinstructor[2] + ">" + infoinstructor[2] + "</td>";
+        html += "<td><input type='hidden' name='estado[]' value=" + infoinstructor[3] + ">" + infoinstructor[4] + "</td>";
+        html += '<td><button type="button" class="btn btn-danger remover">Remover</button></td>';
+        html += "</tr>";
+        $("#equipoinstructores tbody").append(html);
+
+        $("#nroficha").prop("disabled", true);
+        $("#agregarEI").prop("disabled", false);
+
+        sw = 1;
+
+      } else {
+
+        doc_existe = false;
+
+        for (let j = 0; j < documento_repetido.length; j++) {
+
+          //Si el documento existe en el arreglo se devolvera un valor booleano
+          if (documento_repetido[j] == infoinstructor[0]) {
+            doc_existe = true;
+          }
+
+        }
+
+        if (doc_existe != true) {
+
+          documento_repetido.push(infoinstructor[0]);
+
+          html = "<tr>";
+          html += "<td><input type='hidden' name='documento[]' value=" + infoinstructor[0] + ">" + infoinstructor[0] + "</td>";
+          html += "<td>" + infoinstructor[1] + "</td>";
+          html += "<td><input type='hidden' name='ficha[]' value=" + infoinstructor[2] + ">" + infoinstructor[2] + "</td>";
+          html += "<td><input type='hidden' name='estado[]' value=" + infoinstructor[3] + ">" + infoinstructor[4] + "</td>";
+          html += '<td><button type="button" class="btn btn-danger remover">Remover</button></td>';
+          html += "</tr>";
+
+          $("#equipoinstructores tbody").append(html);
+
+        } else {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'error',
+            title: 'El instructor ya esta en la tabla'
+          })
+        }
+
+        console.log(documento_repetido);
+      }
+
+      //console.log(infoinstructor);
+
+      //console.log(documento_repetido);
+
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        onOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+
+      Toast.fire({
+        icon: 'error',
+        title: 'Seleccione un instructor por favor'
+      })
+    }
+  });
+
+  //Boton remover instructor de la tabla
+  $(document).on("click", ".remover", function () {
+
+    nuevo_doc = $(this).closest("tr");
+
+    let verificar = nuevo_doc
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    for (let index = 0; index < documento_repetido.length; index++) {
+
+      if (verificar[0] == documento_repetido[index]) {
+        posicion = index;
+      }
+    }
+
+    documento_repetido.splice(posicion, 1);
+
+    if (documento_repetido.length == 0) {
+      $("#agregarEI").prop("disabled", true);
+      sw = 0;
+    }
+
+    $(this).closest("tr").remove();
+
+  });
+
   // Fin del Document Ready()
 });
+

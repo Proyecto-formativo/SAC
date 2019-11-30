@@ -2,6 +2,7 @@
     <?=$header?>
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
 <!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script> -->
 </head>
 <body>

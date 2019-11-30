@@ -5,7 +5,7 @@ class Administrador extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         //Carga de los Modelos Requeridos en el perfil de Administrador
-        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil']);
+        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores']);
         
         //Carga de la libreria para la validación de formularios
         $this->load->library(['form_validation']);
@@ -4177,9 +4177,69 @@ class Administrador extends CI_Controller {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['fichas'] = $this->ficha->listarFichas();
             $data['instructores'] = $this->usuario->getInstructores();
-            $data['estados_instructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+            $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
             $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data,true);
             $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarEquipoInstructores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $nroficha = $this->input->post('ficha');
+            $documentos = $this->input->post('documento');
+            $estado = $this->input->post('estado');
+            
+            $resultado = $this->equipoinstructores->agregarEquipoInstructores($nroficha, $documentos, $estado);
+
+            if ($resultado) {
+                $data['fichas'] = $this->ficha->listarFichas();
+                $data['instructores'] = $this->usuario->getInstructores();
+                $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Equipo de Instructores añadidos a la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['fichas'] = $this->ficha->listarFichas();
+                $data['instructores'] = $this->usuario->getInstructores();
+                $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Los registros ya existen'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+
         } else {
             show_404();
         }
@@ -4588,7 +4648,7 @@ class Administrador extends CI_Controller {
         }
     }
 
-     public function darAccesoBienestar() {
+    public function darAccesoBienestar() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             
             $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
@@ -4650,6 +4710,8 @@ class Administrador extends CI_Controller {
             show_404();
         }
     }
+
+    /* ========================================================================================================*/
     /*==== Fin Control Administracion Usuarios ==== */
 
 }

@@ -195,4 +195,14 @@ class usuario extends CI_Model{
         $sql = $this->db->insert('tblacceso', ['docIDUsuario' => $documento, 'clave' => $password]);
         return $sql;
     }
+
+    //Auto Complete
+    public function autoCompleteInstructores($valor) {
+        $this->db->where('perfil', 1);
+        $this->db->select('docid');
+        $this->db->from('tblusuario');
+        $this->db->like("docid", $valor);
+        $resultados = $this->db->get();
+        return $resultados->result_array();
+    }
 }
