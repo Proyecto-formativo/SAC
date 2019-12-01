@@ -751,6 +751,25 @@ $(document).ready(function () {
     }
   });
 
+  $("#equipo_instructores").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
   //Buscar Instructores y añadir valores a sus respectivos inputs
   $("#inst_detalle").on("click", ".addInstructor", function () {
 
@@ -838,7 +857,7 @@ $(document).ready(function () {
 
           Toast.fire({
             icon: 'error',
-            title: 'El instructor ya esta en la tabla'
+            title: 'El instructor ya esta en la lista'
           })
         }
 
@@ -886,12 +905,14 @@ $(document).ready(function () {
       if (verificar[0] == documento_repetido[index]) {
         posicion = index;
       }
+
     }
 
     documento_repetido.splice(posicion, 1);
 
     if (documento_repetido.length == 0) {
       $("#agregarEI").prop("disabled", true);
+      $("#nroficha").prop("disabled", false);
       sw = 0;
     }
 

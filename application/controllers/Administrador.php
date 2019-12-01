@@ -3476,7 +3476,7 @@ class Administrador extends CI_Controller {
                     'perfil' => $this->input->post('perfil')
                 );
 
-                $resultado = $this->usuario->editarUsuarios($datos);
+                $resultado = $this->usuario->editarUsuario($datos);
 
                 if ($resultado) {
                     $data['instructores'] = $this->usuario->mostrarInstructores();
@@ -4175,10 +4175,8 @@ class Administrador extends CI_Controller {
     //Modulo Equipo de Instructores
     public function equipoinstructores() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
-            $data['fichas'] = $this->ficha->listarFichas();
-            $data['instructores'] = $this->usuario->getInstructores();
-            $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
-            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data,true);
+            $data['equipoinstructores'] = $this->equipoinstructores->mostrarEquipoInstructores();
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/listar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
             show_404();
@@ -4240,6 +4238,44 @@ class Administrador extends CI_Controller {
                 $this->Plantilla_Administrador($dinamica);
             }
 
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarInstructorFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $ficha = $this->input->post('ficha');
+
+            $resultado = $this->equipoinstructores->eliminarInstructorFicha($documento, $ficha);
+
+            if ($resultado) {
+                $this->FrmEditarEquipoInstructores($ficha);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Equipo Instructores
+    public function FrmAgregarEquipoInstructores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['fichas'] = $this->ficha->listarFichas();
+            $data['instructores'] = $this->usuario->getInstructores();
+            $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data,true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarEquipoInstructores($nroficha) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['equipoinstructores'] = $this->equipoinstructores->getEquipoInstructores($nroficha);
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
         } else {
             show_404();
         }

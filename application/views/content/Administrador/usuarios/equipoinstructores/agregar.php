@@ -43,7 +43,7 @@
     </div>
 
     <!-- tabla maestro detalle -->          
-    <table class="table mt-4" id="equipoinstructores">
+    <table class="table table-bordered table-striped table-hover mt-4" id="equipoinstructores">
       <thead class="bg-sena">
         <tr>
           <th>Documento</th>
@@ -63,6 +63,7 @@
     <!-- fin tabla maestro detalle --> 
   </form>
 
+  <a href="<?= base_url('Administrador/equipoinstructores')?>" class="btn bg-sena mt-3">Regresar al modulo Equipo Instructores</a>
   
 </div>
 
