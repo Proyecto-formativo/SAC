@@ -3,6 +3,7 @@
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
 <!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script> -->
 </head>
 <body>
@@ -116,6 +117,10 @@
 
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/equipoinstructores'); ?>" id="btn-2" class="dropdown-item">Equipo Instructores Ficha</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/aprendicesficha'); ?>" id="btn-2" class="dropdown-item">Aprendices Ficha</a>
                     </div>
                 </div>
             </div>

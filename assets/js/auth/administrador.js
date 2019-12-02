@@ -751,6 +751,7 @@ $(document).ready(function () {
     }
   });
 
+  //Plugin Data Table Equipo Instructores
   $("#equipo_instructores").DataTable({
     //Para cambiar el lenguaje a español
     "language": {
@@ -769,6 +770,47 @@ $(document).ready(function () {
       }
     }
   });
+
+  //Plugin Data Table Aprendices Ficha
+  $("#aprendices_ficha").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  $("#apr_detalle").DataTable({
+    //Para cambiar el lenguaje a español
+    "language": {
+      "lengthMenu": "Mostrar _MENU_ registros",
+      "zeroRecords": "No se encontraron resultados",
+      "searchPlaceholder": "Buscar Registros",
+      "info": "Mostrando Registros de _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No existen registros",
+      "infoFiltered": "(Filtrando un total de _MAX_ registros)",
+      "search": "Buscar...",
+      "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+    }
+  });
+
+  /* ==========================================================================================================*/
 
   //Buscar Instructores y añadir valores a sus respectivos inputs
   $("#inst_detalle").on("click", ".addInstructor", function () {
@@ -917,9 +959,161 @@ $(document).ready(function () {
     }
 
     $(this).closest("tr").remove();
+    console.log(documento_repetido);
 
   });
 
+  /* ==========================================================================================================*/
+  //Buscar Aprendices y añadir valores a sus respectivos inputs
+  $("#apr_detalle").on("click", ".addAprendiz", function () {
+
+    aprendiz = $(this).val();
+    datosaprendiz = aprendiz.split("*");
+    $("#docid_aprendiz").val(datosaprendiz[0]);
+    $("#campo_aprendiz").val(datosaprendiz[1]);
+
+    aprendizficha = datosaprendiz[0] + "*" + datosaprendiz[1] + "*" + $("#nroficha").val() + "*" + $("#estado_aprendiz").val() + "*" + $("#estado_aprendiz option:selected").text();
+    $("#addAprendizDetalle").val(aprendizficha);
+    $("#aprendiz_detalle").modal("hide");
+
+  });
+
+  //Inicializar vector, ir cuando el documento que se ingresa y verificar si esta repetido
+  let docid_repetido = [];
+  let swa = 0;
+  //Agregar instructores en la lista desplegable
+  $("#addAprendizDetalle").on("click", function () {
+    dato = $(this).val();
+
+    if (dato != "") {
+
+      infoaprendiz = dato.split("*");
+
+
+      //La primera vez que se carga la pagina se agregara a la tabla la información
+      if (swa == 0) {
+        //Cada documento ingresado se agrega a un vector
+        docid_repetido.push(infoaprendiz[0]);
+
+        html = "<tr>";
+        html += "<td><input type='hidden' name='documento[]' value=" + infoaprendiz[0] + ">" + infoaprendiz[0] + "</td>";
+        html += "<td>" + infoaprendiz[1] + "</td>";
+        html += "<td><input type='hidden' name='ficha[]' value=" + infoaprendiz[2] + ">" + infoaprendiz[2] + "</td>";
+        html += "<td><input type='hidden' name='estado[]' value=" + infoaprendiz[3] + ">" + infoaprendiz[4] + "</td>";
+        html += '<td><button type="button" class="btn btn-danger remover_a">Remover</button></td>';
+        html += "</tr>";
+        $("#aprendicesficha tbody").append(html);
+
+        $("#nroficha").prop("disabled", true);
+        $("#agregarAF").prop("disabled", false);
+
+        swa = 1;
+
+      } else {
+
+        doc_existe = false;
+
+        for (let j = 0; j < docid_repetido.length; j++) {
+
+          //Si el documento existe en el arreglo se devolvera un valor booleano
+          if (docid_repetido[j] == infoaprendiz[0]) {
+            doc_existe = true;
+          }
+
+        }
+
+        if (doc_existe != true) {
+
+          docid_repetido.push(infoaprendiz[0]);
+
+          html = "<tr>";
+          html += "<td><input type='hidden' name='documento[]' value=" + infoaprendiz[0] + ">" + infoaprendiz[0] + "</td>";
+          html += "<td>" + infoaprendiz[1] + "</td>";
+          html += "<td><input type='hidden' name='ficha[]' value=" + infoaprendiz[2] + ">" + infoaprendiz[2] + "</td>";
+          html += "<td><input type='hidden' name='estado[]' value=" + infoaprendiz[3] + ">" + infoaprendiz[4] + "</td>";
+          html += '<td><button type="button" class="btn btn-danger remover_a">Remover</button></td>';
+          html += "</tr>";
+
+          $("#aprendicesficha tbody").append(html);
+
+        } else {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'error',
+            title: 'El aprendiz ya esta en la lista'
+          })
+        }
+
+        console.log(docid_repetido);
+      }
+
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        onOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+
+      Toast.fire({
+        icon: 'error',
+        title: 'Seleccione un aprendiz por favor'
+      })
+    }
+  });
+
+  //Boton remover aprendiz de la tabla
+  $(document).on("click", ".remover_a", function () {
+
+    nuevo_doc_a = $(this).closest("tr");
+
+    let verificar_a = nuevo_doc_a
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    for (let iterador = 0; iterador < docid_repetido.length; iterador++) {
+
+      if (verificar_a[0] == docid_repetido[iterador]) {
+        posicion_a = iterador;
+      }
+
+    }
+
+    docid_repetido.splice(posicion_a, 1);
+
+    if (docid_repetido.length == 0) {
+      $("#agregarAF").prop("disabled", true);
+      $("#nroficha").prop("disabled", false);
+      swa = 0;
+    }
+    console.log(docid_repetido.length);
+    console.log(docid_repetido);
+    $(this).closest("tr").remove();
+
+  });
+
+
+
+  /* ==========================================================================================================*/
   // Fin del Document Ready()
 });
 

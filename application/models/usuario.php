@@ -44,6 +44,11 @@ class usuario extends CI_Model{
         return $sql;
     }
 
+    public function getAprendices() {
+        $sql = $this->db->query("SELECT docID AS documento, CONCAT(nombres, ' ', apellidos) AS instructor FROM tblusuario WHERE perfil = 4 ORDER BY CONCAT(nombres, ' ', apellidos)");
+        return $sql;
+    }
+
     //Mostrar Usuarios que tengan el perfil de Administrador
     public function mostrarAdministradores() {
         $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil, a.docIDUsuario AS docidusuario FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo LEFT JOIN tblacceso AS a ON a.docIDUsuario = u.docID WHERE u.perfil = 5 ORDER BY p.nombre");

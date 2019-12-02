@@ -5,7 +5,7 @@ class Administrador extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         //Carga de los Modelos Requeridos en el perfil de Administrador
-        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores']);
+        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores', 'aprendicesficha']);
         
         //Carga de la libreria para la validación de formularios
         $this->load->library(['form_validation']);
@@ -4252,6 +4252,26 @@ class Administrador extends CI_Controller {
 
             if ($resultado) {
                 $this->FrmEditarEquipoInstructores($ficha);
+            } else {
+                $data['equipoinstructores'] = $this->equipoinstructores->getEquipoInstructores($nroficha);
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido eliminar al instructor de la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/editar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
             }
         } else {
             show_404();
@@ -4281,6 +4301,139 @@ class Administrador extends CI_Controller {
         }
     }
     //Fin Modulo Equipo de Instructores
+    /*
+    ==============================================================================================================
+    */
+
+    //Modulo Aprendices Ficha
+    public function aprendicesficha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendicesficha'] = $this->aprendicesficha->mostrarAprendicesFicha();
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarAprendicesFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $nroficha = $this->input->post('ficha');
+            $documentos = $this->input->post('documento');
+            $estado = $this->input->post('estado');
+
+            $resultado = $this->aprendicesficha->agregarAprendicesFicha($nroficha, $documentos, $estado);
+
+            if ($resultado) {
+                $data['aprendicesficha'] = $this->aprendicesficha->mostrarAprendicesFicha();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Aprendices añadidos a la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['fichas'] = $this->ficha->listarFichas();
+                $data['aprendices'] = $this->usuario->getAprendices();
+                $data['estadoaprendices'] = $this->estadoaprendiz->mostrarEstadoAprendices();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Los registros ya existen'
+                })";
+
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/agregar', $data,true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarAprendicesFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $ficha = $this->input->post('ficha');
+
+            $resultado = $this->aprendicesficha->eliminarAprendizFicha($documento, $ficha);
+
+            if ($resultado) {
+                $this->FrmEditarAprendicesFicha($ficha);
+            } else {
+                $data['aprendicesficha'] = $this->aprendicesficha->getAprendicesFicha($ficha);
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido eliminar al aprendiz de la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/editar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Aprendices Ficha
+    public function FrmAgregarAprendicesFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['fichas'] = $this->ficha->listarFichas();
+            $data['aprendices'] = $this->usuario->getAprendices();
+            $data['estadoaprendices'] = $this->estadoaprendiz->mostrarEstadoAprendices();
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/agregar', $data,true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarAprendicesFicha($nroficha) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendicesficha'] = $this->aprendicesficha->getAprendicesFicha($nroficha);
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    //Fin Modulo Aprendices Ficha
+
     /*
     ==============================================================================================================
     */
