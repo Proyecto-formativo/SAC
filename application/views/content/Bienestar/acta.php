@@ -329,19 +329,19 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
 
 
                 <div class="form-group form-check">
-                    <label for="informeEquipoEjecutor">informe del EquipoEjecutor:</label>
+                    <label for="informeEquipoEjecutor">Informe del equipo ejecutor:</label>
                     <textarea  class="form-control style-textareaficha-descargos" name="Desarrollo" id="informeEquipoEjecutor" cols="20" row="10" rows=""></textarea>
                 </div>
 
 
                 <div class="form-group form-check">
-                    <label for="descarosAprendiz">Descaros del Aprendiz:</label>
+                    <label for="descarosAprendiz">Descargos del Aprendiz:</label>
                     <textarea  class="form-control style-textareaficha-descargos" name="Desarrollo" id="descarosAprendiz" cols="20" rows=""></textarea>
                 </div>
 
 
                 <div class="form-group">
-                    <label for="Recomendacion">Recomendacion:</label>
+                    <label for="Recomendacion">Recomendación:</label>
                     <select name="Recomendacion" class="form-control"  id="Recomendacion" required >
                         <?php foreach ($recomendacion->result() as $valores): ?>
                         <option value="<?=$valores->codigo?>"><?=$valores->nombre?></option>
