@@ -2,7 +2,6 @@
     <?=$header?>
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
-<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -12,7 +11,7 @@
         <h3 class="st-text">SAC - Seguimientos Aprendices Citados </h3>
         <div>
             
-            <h1 class="st-text d-inline"><i class="fas fa-user"></i>  Bienestar:</h1>
+            <h1 class="st-text d-inline"><img src="<?=base_url("assets/images_sac/icono_de_usuario.png")?>" width="50" alt="">  Bienestar:</h1>
             <p  class="d-inline"><?= $this->session->userdata('nombre')?></p>
         </div>
     </div>
@@ -22,13 +21,13 @@
         <div class="style-navegacion">
             <a href="<?=base_url('Bienestar/ActaComite')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
-                <button type="button" id="btn-1" class="btn botoncito">Acta comite </button> <i class="far fa-bell"></i>
+                <button type="button" id="btn-1" class="btn botoncito">Acta comite </button> <img src="<?=base_url("assets/images_sac/iconoActa.png")?>" width="30" alt=""> 
                 </div>
             </a>
 
             <a href="<?=base_url('Bienestar/ActasGeneradas')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
-                <button type="button" id="btn-1" class="btn botoncito">Actas generadas</button> <i class="far fa-bell"></i>
+                <button type="button" id="btn-1" class="btn botoncito">Actas generadas</button> <img src="<?=base_url("assets/images_sac/actaGeneradas.png")?>" width="35" alt="">
                 </div>
             </a>
 
@@ -76,14 +75,14 @@
 
             <a href="<?=base_url('Bienestar/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">
-                    <button type="button" id="btn-3" class="btn botoncito">Configuracion  </button><i class="fas fa-cog"></i>
+                    <button type="button" id="btn-3" class="btn botoncito">Configuracion  </button><img src="<?=base_url("assets/images_sac/configuraciones.png")?>" width="25" alt="">
                 </div>
             </a>
             
 
             <a href="<?=base_url('login_controller/logout')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
-                    Salir <i class="fas fa-power-off"></i>
+                    Salir <img src="<?=base_url("assets/images_sac/salir.png")?>" width="25" alt="">
                 </div>
             </a>
             <hr>

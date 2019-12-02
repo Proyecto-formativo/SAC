@@ -274,16 +274,68 @@ $(document).ready(function() {
 
 
   $('#generarpdf').click(function() {
-		var options = {
-      // 'width': 800, 
-      // 'height': 500,
-		};
-		var pdf = new jsPDF('p', 'pt', 'letter');
-		//pdf.text("Reporte numero");
-		pdf.addHTML($("#pdf").get(0), 15, 15, options, function() {
-			pdf.save('informe.pdf');
+		// var options = {
+    //   // 'width': 800, 
+    //   // 'height': 500,
+    //   pegesplit:true,
+
+    // };
+    // l = { 
+    //   orientation: 'p', 
+    //   unit: 'mm', 
+    //   format: 'a3', 
+    //   compress: true, 
+    //   fontSize: 11, 
+    //   lineHeight: 1, 
+    //   autoSize: false, 
+    //   printHeaders: true 
+    //  };
+    // var pdf = new jsPDF(l, 'pt', 'letter');
+    // pdf.internal.scaleFactor = 5;
+    // pdf.page = 1;
+		// //pdf.text("Reporte numero");
+		// pdf.addHTML($("#pdf").get(0), 15, 15, options, function() {
+    //   // pdf.addPage();
+    //   // pdf.save('informe.pdf');
+      
+    //   var pageCount = pdf.internal.getNumberOfPages();
+    //   for (i = 0; i < pageCount; i++) {
+    //     pdf.setPage(i);
+    //     pdf.text(10, 10, pdf.internal.getCurrentPageInfo().pageNumber + "/" + pageCount);
+    //   };
+    //   pdf.save('Informacion.pdf');
+    // });
+
+    // console.log($("#pdf").get(0));
+
+
+
+    let HTML_Width = $("#pdf").width();
+    let HTML_Height = $("#pdf").height();
+    let top_left_margin = 1;
+    let PDF_Width = HTML_Width + (top_left_margin * 2);
+    let PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    let canvas_image_width = HTML_Width;
+    let canvas_image_height = HTML_Height;
+    let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+    let user = this.auth_user;
+    html2canvas($("#pdf")[0], {allowTaint: true}).then(function (canvas) {
+        canvas.getContext('2d');
+        let imgData = canvas.toDataURL("image/jpeg", 1.0);
+        let pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+
+        pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+        let counter = 0;
+
+        for (let i = 1; i <= totalPDFPages; i++) {
+            counter++;
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+        }
+        pdf.save(user + ".pdf");
     });
-    console.log($("#pdf").get(0));
+   
     
   });
   
