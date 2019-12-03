@@ -5,7 +5,7 @@ class Administrador extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         //Carga de los Modelos Requeridos en el perfil de Administrador
-        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores', 'aprendicesficha']);
+        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores', 'aprendicesficha', 'reportes_admin']);
         
         //Carga de la libreria para la validación de formularios
         $this->load->library(['form_validation']);
@@ -4901,6 +4901,97 @@ class Administrador extends CI_Controller {
     }
 
     /* ========================================================================================================*/
+
     /*==== Fin Control Administracion Usuarios ==== */
 
+    /* ========================================================================================================*/
+
+    /*==== Control Administracion Reportes ==== */
+
+    //Aprendices citados por fecha
+    public function reporte_comite_evaluacion() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/aprendices_citados/generar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function rac_params() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('fecha_inicial', 'Fecha Inicial', 'required');
+            $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'required');
+
+            if ($this->form_validation->run() == false) {
+                $this->reporte_comite_evaluacion();
+            } else {
+                $fecha_inicial = $this->input->post('fecha_inicial');
+                $fecha_final = $this->input->post('fecha_final');
+                $data['reporte_seguimiento_aprendiz'] = $this->reportes_admin->apr_cit_fecha($fecha_inicial, $fecha_final);
+                $dinamica = $this->load->view('content/Administrador/reportes_admin/aprendices_citados/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Aprendices citados por área
+    public function apr_c_area() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['areas'] = $this->area->mostrarAreas();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/apr_c_area/generar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function raca_param() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $area = $this->input->post('area');
+            $data['aprendices_citados_area'] = $this->reportes_admin->apr_cit_area($area);
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/apr_c_area/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Cantidad de citaciones realizadas por instructor
+    public function cant_ci_inst() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['cant_ci_inst'] = $this->reportes_admin->cant_ci_inst();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/cantidad_ri/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Cantidad de aprendices citados por centro
+    public function cant_ci_centro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['cant_ci_centro'] = $this->reportes_admin->cant_ci_centro();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/cantidad_aprc/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Aprendices citados a comité
+    public function aprendices_citados() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendices_citados'] = $this->reportes_admin->aprendices_citados();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/aprendiz_citado/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Reportes ==== */
 }
