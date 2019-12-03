@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/recomendacion'); ?>" id="btn-2" class="dropdown-item">Recomendaciónes</a>
+                        <a href="<?= base_url('Administrador/recomendacion'); ?>" id="btn-2" class="dropdown-item">Recomendaciones</a>
                     </div>
 
                     <div class="style-botones-dropdown">
@@ -46,19 +46,19 @@
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/etapaformacion'); ?>" id="btn-2" class="dropdown-item">Etapa Formación</a>
+                        <a href="<?= base_url('Administrador/etapaformacion'); ?>" id="btn-2" class="dropdown-item">Etapa formación</a>
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/etapaproyecto'); ?>" id="btn-2" class="dropdown-item">Etapa Proyecto</a>
+                        <a href="<?= base_url('Administrador/etapaproyecto'); ?>" id="btn-2" class="dropdown-item">Etapa proyecto</a>
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/estadoinstructor'); ?>" id="btn-2" class="dropdown-item">Estado Instructor</a>
+                        <a href="<?= base_url('Administrador/estadoinstructor'); ?>" id="btn-2" class="dropdown-item">Estado instructor</a>
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/estadoaprendiz'); ?>" id="btn-2" class="dropdown-item">Estado Aprendiz</a>
+                        <a href="<?= base_url('Administrador/estadoaprendiz'); ?>" id="btn-2" class="dropdown-item">Estado aprendiz</a>
                     </div>
 
                     <div class="style-botones-dropdown">
@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/sedes'); ?>" id="btn-2" class="dropdown-item">Sede</a>
+                        <a href="<?= base_url('Administrador/sedes'); ?>" id="btn-2" class="dropdown-item">Sedes</a>
                     </div>
 
                     <div class="style-botones-dropdown">
@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/areas'); ?>" id="btn-2" class="dropdown-item">Área</a>
+                        <a href="<?= base_url('Administrador/areas'); ?>" id="btn-2" class="dropdown-item">Áreas</a>
                     </div>
 
                     <div class="style-botones-dropdown">
