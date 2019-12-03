@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <input type="submit" class="btn bg-sena mt-2" value="Editar">
+    <input type="submit" class="btn bg-sena mt-2" value="Guardar cambios">
   </form>
 
   <a href="<?= base_url('Administrador/aprendices'); ?>" class="btn bg-sena mt-3">Regresar Al Modulo Aprendiz</a>

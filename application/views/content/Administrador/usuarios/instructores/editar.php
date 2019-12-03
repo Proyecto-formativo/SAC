@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <input type="submit" class="btn bg-sena mt-2" value="Editar">
+    <input type="submit" class="btn bg-sena mt-2" value="Guardar cambios">
   </form>
 
   <?php if($acceso) : ?>
@@ -97,8 +97,8 @@
         <div class="row">
           <div class="col-6">
             <div class="form-group">
-              <label for="">Contraseña Temporal:</label>
-              <input type="password" name="password_one" class="form-control" value="<?= set_value('password_one'); ?>">
+              <label for="">Contraseña de acceso:</label>
+              <input type="password" name="password_one" placeholder="Contraseña" class="form-control" value="<?= set_value('password_one'); ?>">
               <?= form_error('password_one', '<p class="text-danger">', '</p>'); ?>
             </div>
           </div>
@@ -106,13 +106,13 @@
           <div class="col-6">
             <div class="form-group">
               <label for="">Confirmar Contraseña:</label>
-              <input type="password" name="password_two" class="form-control" value="<?= set_value('password_two'); ?>">
+              <input type="password" name="password_two" placeholder="Confirmar contraseña" class="form-control" value="<?= set_value('password_two'); ?>">
               <?= form_error('password_two', '<p class="text-danger">', '</p>'); ?>
             </div>
           </div>
         </div>
 
-        <input type="submit" name="editar" class="btn btn-block bg-sena" value="Editar Contraseña">
+        <input type="submit" name="editar" class="btn btn-block bg-sena" value="Guardar contraseña">
       </form>
     </div>
   <?php endif; ?>

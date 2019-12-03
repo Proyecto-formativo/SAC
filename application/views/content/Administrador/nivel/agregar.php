@@ -5,7 +5,7 @@
     
     <div class="form-group">
       <label for="">Nombre:</label>
-      <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>">
+      <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>" placeholder="Nombre">
       <?= form_error('nombre', '<p class="text-danger">', '</p>'); ?>
     </div>
 

@@ -1,10 +1,10 @@
 <div class="container">
-  <h1 class="text-center">Equipo Instructores por Fichas</h1>
+  <h2 class="text-center">Equipo instructores por fichas</h2>
 
-  <a href="<?= base_url('Administrador/FrmAgregarEquipoInstructores'); ?>" class="btn bg-sena">Agregar</a>
+  <a href="<?= base_url('Administrador/FrmAgregarEquipoInstructores'); ?>" class="btn bg-sena mb-3">Agregar</a>
 
   <div class="table-responsive mt-4">
-    <table id="equipo_instructores" class="table table-striped table-bordered mt-3" style="width: 100%;">
+    <table id="equipo_instructores" class="table table-striped table-bordered" style="width: 100%;">
       <thead>
         <tr>
           <th>Ficha</th>

@@ -1,7 +1,8 @@
 <div class="container">
-  <a href="<?= base_url('Administrador/FrmAgregarCentro'); ?>" class="btn bg-sena">Agregar</a>
+  <h2 class="text-center">Centros de formación</h2>
+  <a href="<?= base_url('Administrador/FrmAgregarCentro'); ?>" class="btn bg-sena mb-3">Agregar</a>
 
-  <table id="centro" class="table table-striped table-bordered mt-3" style="width: 100%;">
+  <table id="centro" class="table table-striped table-bordered" style="width: 100%;">
     <thead>
       <tr>
         <th>Codigo</th>

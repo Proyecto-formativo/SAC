@@ -1,7 +1,7 @@
 <div class="container">
-  <h1 class="text-center">Aprendices Ficha</h1>
+  <h2 class="text-center">Aprendices ficha</h2>
 
-  <a href="<?= base_url('Administrador/FrmAgregarAprendicesFicha'); ?>" class="btn bg-sena">Agregar</a>
+  <a href="<?= base_url('Administrador/FrmAgregarAprendicesFicha'); ?>" class="btn bg-sena mb-3">Agregar</a>
 
   <div class="table-responsive mt-4">
     <table id="aprendices_ficha" class="table table-striped table-bordered" style="width:100%">

@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <input type="submit" name="submit" class="btn bg-sena" value="Editar">
+    <input type="submit" name="submit" class="btn bg-sena" value="Guardar cambios">
   </form>
 
   <a href="<?= base_url('Administrador/fichas'); ?>" class="btn bg-sena mt-3">Regresar al Modulo Ficha</a>
