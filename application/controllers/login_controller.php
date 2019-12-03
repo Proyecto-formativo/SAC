@@ -15,7 +15,6 @@ class login_controller extends CI_Controller {
 		}else{
 			$this->plantillaLogin();
 		} 
-
 	}
 	/**
 	 * para validar el ingreso del usuario al sistema
@@ -116,12 +115,46 @@ class login_controller extends CI_Controller {
 	}
 
 	/**
+	 * para cargar la vista de recuperar contraseña
+	 */
+
+	public function recuperar_clave() {
+		if (isset($_POST['correo']) && !empty($_POST['correo'])) {
+
+			$this->form_validation->set_error_delimiters('', '');
+			$correo = trim($this->input->post('correo'));
+			
+			$this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email|min_length[5]|max_length[100]');
+
+			if ($this->form_validation->run() === false) {
+				$datos = [
+					'correovalidar' => form_error('correo'),
+					'valor_correo' => $correo,
+				];
+				$this->plantillaRecuperarClave($datos);
+			} else {
+
+				$resultado = $this->usuario->existe_correo($correo);
+			}
+
+		} else {
+			$this->plantillaRecuperarClave();
+		}
+	} 
+
+	/**
 	 * sel uso de esta funcion es para la reutilizacion del codigo y mostrar la vista de
 	 * login 
 	 */
 	public function plantillaLogin($datos = null){
 		$this->load->view('extra/header');
-		$this->load->view('login',$datos);
+		$this->load->view('login', $datos);
+		$this->load->view('extra/footer');
+	}
+
+	protected function plantillaRecuperarClave($datos = null) {
+		$this->load->view('extra/header');
+		$this->load->view('recuperar_clave', $datos);
 		$this->load->view('extra/footer');
 	}
 
