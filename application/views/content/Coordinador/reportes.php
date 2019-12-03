@@ -9,8 +9,11 @@
 			<th class="bg-sena"> FICHA </th>
 			<th class="bg-sena">PROGRAMA DE FORMACION </th>
 			<th class="bg-sena"> FECHA </th>
+			<?php if($caso=="todos"){
+				echo '<th class="bg-sena"> ESTADO </th>';
+			} ?>
+
 			<th class="bg-sena"> VER</th>
-			<th class="bg-sena"> ESTADO </th>
 
 		</tr>
 	</thead>
@@ -22,13 +25,16 @@
 				<td> <?= $valor->numFicha?></td>
 				<td> <?= $valor->nombre?></td>
 				<td> <?= $valor->fecha?></td>
-				<td style="background: #4F5155">
+				<?php if($caso=="todos"){
+					echo '<td> '. $valor->estado.'</td>';
+				} ?>
+				<td style="background: #4F5155; padding:0px; ">
 					<a href="<?=base_url('Coordinador/verReportes/') . $valor->consecutivo;?>" id="btn-4" class="btn botoncito btn4">
 						<div class="style-botones boton">
-							<button type="button" id="btn-3" class="btn botoncito  fa fa-pencil-square-o" > </button>
+							<button type="button" id="btn-3" class="btn botoncito  fa fa-search-plus" > </button>
 						</div>
 					</a>
-				</td>
+				</td
 			</tr>
 		<?php endforeach?>
 	</tbody>
