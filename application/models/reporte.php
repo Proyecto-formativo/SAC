@@ -87,9 +87,37 @@ class reporte extends CI_Model{
         GROUP BY r.consecutivo ORDER BY r.consecutivo DESC ");
 		return $sql;
 	}
+	public function Consult_aprobados($doc){
+
+		$sql = $this->db->query("SELECT af.numFicha,p.nombre,r.fecha,r.consecutivo,r.estado
+        FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar 
+        ON ar.consReporte=r.consecutivo         
+        INNER JOIN tblaprendicesficha as af ON af.docIDAprendiz=ar.docIDAprendiz
+        INNER JOIN tblficha as f ON f.nroFicha=af.numFicha
+        INNER JOIN tblprograma as p ON p.codigo=f.programa
+        INNER JOIN tblarea as area ON p.area = area.codigo
+    	INNER JOIN tblarea as acor ON r.docIDCoordinador=acor.docIDCoordinador       
+        WHERE acor.docIDCoordinador=$doc and r.estado='Aprobado'
+        GROUP BY r.consecutivo ORDER BY r.consecutivo DESC ");
+		return $sql;
+	}
+	public function Consult_cancelados($doc){
+
+		$sql = $this->db->query("SELECT af.numFicha,p.nombre,r.fecha,r.consecutivo,r.estado
+        FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar 
+        ON ar.consReporte=r.consecutivo         
+        INNER JOIN tblaprendicesficha as af ON af.docIDAprendiz=ar.docIDAprendiz
+        INNER JOIN tblficha as f ON f.nroFicha=af.numFicha
+        INNER JOIN tblprograma as p ON p.codigo=f.programa
+        INNER JOIN tblarea as area ON p.area = area.codigo
+    	INNER JOIN tblarea as acor ON r.docIDCoordinador=acor.docIDCoordinador       
+        WHERE acor.docIDCoordinador=$doc  and r.estado='No aprobado'
+        GROUP BY r.consecutivo ORDER BY r.consecutivo DESC ");
+		return $sql;
+	}
 
 	public function Consult_especifica($consec){
-		$sql=$this->db->query("SELECT r.consecutivo, area.nombre as area,r.fecha as fecha,p.nombre as programa,r.evidencia,
+		$sql=$this->db->query("SELECT r.consecutivo,r.estado, area.nombre as area,r.fecha as fecha,p.nombre as programa,r.evidencia,
                                 nv.nombre as nivel, af.numFicha as ficha ,su.nombre as sugerencia,
                                mu.nombre as municipio,ce.nombre as centro,se.nombre as sede
                              ,ef.nombre as 'etapa_formacion',ep.nombre as 'etapa_proyecto',
@@ -128,9 +156,25 @@ class reporte extends CI_Model{
 	public  function aprobarRep($consec){
 		$query=$this->db->query("UPDATE `tblreporte` SET `estado` = 'Aprobado' WHERE `tblreporte`.`consecutivo` =$consec ");
 		if ($query){
-			return "estado del Reporte ha cambiado a Aprobado";
+			return "Aprobacion Exitosa ";
 		}else{
-			return "no se pudo realizar la solicitud";
+			return "No se pudo realizar la solicitud";
 		}
 	}
+
+
+	public function equipoInstructores($ficha){
+		$sql=$this->db->query("select concat(u.nombres,' ',  u.apellidos) as nombre from tblusuario as u
+inner join tblequipoinstructor t on u.docID = t.docIDInstructor where numFicha=$ficha");
+		return $sql;
+	}
+
+
+	public function nombreCordi($ficha){
+		$sql=$this->db->query("select concat(u.nombres,' ', u.apellidos)as cordi, p.proyectoFormativo as pf from tblusuario as u inner join tblarea as a 
+on u.docID=a.docIDCoordinador inner join tblprograma as p on p.area=a.codigo inner JOIN tblficha
+as f on f.programa=p.codigo where f.nroFicha=$ficha");
+		return $sql->result_object();
+	}
+
 }
