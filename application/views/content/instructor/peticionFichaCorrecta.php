@@ -209,7 +209,7 @@
         <div class="col-12">
             <div class="form-group">
                 <label for="evidencia">Evidencia:</label>
-                <input type="file" name="evidencia" class="form-control-file" id="evidencia" required>
+                <input type="file" name="evidencia" class="form-control-file" id="evidencia" required accept=".pdf ,.jpg ,.png ,.doc,.docx,.txt">
             </div>
         </div>
 

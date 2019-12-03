@@ -24,7 +24,7 @@
         
         <button type="submit" class="btn btn-block btn-login">Ingresar</button>
         <div class="text-center mt-2">
-            <a href="<?= base_url('login_controller/recuperar_clave'); ?>" >¿Has olvidado tu contraseña?</a>
+            <a href="#" data-toggle="modal" data-target="#staticBackdrop">¿Has olvidado tu contraseña?</a>
         </div>
     </form>
 </div>
@@ -34,3 +34,40 @@
 <?= isset($mensaje)?$mensaje:""?>
 </script>
 
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Recuperar contraseña</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="<?=base_url("login_controller/recuperar")?>" method="post">
+                <div class="form-group">
+                    <label for="docuemntoVerificacion">docuemnto</label>
+                    <input type="text" name="docuemntoVerificacion" class="form-control" id="docuemntoVerificacion" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo</label>
+                    <input type="email" name="correoverificacion" class="form-control" id="correo" aria-describedby="emailHelp" required>
+                </div>
+                <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">enviar</button>
+                </div>
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

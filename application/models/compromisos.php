@@ -9,4 +9,12 @@ class compromisos extends CI_Model{
         $this->db->insert('tblcompromisos',['consActa'=>$consActa,'actividad'=>$actividad,'responsable'=>$responsable,'fecha'=>$fecha]);
 
     }
+
+    public function MostrarCompromisosConsecutivoActa($acta){
+        $this->db->select('*');
+        $this->db->from('tblcompromisos');
+        $this->db->where('consActa', $acta);
+        $sql = $this->db->get();
+        return $sql;
+    }
 }

@@ -16,7 +16,7 @@
         <h3 class="st-text">SAC - Seguimientos Aprendices Citados </h3>
         <div>
             
-            <h1 class="st-text d-inline"><i class="fas fa-user"></i>  Administrador:</h1>
+            <h1 class="st-text d-inline"><img src="<?=base_url("assets/images_sac/icono_de_usuario.png")?>" width="50" alt="">   Administrador:</h1>
             <p  class="d-inline"><?= $this->session->userdata('nombre')?></p>
         </div>
     </div>
@@ -169,14 +169,14 @@
 
             <a href="<?=base_url('Administrador/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">
-                    <button type="button" id="btn-3" class="btn botoncito">Configuracion  </button><i class="fas fa-cog"></i>
+                    <button type="button" id="btn-3" class="btn botoncito">Configuracion  </button><img src="<?=base_url("assets/images_sac/configuraciones.png")?>" width="25" alt="">
                 </div>
             </a>
             
 
             <a href="<?=base_url('login_controller/logout')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
-                    Salir <i class="fas fa-power-off"></i>
+                    Salir <img src="<?=base_url("assets/images_sac/salir.png")?>" width="25" alt="">
                 </div>
             </a>
             <hr>

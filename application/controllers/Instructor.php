@@ -111,65 +111,89 @@ class Instructor extends CI_Controller {
                 $this->load->library('upload',$config);
 
                 if ($this->upload->do_upload('evidencia')) {
-                    /**
-                     * 
-                     *se crea un array llamada valores para enviar los datos que se van a actualizar de la ficha y le pasamos el parametro
-                    *del numero de ficha para saber a que ficha se va a actualizar
-                    */
-                    $valores = [
-                        'etapaFormacion' => $this->input->post("etapaformacion"),
-                        'etapaProyecto' => $this->input->post("etapaproyecto"),
-                    ];
-                    $this->ficha->Actualizarficha($this->input->post("ficha"),$valores);
+
+
+                    if ($this->upload->data()["file_size"] > 6155.39) {
+                        $mensaje = [
+                            'mensaje' => "                    
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                onOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'El tamaño del archivo es demaciado grande solo se aceptan '
+                            })",
+                        ];
+                    }else{
+                        /**
+                         * 
+                         *se crea un array llamada valores para enviar los datos que se van a actualizar de la ficha y le pasamos el parametro
+                         *del numero de ficha para saber a que ficha se va a actualizar
+                         */
+                        $valores = [
+                            'etapaFormacion' => $this->input->post("etapaformacion"),
+                            'etapaProyecto' => $this->input->post("etapaproyecto"),
+                        ];
+                        $this->ficha->Actualizarficha($this->input->post("ficha"),$valores);
 
 
 
-                    /**
-                     * datos del reporte
-                     * 
-                     * 
-                     */
-                    $justificacion = $this->input->post("justificacion");
-                    $instructorReporte = $this->session->userdata("documento");
-                    $normasReglamentarias = $this->input->post("normasReglamentarias");
-                    $coordinador = $this->input->post("codigocoordinador");
-                    $tipofalta = $this->input->post("tipofalta");
-                    $tipoCalificcion = $this->input->post("tipocalificacion");
-                    $sugerencia = $this->input->post("sugerencia");
-                    
-                    $dato = ['upload_data' =>$this->upload->data()];
-                    $evidencia = $ruta.$dato['upload_data']['file_name'];
-                    $this->reporte->IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$coordinador,$tipofalta,$tipoCalificcion,$sugerencia);
-                    
-                    
-                    /**
-                     * agregando aprendices por reporte
-                     */
-                    $aprendices = $this->input->post("aprendices");
-                    $sql = $this->reporte->UltimoReporte();
-                    for ($i=0; $i < count($aprendices); $i++) { 
-                        $this->aprendicesreportados->IngresarAprencides($sql->consecutivo,$aprendices[$i]);
+                        /**
+                         * datos del reporte
+                         * 
+                         * 
+                         */
+                        $justificacion = $this->input->post("justificacion");
+                        $instructorReporte = $this->session->userdata("documento");
+                        $normasReglamentarias = $this->input->post("normasReglamentarias");
+                        $coordinador = $this->input->post("codigocoordinador");
+                        $tipofalta = $this->input->post("tipofalta");
+                        $tipoCalificcion = $this->input->post("tipocalificacion");
+                        $sugerencia = $this->input->post("sugerencia");
+                        
+                        $dato = ['upload_data' =>$this->upload->data()];
+                        $evidencia = $ruta.$dato['upload_data']['file_name'];
+
+                        $this->reporte->IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$coordinador,$tipofalta,$tipoCalificcion,$sugerencia);
+                        
+                        
+                        /**
+                         * agregando aprendices por reporte
+                         */
+                        $aprendices = $this->input->post("aprendices");
+                        $sql = $this->reporte->UltimoReporte();
+                        for ($i=0; $i < count($aprendices); $i++) { 
+                            $this->aprendicesreportados->IngresarAprencides($sql->consecutivo,$aprendices[$i]);
+                        }
+                        $mensaje = [
+                            'mensaje' => "                    
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                onOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Reporte enviado correctamente'
+                            })",
+                        ];
                     }
-                    $mensaje = [
-                        'mensaje' => "                    
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            onOpen: (toast) => {
-                              toast.addEventListener('mouseenter', Swal.stopTimer)
-                              toast.addEventListener('mouseleave', Swal.resumeTimer)
-                            }
-                          })
-                          
-                          Toast.fire({
-                            icon: 'success',
-                            title: 'Reporte enviado correctamente'
-                          })",
-                    ];
-                    $this->reporte($mensaje);
                 }else{
                     $mensaje = [
                         'mensaje' => "                    
@@ -190,8 +214,8 @@ class Instructor extends CI_Controller {
                             title: 'La evidencia es requerida, favor repetir el procediminto correspondiente'
                           })",
                     ];
-                    $this->reporte($mensaje);
                 }
+                $this->reporte($mensaje);
             }
         }else{
             show_404();

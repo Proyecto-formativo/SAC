@@ -26,11 +26,11 @@ $(document).ready(function() {
 
   
 
-/**
- * 
- * filtro de municipio hace una peticion al servidor para preguntar los centros y sedes del municipio
- *  que se haya seleccionada
- */
+  /**
+   * 
+   * filtro de municipio hace una peticion al servidor para preguntar los centros y sedes del municipio
+   *  que se haya seleccionada
+   */
   $("#municipio").bind("change", function() {
     var municipio = $("#municipio").val();
     $.ajax({
@@ -159,11 +159,11 @@ $(document).ready(function() {
             icon: 'error',
             title: 'ya existe ese registro en la base de datos'
           });//sweet alert
-
        }//fin funcion de error
 
       });//fin ajax
     }//fin el else
+    $("#formularioDeDescargos")[0].reset();
   });//fin de agregar descargos
 
 
@@ -185,24 +185,27 @@ $(document).ready(function() {
       fecha = $("#fecha-compromiso").val(),
       array = [actividad_text, responsable, fecha],
       dato = "";
-      
+
       listCompromisos.push(array);
-      
-      for (let i = 0; i < listCompromisos.length; i++) {
-        dato += `
-        <tr>
-        <td>${Number(i + 1)}</td>
-        <td>${listCompromisos[i][0]}</td>
-        <td>${listCompromisos[i][1]}</td>
-        <td>${listCompromisos[i][2]}</td>
-        </tr>
-        `;
-        $("#listar-compromisos-tabla").html(dato);
-      }
-      console.log(listCompromisos);
-      let lista = JSON.stringify(listCompromisos);
-      
-      $("#listaCompromisos").val(lista);
+
+     for (let i = 0; i < listCompromisos.length; i++) {
+       dato += `
+       <tr>
+       <td>${Number(i + 1)}</td>
+       <td>${listCompromisos[i][0]}</td>
+       <td>${listCompromisos[i][1]}</td>
+       <td>${listCompromisos[i][2]}</td>
+       <td><button class="btn btn-danger eliminarCompromisos" id="${Number(i)}">Eliminar</button></td>
+       </tr>
+       `;
+       $("#listar-compromisos-tabla").html(dato);
+     }
+     console.log(listCompromisos);
+     let lista = JSON.stringify(listCompromisos);
+     
+     $("#listaCompromisos").val(lista);
+    
+     $("#formularioDeCompromisos")[0].reset();
 
     }else{
       const Toast = Swal.mixin({
@@ -227,6 +230,120 @@ $(document).ready(function() {
 
 
   /**
+   * ****este evento elimina los compromisos
+   * 
+   */
+  $("#tableCompromisos ").on("click",".eliminarCompromisos",function (e) {
+    e.preventDefault();
+    let id = this.getAttribute("id"),
+        dato = "";
+
+    /**
+     * con la funcion splice de indicamos en la primera pocicion el indice de que elemento se va a elimiar
+     * el segundo parametro es para decirle cuantos elementos vamos a eliminar
+     */
+    listCompromisos.splice(id,1);
+    
+    /**
+     * si la cantidad de elementos que tenemos en el array es mayor a 0 entonces me los va alistar en la tabla y agregar
+     *  en el id #lisaompromisos y si no es mayor a 0 es por que no hay elemntos le indicamos a este objeto que se remueva
+     * this.parentElement.parentElement.remove();
+     */
+    if (listCompromisos.length > 0) {
+      for (let i = 0; i < listCompromisos.length; i++) {
+        dato += `
+        <tr>
+        <td>${Number(i + 1)}</td>
+        <td>${listCompromisos[i][0]}</td>
+        <td>${listCompromisos[i][1]}</td>
+        <td>${listCompromisos[i][2]}</td>
+        <td><button class="btn btn-danger eliminarCompromisos" id="${Number(i)}">Eliminar</button></td>
+        </tr>
+        `;
+        $("#listar-compromisos-tabla").html(dato);
+      }
+      console.log(listCompromisos);
+      let lista = JSON.stringify(listCompromisos);
+      
+      $("#listaCompromisos").val(lista);
+    }else{
+      this.parentElement.parentElement.remove();
+      $("#enviarActa").attr("disabled", "");
+    }
+  });
+
+
+  $('#generarpdf').click(function() {
+		// var options = {
+    //   // 'width': 800, 
+    //   // 'height': 500,
+    //   pegesplit:true,
+
+    // };
+    // l = { 
+    //   orientation: 'p', 
+    //   unit: 'mm', 
+    //   format: 'a3', 
+    //   compress: true, 
+    //   fontSize: 11, 
+    //   lineHeight: 1, 
+    //   autoSize: false, 
+    //   printHeaders: true 
+    //  };
+    // var pdf = new jsPDF(l, 'pt', 'letter');
+    // pdf.internal.scaleFactor = 5;
+    // pdf.page = 1;
+		// //pdf.text("Reporte numero");
+		// pdf.addHTML($("#pdf").get(0), 15, 15, options, function() {
+    //   // pdf.addPage();
+    //   // pdf.save('informe.pdf');
+      
+    //   var pageCount = pdf.internal.getNumberOfPages();
+    //   for (i = 0; i < pageCount; i++) {
+    //     pdf.setPage(i);
+    //     pdf.text(10, 10, pdf.internal.getCurrentPageInfo().pageNumber + "/" + pageCount);
+    //   };
+    //   pdf.save('Informacion.pdf');
+    // });
+
+    // console.log($("#pdf").get(0));
+
+
+
+    let HTML_Width = $("#pdf").width();
+    let HTML_Height = $("#pdf").height();
+    let top_left_margin = 1;
+    let PDF_Width = HTML_Width + (top_left_margin * 2);
+    let PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    let canvas_image_width = HTML_Width;
+    let canvas_image_height = HTML_Height;
+    let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+    let user = this.auth_user;
+    html2canvas($("#pdf")[0], {allowTaint: true}).then(function (canvas) {
+        canvas.getContext('2d');
+        let imgData = canvas.toDataURL("image/jpeg", 1.0);
+        let pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+
+        pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+        let counter = 0;
+
+        for (let i = 1; i <= totalPDFPages; i++) {
+            counter++;
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+        }
+        pdf.save(user + ".pdf");
+    });
+   
+    
+  });
+  
+
+
+
+
+  /**
    * 
    * 
    * estod dos eventos es para validad los compromisos que no se genere el acta sin los compromisos
@@ -247,6 +364,8 @@ $(document).ready(function() {
     $("#compromisos").modal({
       backdrop:"static"
     });
+
+
   });
 
   $("#cerrarCompromisos").click(function (e) { 
@@ -256,7 +375,7 @@ $(document).ready(function() {
     if (listCompromisos.length > 0) {
       $("#enviarActa").removeAttr("disabled");
     }
-  });
 
+  });
 });//fin de document ready
 
