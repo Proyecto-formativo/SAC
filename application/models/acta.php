@@ -4,7 +4,7 @@ class acta extends CI_Model {
     function __construct(){
         $this->load->database();
     }
-
+ 
 
     public function NumeroActa($consecutivo){
         $this->db->select('*');

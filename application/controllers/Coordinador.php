@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Coordinador extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','reporte','aprendicesreportados']);
+		$this->load->model(['usuario','acceso','reporte','aprendicesreportados','reportes_admin','area']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 		//$this->load->library('pdf');
@@ -203,6 +203,94 @@ class Coordinador extends CI_Controller {
 		$this->fpdf->Cell(2, -6, 'Titulo de Documento', 0, 0, 'C');
 
 	}
+
+
+	//Aprendices citados por fecha
+	public function reporte_comite_evaluacion() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/aprendices_citados/generar', '', true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	public function rac_params() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			
+			$this->form_validation->set_rules('fecha_inicial', 'Fecha Inicial', 'required');
+			$this->form_validation->set_rules('fecha_final', 'Fecha Final', 'required');
+
+			if ($this->form_validation->run() == false) {
+				$this->reporte_comite_evaluacion();
+			} else {
+				$fecha_inicial = $this->input->post('fecha_inicial');
+				$fecha_final = $this->input->post('fecha_final');
+				$data['reporte_seguimiento_aprendiz'] = $this->reportes_admin->apr_cit_fecha($fecha_inicial, $fecha_final);
+				$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/aprendices_citados/listar', $data, true);
+				$this->Plantilla_Coordinador($dinamica);
+			}
+		} else {
+			show_404();
+		}
+	}
+
+	//Aprendices citados por área
+	public function apr_c_area() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['areas'] = $this->area->mostrarAreas();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/apr_c_area/generar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	public function raca_param() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			
+			$area = $this->input->post('area');
+			$data['aprendices_citados_area'] = $this->reportes_admin->apr_cit_area($area);
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/apr_c_area/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	//Cantidad de citaciones realizadas por instructor
+	public function cant_ci_inst() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['cant_ci_inst'] = $this->reportes_admin->cant_ci_inst();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/cantidad_ri/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	//Cantidad de aprendices citados por centro
+	public function cant_ci_centro() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['cant_ci_centro'] = $this->reportes_admin->cant_ci_centro();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/cantidad_aprc/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	//Aprendices citados a comité
+	public function aprendices_citados() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['aprendices_citados'] = $this->reportes_admin->aprendices_citados();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/aprendiz_citado/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
 
 
 }

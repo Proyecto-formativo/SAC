@@ -17,4 +17,4 @@ class compromisos extends CI_Model{
         $sql = $this->db->get();
         return $sql;
     }
-}
+} 

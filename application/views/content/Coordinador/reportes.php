@@ -31,7 +31,7 @@
 				<td style="background: #4F5155; padding:0px; ">
 					<a href="<?=base_url('Coordinador/verReportes/') . $valor->consecutivo;?>" id="btn-4" class="btn botoncito btn4">
 						<div class="style-botones boton">
-							<button type="button" id="btn-3" class="btn botoncito  fa fa-search-plus" > </button>
+							<button type="button" id="btn-3" class="btn botoncito"> <img src="<?=base_url("assets/images_sac/lupa.png")?>" alt="" width="30"> </button>
 						</div>
 					</a>
 				</td

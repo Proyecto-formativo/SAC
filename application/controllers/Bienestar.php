@@ -5,7 +5,7 @@ class Bienestar extends CI_Controller {
     public $sw = true;
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta','compromisos','recomendacion']);
+		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta','compromisos','recomendacion','reportes_admin']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil','validarActa']);
 	}
@@ -466,7 +466,7 @@ class Bienestar extends CI_Controller {
                 array_push($datos,$valores);
             }
             
-                        
+                         
             $vistaDatosPoraprendiz = $this->load->view("content/Bienestar/vistaDeDatosPorAprendiz",['datos'=>$datos,'reportes'=>$reportes],true);
             
             $dinamica = $this->load->view('content/Bienestar/verActa',['Acta'=>$acta,'compromisos'=>$compromisos,'vistaDatosPoraprendiz'=>$vistaDatosPoraprendiz],true);
@@ -477,41 +477,90 @@ class Bienestar extends CI_Controller {
     }
 
 
-    public function cargarPdf(){
-        $this->load->library('fpdf_gen');
-        $pdf = new FPDF('L','mm','A4');
+    
+    //Aprendices citados por fecha
+    public function reporte_comite_evaluacion() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/aprendices_citados/generar', '', true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
 
-        $san = "hola muncundo erfreh";
-        //$this->Plantilla_Coordinador($dinamica);
-		$this->fpdf->setAuthor('f de mont');
-		$this->fpdf->SetTitle('biblioteca de codei', 0);
-		$this->fpdf->AliasNbPages('(np)');
-		$this->fpdf->SetAutoPageBreak(false);
-		$this->fpdf->SetMargins(8, 8, 8, 8);
-		$this->fpdf->SetFont('Arial', 'I', 35);
+    public function rac_params() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            
+            $this->form_validation->set_rules('fecha_inicial', 'Fecha Inicial', 'required');
+            $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'required');
 
-		$this->fpdf->Ln(4);
-		$this->fpdf->Cell(95, 10, '', 0, 0, 'L');
-		$this->fpdf->SetTextColor(0, 0, 255);
-		$this->fpdf->Cell(2, -6, 'Titulo de Documento', 0, 0, 'C');
+            if ($this->form_validation->run() == false) {
+                $this->reporte_comite_evaluacion();
+            } else {
+                $fecha_inicial = $this->input->post('fecha_inicial');
+                $fecha_final = $this->input->post('fecha_final');
+                $data['reporte_seguimiento_aprendiz'] = $this->reportes_admin->apr_cit_fecha($fecha_inicial, $fecha_final);
+                $dinamica = $this->load->view('content/Bienestar/reportes_admin/aprendices_citados/listar', $data, true);
+                $this->Plantilla_Bienestar($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
 
-		$this->fpdf->Ln(34);
-		$this->fpdf->SetFont('Arial', '', 14);
-		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');
-		$this->fpdf->SetTextColor(65, 65, 255);
-		$this->fpdf->Cell(2, -6, 'teste 2',0, 0, 'C');
+    //Aprendices citados por área
+    public function apr_c_area() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['areas'] = $this->area->mostrarAreas();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/apr_c_area/generar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
 
-		$this->fpdf->Ln(15);//salto de linea (especifica altura del salto)
-		$this->fpdf->SetFont('Arial', 'U', 14);//establece fuente,tipo(I=italica,U=subrayada,""=normal),tamaño
-		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');//imprime Una celda : ancho, alto,texto,borde(numero :0=sin borde; 1= marco /cadena: L,T,R,B), posicion(0:derecha/1:comienzo sig linea/ 2:abajo), align(L,C,R), fondo(true/false),
-		$this->fpdf->SetTextColor(65, 65, 255);
-		$this->fpdf->Cell(2, -6, $san, 0, 0, 'C');
+    public function raca_param() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            
+            $area = $this->input->post('area');
+            $data['aprendices_citados_area'] = $this->reportes_admin->apr_cit_area($area);
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/apr_c_area/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
 
-		$this->fpdf->Ln(15);//salto de linea (especifica altura del salto)
-		$this->fpdf->SetFont('Arial', '', 14);//establece fuente,tipo(I=italica,U=subrayada,""=normal),tamaño
-		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');//imprime Una celda : ancho, alto,texto,borde(numero :0=sin borde; 1= marco /cadena: L,T,R,B), posicion(0:derecha/1:comienzo sig linea/ 2:abajo), align(L,C,R), fondo(true/false),
-		$this->fpdf->SetTextColor(65, 65, 255);
-		$this->fpdf->Cell(2, -6, 'otra lista de texto', 1, 'C');
-		echo $this->fpdf->Output('Bibliotecafpdf.pdf', 'D');
+    //Cantidad de citaciones realizadas por instructor
+    public function cant_ci_inst() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['cant_ci_inst'] = $this->reportes_admin->cant_ci_inst();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/cantidad_ri/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Cantidad de aprendices citados por centro
+    public function cant_ci_centro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['cant_ci_centro'] = $this->reportes_admin->cant_ci_centro();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/cantidad_aprc/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Aprendices citados a comité
+    public function aprendices_citados() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['aprendices_citados'] = $this->reportes_admin->aprendices_citados();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/aprendiz_citado/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
     }
 }

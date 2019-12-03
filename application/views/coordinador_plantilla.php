@@ -2,6 +2,9 @@
     <?=$header?>
 
 <link rel="stylesheet" href="<?=base_url('assets/css/style_plantillas.css')?>">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://unpkg.com/tableexport@5.2.0/dist/css/tableexport.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
 </head>
 <body>
 
@@ -25,44 +28,36 @@
                 </div>
             </a>
 
-            <div class="dbtn-group dropright style-botones botoncito">
-                <button class="btn botoncito dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Reportes Generales
+             <!-- Reportes -->
+             <div class="dbtn-group dropright style-botones botoncito">
+                <button class="btn botoncito dropdown-toggle " type="button" id="dropdownMenuUsuarios" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Reportes
                 </button>
 
-                <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Aprendices Citados Por Ficha Y Programa</button>
+                <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuUsuarios">
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Coordinador/reporte_comite_evaluacion'); ?>" id="btn-2" class="dropdown-item">Aprendices citados a comité por fecha</a>
                     </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Areas Que Realizan Más Citaciones A Comité</button>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Coordinador/apr_c_area'); ?>" id="btn-2" class="dropdown-item">Aprendices citados a comité por área</a>
                     </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité</button>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Coordinador/cant_ci_inst'); ?>" id="btn-2" class="dropdown-item">Cantidad de citaciones a comité realizadas por instructor</a>
                     </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité Por Materia</button>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Coordinador/cant_ci_centro'); ?>" id="btn-2" class="dropdown-item">Cantidad de aprendices citados por centro</a>
                     </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Equipo Ejecutor Por Ficha</button>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Coordinador/aprendices_citados'); ?>" id="btn-2" class="dropdown-item">Aprendices citados a comité</a>
                     </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Instructor Que Realiza Más Citaciones Por Programa De Foración</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Aprendices Citados Por Ficha Y Programa</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité</button>
-                    </div>
-                    <div class="style-botones-dropdown ">
-                        <button type="button" id="btn-2" class="dropdown-item">Total Aprendices Citados A Comité En El Año</button>
-                    </div>
+
                 </div>
             </div>
+            <!-- Fin Reportes -->
 
 
 

@@ -5,11 +5,11 @@ class reporte extends CI_Model{
         $this->load->database();
         date_default_timezone_set('America/Bogota');
     }
-
+ 
 
 
 	public function IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$coordinador,$tipofalta,$tipoCalificcion,$sugerencia){
-		$this->db->query("INSERT INTO tblreporte value(null,current_date() ,' $justificacion ',$instructorReporte,'$evidencia ',' $normasReglamentarias',$coordinador,'$tipofalta',' $tipoCalificcion',$sugerencia, 'No aprobado')");
+		$this->db->query("INSERT INTO tblreporte value(null,current_date() ,' $justificacion ',$instructorReporte,'$evidencia ',' $normasReglamentarias',$coordinador,'$tipofalta',' $tipoCalificcion',$sugerencia, 'No aprobado',null)");
 	}
 
     public function Actualizarficha($numeroficha,$valores){
@@ -160,7 +160,20 @@ class reporte extends CI_Model{
 		}else{
 			return "No se pudo realizar la solicitud";
 		}
-	}
+    }
+    
+
+
+
+    public function agregarActaAreportes($acta,$consecutivo){
+        $this->db->query("UPDATE tblreporte set nro_acta = '$acta' where consecutivo = $consecutivo");
+    }
+
+    public function MostrarReportePorActa($acta){
+        $sql = $this->db->query("SELECT consecutivo,justificacion,normasReglamento,tipofalta,tipoCalificacion from tblreporte where nro_acta = '$acta'");
+        return $sql;
+    }
+	
 
 
 	public function equipoInstructores($ficha){
