@@ -26,9 +26,9 @@
 
 		<br>
 
-	<?php if($reporte[0]->estado=="Aprobado"){echo " <script>document.getElementById('ap').style.display = 'none'</script>"; }?>
+	<?php if($reporte[0]->estado=="Aprobado" or $reporte[0]->estado=="aprobado"){echo " <script>document.getElementById('ap').style.display = 'none'</script>"; }?>
 
-		<table class="table table-bordered table-dark">
+		<table class="table table-bordered table-dark" style="width: 95%; margin: auto; ">
 
 			<tbody>
 			<tr>
