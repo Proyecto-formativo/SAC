@@ -1,4 +1,5 @@
 <div class="container">
+  <h2 class="text-center">Niveles de formación</h2>
   <a href="<?= base_url('Administrador/FrmAgregarNivel'); ?>" class="btn bg-sena">Agregar</a>
 
   <table id="nivel" class="table table-striped table-bordered mt-3" style="width: 100%;">

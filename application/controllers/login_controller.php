@@ -15,7 +15,6 @@ class login_controller extends CI_Controller {
 		}else{
 			$this->plantillaLogin();
 		} 
-
 	}
 	/**
 	 * para validar el ingreso del usuario al sistema
@@ -116,12 +115,16 @@ class login_controller extends CI_Controller {
 	}
 
 	/**
+	 * para cargar la vista de recuperar contraseña
+	 */
+
+	/**
 	 * sel uso de esta funcion es para la reutilizacion del codigo y mostrar la vista de
 	 * login 
 	 */
 	public function plantillaLogin($datos = null){
 		$this->load->view('extra/header');
-		$this->load->view('login',$datos);
+		$this->load->view('login', $datos);
 		$this->load->view('extra/footer');
 	}
 

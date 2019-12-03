@@ -4,13 +4,13 @@
   <form action="<?= base_url('Administrador/agregarMunicipio'); ?>" method="POST">
     <div class="form-group">
       <label for="">Codigo:</label>
-      <input type="text" class="form-control" name="codigo" value="<?= set_value('codigo'); ?>">
+      <input type="text" class="form-control" name="codigo" value="<?= set_value('codigo'); ?>" placeholder="Codigo">
       <?= form_error('codigo', '<p class="text-danger">', '</p>'); ?>
     </div>
 
     <div class="form-group">
       <label for="">Nombre:</label>
-      <input type="text" class="form-control" name="nombre" value="<?= set_value('nombre'); ?>">
+      <input type="text" class="form-control" name="nombre" value="<?= set_value('nombre'); ?>" placeholder="Nombre">
       <?= form_error('nombre', '<p class="text-danger">', '</p>'); ?>
     </div>
 

@@ -13,7 +13,7 @@
       <input type="text" name="recomendacion" class="form-control" value="<?= $recomendacion->nombre; ?>">
       <?= form_error('recomendacion', '<p class="text-danger mt-2">', '</p>'); ?>
     </div>
-    <input type="submit" name="editar" class="btn bg-sena" value="Editar">
+    <input type="submit" name="editar" class="btn bg-sena" value="Guardar cambios">
   </form>
 </div>
 

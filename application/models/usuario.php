@@ -44,6 +44,11 @@ class usuario extends CI_Model{
         return $sql;
     }
 
+    public function getAprendices() {
+        $sql = $this->db->query("SELECT docID AS documento, CONCAT(nombres, ' ', apellidos) AS instructor FROM tblusuario WHERE perfil = 4 ORDER BY CONCAT(nombres, ' ', apellidos)");
+        return $sql;
+    }
+
     //Mostrar Usuarios que tengan el perfil de Administrador
     public function mostrarAdministradores() {
         $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil, a.docIDUsuario AS docidusuario FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo LEFT JOIN tblacceso AS a ON a.docIDUsuario = u.docID WHERE u.perfil = 5 ORDER BY p.nombre");
@@ -52,7 +57,7 @@ class usuario extends CI_Model{
 
     //Mostrar Usuarios que tengan el perfil de Aprendiz
     public function mostrarAprendices() {
-        $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo WHERE u.perfil = 4 ORDER BY p.nombre");
+        $sql = $this->db->query("SELECT DISTINCT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo WHERE u.perfil = 4 ORDER BY p.nombre");
         return $sql;
     }
 
@@ -61,11 +66,13 @@ class usuario extends CI_Model{
         $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil, a.docIDUsuario AS docidusuario FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo LEFT JOIN tblacceso AS a ON a.docIDUsuario = u.docID WHERE u.perfil = 2 ORDER BY p.nombre");
         return $sql;
     }
+
     //Mostrar Usuarios que tengan el perfil de Instructor
     public function mostrarInstructores() {
-        $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil, a.docIDUsuario AS docidusuario FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo LEFT JOIN tblacceso AS a ON a.docIDUsuario = u.docID WHERE u.perfil = 1 ORDER BY p.nombre");
+        $sql = $this->db->query("SELECT DISTINCT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil, a.docIDUsuario AS docidusuario FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo LEFT JOIN tblacceso AS a ON a.docIDUsuario = u.docID WHERE u.perfil = 1 ORDER BY p.nombre");
         return $sql;
     }
+
     //Mostrar Usuarios que tengan el perfil de Bienestar
     public function mostrarBienestar() {
         $sql = $this->db->query("SELECT u.docId AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS usuario, u.correoPersonal AS correopersonal, u.correoCorporativo AS correocorporativo, u.telefonoMovil AS telmovil, u.telefonoFijo AS telfijo, p.nombre AS perfil, a.docIDUsuario AS docidusuario FROM tblusuario AS u INNER JOIN tblperfil AS p ON u.perfil = p.codigo LEFT JOIN tblacceso AS a ON a.docIDUsuario = u.docID WHERE u.perfil = 3 ORDER BY p.nombre");
@@ -145,7 +152,7 @@ class usuario extends CI_Model{
         return $sql;
     }
 
-    //Editar Usuario Coordinador, Instructor, Bienestar, Aprendiz
+    //Editar Usuario Coordinador, Bienestar
     public function editarUsuarios($datos) {
         $this->db->set('nombres', $datos['nombres']);
         $this->db->set('apellidos', $datos['apellidos']);
@@ -157,6 +164,28 @@ class usuario extends CI_Model{
         $this->db->where('docID', $datos['docid']);
         $sql = $this->db->update('tblusuario');
         return $sql;
+    }
+
+    //Editar Usuario Instructor
+    public function editarInstructor($datos) {
+        $this->db->set('nombres', $datos['nombres']);
+        $this->db->set('apellidos', $datos['apellidos']);
+        $this->db->set('correoCorporativo', $datos['correo_corporativo']);
+        $this->db->set('correoPersonal', $datos['correo_personal']);
+        $this->db->set('telefonoMovil', $datos['tel_movil']);
+        $this->db->set('telefonoFijo', $datos['tel_fijo']);
+        $this->db->set('perfil', $datos['perfil']);
+        $this->db->where('docID', $datos['docid']);
+        $sql = $this->db->update('tblusuario');
+
+        if ($sql) {
+            $this->db->set('estado', $datos['estado']);
+            $this->db->where('docIDInstructor', $datos['docid']);
+            $query = $this->db->update('tblequipoinstructor');
+            return $query;
+        }
+
+        return false;
     }
 
     //Eliminación de Usuarios Independiente del Perfil
@@ -194,5 +223,15 @@ class usuario extends CI_Model{
     public function darAcceso($documento, $password) {
         $sql = $this->db->insert('tblacceso', ['docIDUsuario' => $documento, 'clave' => $password]);
         return $sql;
+    }
+
+    //Auto Complete
+    public function autoCompleteInstructores($valor) {
+        $this->db->where('perfil', 1);
+        $this->db->select('docid');
+        $this->db->from('tblusuario');
+        $this->db->like("docid", $valor);
+        $resultados = $this->db->get();
+        return $resultados->result_array();
     }
 }

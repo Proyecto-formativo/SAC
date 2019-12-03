@@ -67,14 +67,14 @@
 
     <div class="row">
       <div class="col-6">
-        <label for="">Contraseña de Accesso Temporal:</label>
-        <input type="password" name="password_one" class="form-control" placeholder="Contraseña Temporal" value="<?= set_value('password_one'); ?>">
+        <label for="">Contraseña de accesso:</label>
+        <input type="password" name="password_one" class="form-control" placeholder="Contraseña" value="<?= set_value('password_one'); ?>">
         <?= form_error('password_one', '<p class="text-danger">', '</p>'); ?>
       </div>
 
       <div class="col-6">
         <label for="">Confirmar Contraseña:</label>
-        <input type="password" name="password_two" class="form-control" placeholder="Contraseña Temporal" value="<?= set_value('password_two'); ?>">
+        <input type="password" name="password_two" class="form-control" placeholder="Confirmar contraseña" value="<?= set_value('password_two'); ?>">
         <?= form_error('password_two', '<p class="text-danger">', '</p>'); ?>
       </div>
     </div>

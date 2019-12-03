@@ -11,7 +11,7 @@
       <input type="text" class="form-control" name="sugerencia" placeholder="Sugerencia..." value="<?= $sugerencia->nombre; ?>">
       <?php echo form_error('sugerencia', '<p class="text-danger mt-2">', '</p>'); ?>
     </div>
-    <input type="submit" name="editar_sugerencia" class="btn bg-sena" value="Editar">
+    <input type="submit" name="editar_sugerencia" class="btn bg-sena" value="Guardar cambios">
   </form>
 </div>
 

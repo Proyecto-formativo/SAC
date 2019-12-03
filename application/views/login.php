@@ -24,7 +24,7 @@
         
         <button type="submit" class="btn btn-block btn-login">Ingresar</button>
         <div class="text-center mt-2">
-            <a href="#" >¿Has olvidado tu contraseña?</a>
+            <a href="<?= base_url('login_controller/recuperar_clave'); ?>" >¿Has olvidado tu contraseña?</a>
         </div>
     </form>
 </div>

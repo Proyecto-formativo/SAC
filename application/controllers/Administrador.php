@@ -5,7 +5,7 @@ class Administrador extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         //Carga de los Modelos Requeridos en el perfil de Administrador
-        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil']);
+        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores', 'aprendicesficha', 'reportes_admin']);
         
         //Carga de la libreria para la validación de formularios
         $this->load->library(['form_validation']);
@@ -3475,7 +3475,7 @@ class Administrador extends CI_Controller {
                     'perfil' => $this->input->post('perfil')
                 );
 
-                $resultado = $this->usuario->editarUsuarios($datos);
+                $resultado = $this->usuario->editarUsuario($datos);
 
                 if ($resultado) {
                     $data['instructores'] = $this->usuario->mostrarInstructores();
@@ -4174,16 +4174,265 @@ class Administrador extends CI_Controller {
     //Modulo Equipo de Instructores
     public function equipoinstructores() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['equipoinstructores'] = $this->equipoinstructores->mostrarEquipoInstructores();
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarEquipoInstructores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $nroficha = $this->input->post('ficha');
+            $documentos = $this->input->post('documento');
+            $estado = $this->input->post('estado');
+            
+            $resultado = $this->equipoinstructores->agregarEquipoInstructores($nroficha, $documentos, $estado);
+
+            if ($resultado) {
+                $data['fichas'] = $this->ficha->listarFichas();
+                $data['instructores'] = $this->usuario->getInstructores();
+                $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Equipo de Instructores añadidos a la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['fichas'] = $this->ficha->listarFichas();
+                $data['instructores'] = $this->usuario->getInstructores();
+                $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Los registros ya existen'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarInstructorFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $ficha = $this->input->post('ficha');
+
+            $resultado = $this->equipoinstructores->eliminarInstructorFicha($documento, $ficha);
+
+            if ($resultado) {
+                $this->FrmEditarEquipoInstructores($ficha);
+            } else {
+                $data['equipoinstructores'] = $this->equipoinstructores->getEquipoInstructores($nroficha);
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido eliminar al instructor de la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/editar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Equipo Instructores
+    public function FrmAgregarEquipoInstructores() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['fichas'] = $this->ficha->listarFichas();
             $data['instructores'] = $this->usuario->getInstructores();
-            $data['estados_instructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
+            $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
             $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/agregar', $data,true);
             $this->Plantilla_Administrador($dinamica);
         } else {
             show_404();
         }
     }
+
+    public function FrmEditarEquipoInstructores($nroficha) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['equipoinstructores'] = $this->equipoinstructores->getEquipoInstructores($nroficha);
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
     //Fin Modulo Equipo de Instructores
+    /*
+    ==============================================================================================================
+    */
+
+    //Modulo Aprendices Ficha
+    public function aprendicesficha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendicesficha'] = $this->aprendicesficha->mostrarAprendicesFicha();
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarAprendicesFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $nroficha = $this->input->post('ficha');
+            $documentos = $this->input->post('documento');
+            $estado = $this->input->post('estado');
+
+            $resultado = $this->aprendicesficha->agregarAprendicesFicha($nroficha, $documentos, $estado);
+
+            if ($resultado) {
+                $data['aprendicesficha'] = $this->aprendicesficha->mostrarAprendicesFicha();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Aprendices añadidos a la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            } else {
+                $data['fichas'] = $this->ficha->listarFichas();
+                $data['aprendices'] = $this->usuario->getAprendices();
+                $data['estadoaprendices'] = $this->estadoaprendiz->mostrarEstadoAprendices();
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Los registros ya existen'
+                })";
+
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/agregar', $data,true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarAprendicesFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $documento = $this->input->post('documento');
+            $ficha = $this->input->post('ficha');
+
+            $resultado = $this->aprendicesficha->eliminarAprendizFicha($documento, $ficha);
+
+            if ($resultado) {
+                $this->FrmEditarAprendicesFicha($ficha);
+            } else {
+                $data['aprendicesficha'] = $this->aprendicesficha->getAprendicesFicha($ficha);
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido eliminar al aprendiz de la ficha'
+                })";
+                $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/editar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de Vistas Formularios Aprendices Ficha
+    public function FrmAgregarAprendicesFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['fichas'] = $this->ficha->listarFichas();
+            $data['aprendices'] = $this->usuario->getAprendices();
+            $data['estadoaprendices'] = $this->estadoaprendiz->mostrarEstadoAprendices();
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/agregar', $data,true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarAprendicesFicha($nroficha) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendicesficha'] = $this->aprendicesficha->getAprendicesFicha($nroficha);
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/editar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+    //Fin Modulo Aprendices Ficha
+
     /*
     ==============================================================================================================
     */
@@ -4587,7 +4836,7 @@ class Administrador extends CI_Controller {
         }
     }
 
-     public function darAccesoBienestar() {
+    public function darAccesoBienestar() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             
             $this->form_validation->set_rules('password_one', 'Contraseña', 'trim|required|max_length[15]');
@@ -4670,6 +4919,125 @@ class Administrador extends CI_Controller {
             show_404();
         }
     }
+
     /*==== Fin Control Administracion Usuarios ==== */
 
+    /* ========================================================================================================*/
+
+    /*==== Control Administracion Reportes ==== */
+
+    //Aprendices citados por fecha
+    public function reporte_comite_evaluacion() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/aprendices_citados/generar', '', true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function rac_params() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->form_validation->set_rules('fecha_inicial', 'Fecha Inicial', 'required');
+            $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'required');
+
+            if ($this->form_validation->run() == false) {
+                $this->reporte_comite_evaluacion();
+            } else {
+                $fecha_inicial = $this->input->post('fecha_inicial');
+                $fecha_final = $this->input->post('fecha_final');
+                $data['reporte_seguimiento_aprendiz'] = $this->reportes_admin->apr_cit_fecha($fecha_inicial, $fecha_final);
+                $dinamica = $this->load->view('content/Administrador/reportes_admin/aprendices_citados/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Aprendices citados por área
+    public function apr_c_area() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['areas'] = $this->area->mostrarAreas();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/apr_c_area/generar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function raca_param() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $area = $this->input->post('area');
+            $data['aprendices_citados_area'] = $this->reportes_admin->apr_cit_area($area);
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/apr_c_area/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Cantidad de citaciones realizadas por instructor
+    public function cant_ci_inst() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['cant_ci_inst'] = $this->reportes_admin->cant_ci_inst();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/cantidad_ri/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Cantidad de aprendices citados por centro
+    public function cant_ci_centro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['cant_ci_centro'] = $this->reportes_admin->cant_ci_centro();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/cantidad_aprc/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Aprendices citados a comité
+    public function aprendices_citados() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['aprendices_citados'] = $this->reportes_admin->aprendices_citados();
+            $dinamica = $this->load->view('content/Administrador/reportes_admin/aprendiz_citado/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    /* ========================================================================================================*/
+
+    //Backup Base de Datos
+    public function backup_database() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->load->dbutil();
+
+            $prefs = array(
+                'format' => 'zip',
+                'filename' => 'backupSAC.sql'
+            );
+
+            $backup = $this->dbutil->backup($prefs);
+            $this->load->helper('file');
+            write_file('C:/Usuarios/usuario/Documentos', $backup);
+
+            date_default_timezone_set('America/bogota');
+            $backup_name = 'Backup_proyectoformativo_' . date('Y-m-d h:i:sa') . '.sql';
+
+            $this->load->helper('download');
+            force_download($backup_name, $backup);
+
+        } else {
+            show_404();
+        }
+    }
+    /*==== Fin Control Administracion Reportes ==== */
 }

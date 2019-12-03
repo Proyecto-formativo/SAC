@@ -1,7 +1,8 @@
 <div class="container">
-  <a href="<?= base_url('Administrador/FrmAgregarArea'); ?>" class="btn bg-sena">Agregar</a>
+  <h2 class="text-center">Áreas</h2>
+  <a href="<?= base_url('Administrador/FrmAgregarArea'); ?>" class="btn bg-sena mb-3">Agregar</a>
 
-  <table id="area" class="table table-striped table-bordered mt-3" style="width: 100%;">
+  <table id="area" class="table table-striped table-bordered" style="width: 100%;">
     <thead>
       <tr>
         <th>Codigo</th>
