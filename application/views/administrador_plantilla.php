@@ -159,6 +159,14 @@
             </div>
             <!-- Fin Reportes -->
 
+            <!-- Backup Base de datos -->
+
+            <a href="<?=base_url('Administrador/backup_database')?>" id="btn-4" class="btn botoncito btn4">
+                <div class="style-botones boton">
+                    <button type="button" id="btn-3" class="btn botoncito">Backup base de datos</button>
+                </div>
+            </a>
+
             <a href="<?=base_url('Administrador/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">
                     <button type="button" id="btn-3" class="btn botoncito">Configuracion  </button><i class="fas fa-cog"></i>

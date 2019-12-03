@@ -4993,5 +4993,33 @@ class Administrador extends CI_Controller {
             show_404();
         }
     }
+
+    /* ========================================================================================================*/
+
+    //Backup Base de Datos
+    public function backup_database() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $this->load->dbutil();
+
+            $prefs = array(
+                'format' => 'zip',
+                'filename' => 'backupSAC.sql'
+            );
+
+            $backup = $this->dbutil->backup($prefs);
+            $this->load->helper('file');
+            write_file('C:/Usuarios/usuario/Documentos', $backup);
+
+            date_default_timezone_set('America/bogota');
+            $backup_name = 'Backup_proyectoformativo_' . date('Y-m-d h:i:sa') . '.sql';
+
+            $this->load->helper('download');
+            force_download($backup_name, $backup);
+
+        } else {
+            show_404();
+        }
+    }
     /*==== Fin Control Administracion Reportes ==== */
 }
