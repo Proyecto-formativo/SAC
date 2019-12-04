@@ -167,7 +167,7 @@ class Bienestar extends CI_Controller {
                 $municipio = $this->municipio->mostrarMunicipios();
 
                 /**
-                 * la sugerencia es para los descargos del aprendiz
+                 * las  recomendaciones es para los descargos del aprendiz
                  */
                 $recomendaciones = $this->recomendacion->mostrarRecomendaciones();
 
