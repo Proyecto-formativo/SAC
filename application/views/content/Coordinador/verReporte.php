@@ -99,7 +99,7 @@
 
 			<tr>
 				<th class="bg-sena text-white text-center" scope="col">Tipo de falta:</th>
-				<td class="bg-light text-center text-black" colspan="2"><?=$reporte[0]->tipoFalta;?></td>
+				<td class="bg-light text-center text-black" colspan="3"><?=$reporte[0]->tipoFalta;?></td>
 				<th class="bg-sena text-white text-center" scope="col">Calificación provisional de la falta</th>
 				<td class="bg-light text-center" colspan="2"><?=$reporte[0]->tipoCalificacion;?></td>
 			</tr>
@@ -123,6 +123,7 @@
 				<td class="bg-sena text-white text-center" scope="col">Documento</td>
 				<td class="bg-sena text-white text-center" colspan="3">Correos Aprendiz</td>
 				<td class="bg-sena text-white text-center" scope="col">Num. Contacto</td>
+				<td class="bg-sena text-white text-center" scope="col">Citar</td>
 			</tr>
 
 			<tr>
@@ -134,22 +135,17 @@
 					echo  "<td class='bg-light text-center text-black' colspan='3'>". $ver[$i]->correoPersonal." - ".$ver[$i]->correoCorporativo."</td>";
 					if( $ver[$i]->telefonoFijo>0){echo $fijo=$ver[$i]->telefonoFijo;}else{$fijo="";}
 					echo "<td class='bg-light text-center text-black'>".  $ver[$i]->telefonoMovil."  ".$fijo ."</td>";
-					echo "	</tr>";
+					echo "<td class='bg-light text-center text-black'>";?>
+
+		<button  onclick="citarAprendiz(<?=$ver[$i]->docID;?>)" type="button" class="btn btn-warning"   id="citar">Citar A Comite</button>
+					</td>
+					<?php "	</tr>";
 
 					echo "<tr>";
-					// echo "<td>". $ver[$i]->nombres."</td>";
-					// echo  "<td>". $ver[$i]->apellidos."</td>";
-					// echo  "<td>". $ver[$i]->docID."</td>";
-					// echo  "<td>". $ver[$i]->correoPersonal."</td>";
-					// echo  "<td>". $ver[$i]->correoCorporativo."</td>";
-					// echo "<td>".  $ver[$i]->telefonoMovil."</td>";
-					// if( $ver[$i]->telefonoFijo>0){echo $fijo=$ver[$i]->telefonoFijo;}else{$fijo="";}
-					// echo  "<td>".$fijo ."</td>";
-					// echo "	</tr>";
 
 				}?>
 
-			</tr>
+			</tr>'
 
 
 
@@ -169,10 +165,81 @@
 
 	</div>
 	<input type="text" id="evidentia" value="<?=$reporte[0]->evidencia;?>" readonly="readonly" style="display:none " >
-	<p align="center"><button id="ver" class="btn  btn-xs bg-sena" onclick="ver()">Ver Evidencias!</button>
+	<p align="center"><button id="ver" class="btn  btn-xs bg-sena mt-5" onclick="ver()">Ver Evidencias!</button>
 
-	<a onclick="ocultar()" id="ocultar" style="display:none "><button  class="btn  btn-xs bg-sena">Ocultar Evidencias!</button  ></a></p>
+	<a onclick="ocultar()" id="ocultar" style="display:none"><button  class="btn  btn-xs bg-sena mt-3">Ocultar Evidencias!</button  ></a></p>
+
+
+
+	<div class="modal" style="display:none" id="modal" role="document">
+		<div class="modal-content" id="modalContent" style="width: 82.8%; margin-left: 16.5%;  height:89%; margin-top: 5.1%; overflow: scroll;">
+			<div class="modal-header">
+				<h5 class="modal-title"> </h5>
+
+			</div>
+
+
+			<div class="modal-body">
+
+				<form style=" background:#249762 ; opacity: 0.8; text-align: center; width: 90%; margin: auto; color: #fff" action="<?=base_url('Coordinador/enviar_correo')?>" method="post">
+					<div class="form-group" style="display: none">
+					<label for="exampleFormControlInput1">Email address</label>
+					<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+				</div>
+					<div class="form-group">
+						<label for="exampleFormControlSelect2">De:</label>
+						<input type="email" class="form-control" value="<?=$cordi[0]->cordi; ?>" id="exampleFormControlInput1" placeholder="Destino">
+					</div>
+				<div class="form-group">
+					<label for="exampleFormControlSelect2">Para: </label>
+					<input type="email" class="form-control" name="para" id="para" placeholder="Destino">
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlSelect2">Asunto:</label>
+					<input type="text" class="form-control" value="<?=$asunto[0]; ?>" id="exampleFormControlInput1" placeholder="Asunto">
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlTextarea1">Mensaje:</label>
+					<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Mensaje">
+<?=$asunto[1],$reporte[0]->tipoFalta.' ' ; ?><?=$asunto[2]."\n\n"; ?>
+HECHOS:<?=$reporte[0]->justificacion."\n\n"; echo $reporte[0]->normasReglamento."\n\n";?>
+
+<?=$asunto[3],$asunto[4],$reporte[0]->sede; ?>
+
+					</textarea>
+				</div>
+				<div class="form-group">
+					<input type="Submit" onclick="enviarCorreo()"  class="form-control btn-info bg-sena" id="exampleFormControlInput1" value="Enviar"    >
+				</div>
+
+				</form>
+
+			<div class="modal-footer">
+				<button onclick="ocultarModal()" type="button" class="btn btn-secondary">Cerrar</button>
+				<!---<button onclick="enviarCorreo()" type="button" class="btn btn-primary">Enviar correo</button>-->
+
+
+
+			</div>
+		</div>
+	</div>
+
+
+
 </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script >
     var archivoInput = document.getElementById('evidentia');
@@ -205,6 +272,73 @@ function ocultar() {
         //code
 		alert("se actualiza esta pagina");
         return true;
+    }
+    function citarAprendiz(a) {
+        document.getElementById('modal').style.display = 'block';
+        //rt (a+"--"+b);
+
+        $.ajax({
+            type:'POST',
+            data: 'id='+a,
+            url:"../correo_aprendiz",
+            success:function(r){
+               correo=r;
+
+                var s13=document.getElementById("para");
+                s13.value=correo;
+            }
+        });
+        $.ajax({
+            type:'POST',
+            data: 'id='+a,
+            url:"../nombre_aprendiz",
+            success:function(r){
+                var s13=document.getElementById("nombrecito");
+                s13.value=r;
+                alert(r);
+            }
+        });
+
+    }
+    function ocultarModal() {
+        document.getElementById('modal').style.display = 'none';
+
+
+
+    }
+    function enviarCorreo() {
+        var nombre=document.getElementsByName("para")[0].value;
+       //alert(nombre);
+        $.ajax({
+            type:'POST',
+            data: {'mail': nombre, 'nom': nombre },
+            url:"../mail",
+            success:function(r){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: '' + r
+                })
+                var s13=document.getElementById("para");
+                s13.value=correo;
+            }
+        });
+
+
+
+		ocultarModal();
+
     }
 
 </script>

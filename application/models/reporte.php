@@ -177,4 +177,9 @@ as f on f.programa=p.codigo where f.nroFicha=$ficha");
 		return $sql->result_object();
 	}
 
+
+	public function ajax_correo($id){
+		$sql=$this->db->query("SELECT concat(nombres,' ', apellidos)as nombre, correoCorporativo FROM tblusuario where docID=$id");
+		return $sql->result_object();
+	}
 }

@@ -163,8 +163,16 @@ class Coordinador extends CI_Controller {
 		$cordi=$this->reporte->nombreCordi($ficha);
 		$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);
 		$noms=$this->aprendicesreportados->getFilasAp($consec);
+
+		$asunto[]=" Citación a descargos al comité de evaluación y seguimineto";
+		$asunto[]="Una de las principales labores de los instructores y la coordinación académica, es velar por el desarrollo adecuado de su proceso formativo. Teniendo en cuenta su desempeño ";
+		$asunto[]="y lo establecido en el manual del aprendiz.";
+		$asunto[]="Lo invitamos a presentar descargos ante el comité de evaluación y seguimiento a realizarce el próximo (fecha Comitè) ";
+		$asunto[]="en el Sena sede ";
+
+
 		$dinamica[] = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
-			'filas'=>$noms,'ver'=>$ar,'equipo'=>$equipo,'cordi'=>$cordi],true);
+			'filas'=>$noms,'ver'=>$ar,'equipo'=>$equipo,'cordi'=>$cordi,'asunto'=>$asunto],true);
 		$this->Plantilla_Coordinador($dinamica);
 	}
 }
@@ -180,7 +188,7 @@ class Coordinador extends CI_Controller {
 		}
 	}
 
-	public function pdf()
+	/*public function pdf()
 	{
 
         $otra="otro texto";
@@ -224,6 +232,48 @@ class Coordinador extends CI_Controller {
 
 
 		echo $this->fpdf->Output('Bibliotecafpdf.pdf', 'D');
+	}*/
+
+	public function correo_aprendiz(){
+		$id=$_POST['id'];
+		$correo=$this->reporte->ajax_correo($id);
+		$email=$correo[0]->correoCorporativo;
+		echo $email;
+	}
+	public function nombre_aprendiz(){
+		$id=$_POST['id'];
+		$nombre=$this->reporte->ajax_correo($id);
+		$nombre=$nombre[0]->nombre;
+		echo $nombre;
+	}
+
+
+
+	public function mail(){
+		$email=$_POST['mail'];
+
+		$email_to = $email;
+		$email_subject = "contacto de venta: Nuevo cliente";
+		$email_message = "detalles del formulario de contacto:\n\n";
+		$email_message .= "nombre: sergio torres\n";
+		$email_message .= "apellido: sergio torres\n";
+		$email_message .= "E-mail: fdmontoya0@misena.edu.co \n";
+		$email_message .= "telefono: sergio torres\n";
+		$email_message .= "comentarios: comentarios del mensaje x \n\n";
+
+		$mail = "frayjes10@gmail.com";
+		$header = "From: " . $mail . "\r\n";
+		$header .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+		$header .= "Mime-Version: 1.0  \r\n";
+		$header .= "Content-Type: text/plain";
+
+		if (mail('$email_to', $email_subject, $email_message, $header)) {
+			echo "enviado correctamente";
+		} else {
+			echo "no se pudo enviar el correo";
+		}
+
+
 	}
 
 	}

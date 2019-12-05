@@ -22,7 +22,7 @@
         <div class="style-navegacion">
             <a href="<?=base_url('Coordinador/reportes')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
-                    <button type="button" id="btn-1" class="btn botoncito">Reportes a Comite </button> <i class="far fa-bell"></i>
+                    <button type="button" id="btn-1" class="btn botoncito">Citación a comité </button> <i class="far fa-bell"></i>
                 </div>
             </a>
 
