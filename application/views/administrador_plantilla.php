@@ -163,7 +163,7 @@
 
             <a href="<?=base_url('Administrador/backup_database')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">
-                    <button type="button" id="btn-3" class="btn botoncito">Backup base de datos</button>
+                    <button type="button" id="btn-3" class="btn botoncito">Backup</button>
                 </div>
             </a>
 

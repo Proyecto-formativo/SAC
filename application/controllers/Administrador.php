@@ -5021,7 +5021,7 @@ class Administrador extends CI_Controller {
             $this->load->dbutil();
 
             $prefs = array(
-                'format' => 'zip',
+                'format' => 'sql',
                 'filename' => 'backupSAC.sql'
             );
 
