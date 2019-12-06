@@ -1,16 +1,16 @@
-
+<div class="container">
 <?php error_reporting(E_ALL ^ E_NOTICE);?>
 
-<table id="vert" border="1" style="text-align: center; width: 99%; margin: auto; margin-top:30px">
+<table id="example" class="table table-striped table-bordered" style="width:100%">
 	
-	<thead class="thead-dark mb-5" style="width: 200%;">
+	<thead>
 		<tr >
-			<th class="bg-sena"> </th>
-			<th class="bg-sena"> FICHA </th>
-			<th class="bg-sena">PROGRAMA DE FORMACION </th>
-			<th class="bg-sena"> FECHA </th>
+			<th> </th>
+			<th> Ficha </th>
+			<th>Programa de formacion </th>
+			<th> FECHA </th>
 			<?php if($caso=="todos"){
-				echo '<th class="bg-sena"> ESTADO </th>';
+				echo '<th class="bg-sena"> Estado </th>';
 			} ?>
 
 			<th class="bg-sena"> VER</th>
@@ -39,7 +39,7 @@
 		<?php endforeach?>
 	</tbody>
 </table>
-
+</div>
 
 
 

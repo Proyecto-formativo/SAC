@@ -13,7 +13,7 @@ $sql = $this->db->insert('tblaprendicesreportados',['consReporte'=>$consecutivo,
 
 
 	public function mostrarAprendicesReporte($consec){
-		$sql = $this->db->query("SELECT a.consecutivoAprendizReporte, u.docID, u.nombres,u.apellidos,u.correoPersonal,u.correoCorporativo,u.telefonoMovil,u.telefonoFijo 
+		$sql = $this->db->query("SELECT a.citacion,a.consecutivoAprendizReporte, u.docID, u.nombres,u.apellidos,u.correoPersonal,u.correoCorporativo,u.telefonoMovil,u.telefonoFijo 
 FROM tblusuario as u INNER JOIN tblaprendicesreportados as a 
 ON u.docID=a.docIDAprendiz INNER JOIN tblreporte as r 
 ON r.consecutivo=a.consReporte WHERE r.consecutivo=$consec");
@@ -32,5 +32,14 @@ ON r.consecutivo=a.consReporte WHERE r.consecutivo=$consec");
 
 	}
 
+	public  function citarAprendiz($consec){
+		$query=$this->db->query("UPDATE `tblaprendicesreportados` SET `citacion` = '2' WHERE `consecutivoAprendizReporte =$consec ");
+
+		if ($query){
+			return "Aprobacion Exitosa ";
+		}else{
+			return "No se pudo realizar la solicitud";
+		}
+	}
 }
 

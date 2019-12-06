@@ -50,4 +50,10 @@ class usuario extends CI_Model{
     //Mostrar Usuarios que tengan el perfil de Coordinador
     //Mostrar Usuarios que tengan el perfil de Instructor
     //Mostrar Usuarios que tengan el perfil de Aprendiz
+
+	//Mostrar nombre y correo de aprendices reportados a comité, lo llama el perfil coordinador
+	public function nombreycorreoAprendiz($id){
+		$sql=$this->db->query("SELECT concat(nombres,' ', apellidos)as nombre, correoCorporativo FROM tblusuario where docID=$id");
+		return $sql->result_object();
+	}
 }

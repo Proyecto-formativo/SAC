@@ -113,6 +113,7 @@ class Coordinador extends CI_Controller {
 		}
 	}
 
+	//LISTA TODOS LOS REPORTES
 	public function reportes(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$id=$this->session->userdata("documento");
@@ -126,6 +127,8 @@ class Coordinador extends CI_Controller {
 			show_404();
 		}
 	}
+
+	//lista reportes en los que se ha citado al menos un aprendiz
 	public function aprobados(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$id=$this->session->userdata("documento");
@@ -139,6 +142,8 @@ class Coordinador extends CI_Controller {
 			show_404();
 		}
 	}
+
+	//muestra los reeportes que no se han aprobado, no ha sido citado ninguno de los aprendices en el reporte
 	public function cancelados(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$id=$this->session->userdata("documento");
@@ -153,6 +158,7 @@ class Coordinador extends CI_Controller {
 		}
 	}
 
+	//recoge datos necesarios en la vista verReporte de coordinador
 	public function verReportes($consec){
 	if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
 		$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
@@ -164,85 +170,39 @@ class Coordinador extends CI_Controller {
 		$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);
 		$noms=$this->aprendicesreportados->getFilasAp($consec);
 
-		$asunto[]=" Citación a descargos al comité de evaluación y seguimineto";
+		$asunto[]=" Citación a descargos al comité de evaluación y seguimiento";
 		$asunto[]="Una de las principales labores de los instructores y la coordinación académica, es velar por el desarrollo adecuado de su proceso formativo. Teniendo en cuenta su desempeño ";
 		$asunto[]="y lo establecido en el manual del aprendiz.";
-		$asunto[]="Lo invitamos a presentar descargos ante el comité de evaluación y seguimiento a realizarce el próximo (fecha Comitè) ";
+		$asunto[]="Lo invitamos a presentar descargos ante el comité de evaluación y seguimiento a realizarse el próximo (fecha Comité) ";
 		$asunto[]="en el Sena sede ";
-
-
 		$dinamica[] = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
 			'filas'=>$noms,'ver'=>$ar,'equipo'=>$equipo,'cordi'=>$cordi,'asunto'=>$asunto],true);
 		$this->Plantilla_Coordinador($dinamica);
 	}
 }
 
-
-	public function aprobarReporte($consec){
+    // para aprobar reportes desde el boton aprobarreportes color anaranjando, se encuentra comentado tambien
+	/*public function aprobarReporte($consec){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
 			//$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
-			//$consec =  $_POST["id"];
 			$aprobar=$this->reporte->aprobarRep($consec);
 			$dinamica[] = $this->load->view('content/Coordinador/reporteAprobado',['reporte'=>$aprobar,'n'=>$consec],true);
 			$this->Plantilla_Coordinador($dinamica);
 		}
-	}
-
-	/*public function pdf()
-	{
-
-        $otra="otro texto";
-		$san="prueba pdf";
-
-		$this->load->library('fpdf_gen');
-		$pdf = new FPDF("L", "mm", "A4");
-
-		$dinamica[] = $this->load->view('content/Coordinador/otro', [], true);
-		$this->Plantilla_Coordinador($dinamica);
-		$this->fpdf->setAuthor('f de mont');
-		$this->fpdf->SetTitle('biblioteca de codei', 0);
-		$this->fpdf->AliasNbPages('(np)');
-		$this->fpdf->SetAutoPageBreak(false);
-		$this->fpdf->SetMargins(8, 8, 8, 8);
-		$this->fpdf->SetFont('Arial', 'I', 35);
-
-		$this->fpdf->Ln(4);
-		$this->fpdf->Cell(95, 10, '', 0, 0, 'L');
-		$this->fpdf->SetTextColor(0, 0, 255);
-		$this->fpdf->Cell(2, -6, 'Titulo de Documento', 0, 0, 'C');
-
-		$this->fpdf->Ln(34);
-		$this->fpdf->SetFont('Arial', '', 14);
-		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');
-		$this->fpdf->SetTextColor(65, 65, 255);
-		$this->fpdf->Cell(2, -6, 'teste 2',0, 0, 'C');
-
-		$this->fpdf->Ln(15);//salto de linea (especifica altura del salto)
-		$this->fpdf->SetFont('Arial', 'U', 14);//establece fuente,tipo(I=italica,U=subrayada,""=normal),tamaño
-		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');//imprime Una celda : ancho, alto,texto,borde(numero :0=sin borde; 1= marco /cadena: L,T,R,B), posicion(0:derecha/1:comienzo sig linea/ 2:abajo), align(L,C,R), fondo(true/false),
-		$this->fpdf->SetTextColor(65, 65, 255);
-		$this->fpdf->Cell(2, -6, $san, 0, 0, 'C');
-
-		$this->fpdf->Ln(15);//salto de linea (especifica altura del salto)
-		$this->fpdf->SetFont('Arial', '', 14);//establece fuente,tipo(I=italica,U=subrayada,""=normal),tamaño
-		$this->fpdf->Cell(65, 10, '', 0, 0, 'L');//imprime Una celda : ancho, alto,texto,borde(numero :0=sin borde; 1= marco /cadena: L,T,R,B), posicion(0:derecha/1:comienzo sig linea/ 2:abajo), align(L,C,R), fondo(true/false),
-		$this->fpdf->SetTextColor(65, 65, 255);
-		$this->fpdf->Cell(2, -6, 'otra lista de texto', 1, 'C');
-
-
-
-		echo $this->fpdf->Output('Bibliotecafpdf.pdf', 'D');
 	}*/
 
+	//llamado por un ajax trae correo de un aprendiz de la base de datos
 	public function correo_aprendiz(){
 		$id=$_POST['id'];
-		$correo=$this->reporte->ajax_correo($id);
+		$correo=$this->usuario->nombreycorreoAprendiz($id);
 		$email=$correo[0]->correoCorporativo;
 		echo $email;
 	}
+
+	//llamado por un ajax trae nombre de un aprendiz del modelo repor
 	public function nombre_aprendiz(){
 		$id=$_POST['id'];
-		$nombre=$this->reporte->ajax_correo($id);
+		$nombre=$this->usuario->nombreycorreoAprendiz($id);
 		$nombre=$nombre[0]->nombre;
 		echo $nombre;
 	}
@@ -251,6 +211,11 @@ class Coordinador extends CI_Controller {
 
 	public function mail(){
 		$email=$_POST['mail'];
+		$cons=$_POST['cons'];
+		$reporte=$_POST['reporte'];
+
+		$estadocitacion=$this->aprendicesreportados->citarAprendiz($cons);
+		$aprobarRepo=$this->reporte->aprobarRep($reporte);
 
 		$email_to = $email;
 		$email_subject = "contacto de venta: Nuevo cliente";
@@ -268,11 +233,11 @@ class Coordinador extends CI_Controller {
 		$header .= "Content-Type: text/plain";
 
 		if (mail('$email_to', $email_subject, $email_message, $header)) {
+
 			echo "enviado correctamente";
 		} else {
-			echo "no se pudo enviar el correo";
+			echo "no se pudo enviar el correo debido a problemas de conexion";
 		}
-
 
 	}
 
