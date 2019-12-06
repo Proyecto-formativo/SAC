@@ -5003,13 +5003,14 @@ class Administrador extends CI_Controller {
             $this->load->dbutil();
 
             $prefs = array(
-                'format' => 'zip',
+                'tables' => array('tblsugerencia', 'tblrecomendacion', 'tblmunicipio', 'tbletapaformacion', 'tbletapaproyecto', 'tblestadoinstructor', 'tblestadoaprendiz', 'tblnivel','tblcentro', 'tblsede', 'tblperfil', 'tblusuario', 'tblacceso','tblarea', 'tblprograma', 'tblficha', 'tblequipoinstructor', 'tblaprendicesficha', 'tblacta', 'tblreporte', 'tblaprendicesreportados', 'tblreporteseguimientoaprendiz', 'tblcompromisos'),
+                'format' => 'sql',
                 'filename' => 'backupSAC.sql'
             );
 
             $backup = $this->dbutil->backup($prefs);
             $this->load->helper('file');
-            write_file('C:/Usuarios/usuario/Documentos', $backup);
+            write_file('C:/Usuarios/usuario/Documentos/', $backup);
 
             date_default_timezone_set('America/bogota');
             $backup_name = 'Backup_proyectoformativo_' . date('Y-m-d h:i:sa') . '.sql';
