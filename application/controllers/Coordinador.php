@@ -158,7 +158,11 @@ class Coordinador extends CI_Controller {
 			$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
 			//$consec =  $_POST["id"];
 			$Matriz=$this->reporte->Consult_especifica($consec);
-			$ficha=$Matriz[0]->ficha;
+			$ficha= $Matriz[0]->ficha;
+
+			echo $ficha;
+			return;
+
 			$equipo=$this->reporte->equipoInstructores($ficha);
 			$cordi=$this->reporte->nombreCordi($ficha);
 			$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);

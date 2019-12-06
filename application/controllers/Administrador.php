@@ -5021,10 +5021,7 @@ class Administrador extends CI_Controller {
             $this->load->dbutil();
 
             $prefs = array(
-<<<<<<< HEAD
                 'tables' => array('tblsugerencia', 'tblrecomendacion', 'tblmunicipio', 'tbletapaformacion', 'tbletapaproyecto', 'tblestadoinstructor', 'tblestadoaprendiz', 'tblnivel','tblcentro', 'tblsede', 'tblperfil', 'tblusuario', 'tblacceso','tblarea', 'tblprograma', 'tblficha', 'tblequipoinstructor', 'tblaprendicesficha', 'tblacta', 'tblreporte', 'tblaprendicesreportados', 'tblreporteseguimientoaprendiz', 'tblcompromisos'),
-=======
->>>>>>> origin/SAC
                 'format' => 'sql',
                 'filename' => 'backupSAC.sql'
             );

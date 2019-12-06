@@ -21,7 +21,7 @@ class reporte extends CI_Model{
         return $sql->row();
     }
 
-
+ 
     public function MostrarReporteAprobado($area){
         $year = date('Y');
         $mouth = date('m');

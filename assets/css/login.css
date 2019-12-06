@@ -16,13 +16,11 @@ body {
   font-size: 0.8rem;
 }
 .logosena {
-  width: 218px;
-  height: 217px;
   margin: auto;
 }
 
 .logosena img {
-  width: 218px;
+  width: 335px;
 }
 .btn-login {
   background-color: #fc7323;
