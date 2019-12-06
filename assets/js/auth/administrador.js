@@ -77,6 +77,7 @@ $(document).ready(function () {
     $("#codigo_recomendacion").val(datos[0]);
 
   });
+  
   //Fin Opciones Recomendacion
 
   //Plugin Data Table Municipio
@@ -100,7 +101,9 @@ $(document).ready(function () {
   });
 
   //Boton Eliminar Municipio
-  $("#municipio").on("click", ".eliminarMunicipio", function () {
+  
+  $("#municipio").on("click",".eliminarMunicipio", function () {
+
     $("#eliminarMunicipioModal").modal("show");
 
     $tr = $(this).closest("tr");
@@ -116,7 +119,8 @@ $(document).ready(function () {
 
     $("#codigo_municipio").val(datos[0]);
   });
-  //Fin Opciones Municipio
+  
+  //Fin Opciones Recomendacion
 
   //Plugin Data Table Etapas Formación
   $("#etapasformacion").DataTable({
@@ -725,6 +729,20 @@ $(document).ready(function () {
     $("#denegarAccesoModal").modal("show");
     $("#documento_usuario").val(documento);
   });
+
+  /*
+  ========================================================================================================================
+  */ 
+  
+  //Buscar El Numero de Ficha con Autocomplete JQUERY
+  
+  $("#buscar_ficha").autocomplete({
+    source : "autoCompleteFichas"
+  });
+
+  /*
+  ========================================================================================================================
+  */ 
 
   //=============================================================================================================
 

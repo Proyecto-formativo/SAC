@@ -22,3 +22,27 @@ function login_rules(){
 
     return $config;
 }
+
+
+function recuperar_rules(){
+    $config = array(
+        array(
+            'field' => 'docuemntoVerificacion',
+            'label' => 'documento',
+            'rules' => 'required|trim',
+            'errors' => array(
+                'required' => 'el %s es requerido',
+            )
+        ),
+        array(
+            'field' => 'correoverificacion',
+            'label' => 'correo',
+            'rules' => 'required',
+            'errors' => array(
+                'required' => 'el %s es requerido',
+            )
+        )
+    );
+
+    return $config;
+}

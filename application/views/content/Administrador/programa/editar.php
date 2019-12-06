@@ -41,7 +41,7 @@
           <label for="">Área:</label>
           <select name="area" class="form-control">
             <?php foreach($areas->result() as $area) : ?>
-              <?php if ($nivel->area == $programa->area) : ?>
+              <?php if ($area->codigo == $programa->area) : ?>
                 <option value="<?= $area->codigo; ?>" selected><?= $area->nombre; ?></option>
               <?php else : ?>
                 <option value="<?= $area->codigo; ?>"><?= $area->nombre; ?></option>

@@ -44,7 +44,6 @@ class Administrador extends CI_Controller {
             show_404();
 
         }
-
     }
     /**
      * configuraciones
@@ -4900,7 +4899,26 @@ class Administrador extends CI_Controller {
         }
     }
 
-    /* ========================================================================================================*/
+    public function autoCompleteFichas($nroficha) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            
+            $fichas = array();
+            $datosFichas = $this->ficha->getFichas($nroficha);
+
+            if (!empty($datosFichas)) {
+                foreach ($datosFicha as $row) {
+                    $data['nroFicha'] = $row['nroFicha'];
+                    array_push($fichas, $data);
+                }
+            }
+
+            echo json_encode($fichas); die;
+
+
+        } else {
+            show_404();
+        }
+    }
 
     /*==== Fin Control Administracion Usuarios ==== */
 
@@ -5003,7 +5021,10 @@ class Administrador extends CI_Controller {
             $this->load->dbutil();
 
             $prefs = array(
+<<<<<<< HEAD
                 'tables' => array('tblsugerencia', 'tblrecomendacion', 'tblmunicipio', 'tbletapaformacion', 'tbletapaproyecto', 'tblestadoinstructor', 'tblestadoaprendiz', 'tblnivel','tblcentro', 'tblsede', 'tblperfil', 'tblusuario', 'tblacceso','tblarea', 'tblprograma', 'tblficha', 'tblequipoinstructor', 'tblaprendicesficha', 'tblacta', 'tblreporte', 'tblaprendicesreportados', 'tblreporteseguimientoaprendiz', 'tblcompromisos'),
+=======
+>>>>>>> origin/SAC
                 'format' => 'sql',
                 'filename' => 'backupSAC.sql'
             );

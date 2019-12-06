@@ -67,7 +67,7 @@ class login_controller extends CI_Controller {
 					'is_logged' => TRUE,
 					'documento' => $sesion->docID,
 					'perfil' => $sesion->perfil,
-					'nombre' => $sesion->nombres,
+					'nombre' => $sesion->nombres ." ". $sesion->apellidos,
 				];
 				$this->session->set_userdata($datos);
 				$this->session->set_flashdata('msg',"const Toast = Swal.mixin({
@@ -118,30 +118,6 @@ class login_controller extends CI_Controller {
 	 * para cargar la vista de recuperar contraseña
 	 */
 
-	public function recuperar_clave() {
-		if (isset($_POST['correo']) && !empty($_POST['correo'])) {
-
-			$this->form_validation->set_error_delimiters('', '');
-			$correo = trim($this->input->post('correo'));
-			
-			$this->form_validation->set_rules('correo', 'Correo', 'trim|required|valid_email|min_length[5]|max_length[100]');
-
-			if ($this->form_validation->run() === false) {
-				$datos = [
-					'correovalidar' => form_error('correo'),
-					'valor_correo' => $correo,
-				];
-				$this->plantillaRecuperarClave($datos);
-			} else {
-
-				$resultado = $this->usuario->existe_correo($correo);
-			}
-
-		} else {
-			$this->plantillaRecuperarClave();
-		}
-	} 
-
 	/**
 	 * sel uso de esta funcion es para la reutilizacion del codigo y mostrar la vista de
 	 * login 
@@ -152,17 +128,100 @@ class login_controller extends CI_Controller {
 		$this->load->view('extra/footer');
 	}
 
-	protected function plantillaRecuperarClave($datos = null) {
-		$this->load->view('extra/header');
-		$this->load->view('recuperar_clave', $datos);
-		$this->load->view('extra/footer');
-	}
-
 	public function logout(){
 		$datos = ['documento','is_logged'];
 		$this->session->unset_userdata($datos);
 		$this->session->sess_destroy();
 		redirect(base_url());
+	}
+
+
+	public function recuperar(){
+		$this->form_validation->set_error_delimiters('','');
+		$this->form_validation->set_rules(recuperar_rules());
+		if ($this->form_validation->run() === false) {
+			$datos = [
+				'mensaje' => "const Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000,
+					timerProgressBar: true,
+					onOpen: (toast) => {
+					  toast.addEventListener('mouseenter', Swal.stopTimer)
+					  toast.addEventListener('mouseleave', Swal.resumeTimer)
+					}
+				  })
+				  
+				  Toast.fire({
+					icon: 'error',
+					title: 'Todos los datos son requeridos para recuperar la contraseña, favor verificar'
+				  })",
+			];
+			$this->plantillaLogin($datos);
+		}elseif($this->acceso->verificarDocuemnto($this->input->post("docuemntoVerificacion"))){
+			/**
+			 * se actualiza la contraseña del usuario por una random
+			 * y se enviara al correo que el usuario digito
+			 */
+			$newpass = substr(md5(microtime()),1,10);
+			$this->acceso->ActualizarContraseña($this->input->post("docuemntoVerificacion"),['clave'=>$newpass]);
+
+			/**
+			 * se crea el mensaje para ser enviado al correo del usuario
+			 */
+			$to = $this->input->post("correoverificacion");
+			$from = "From: SAC";
+			$subject = "Recuperar contraseña";
+			$message = "El usuario identificado con el numero de documento: ". $this->input->post("docuemntoVerificacion")."\n";
+			$message .= "se le asigno una nueva contraseña: ".$newpass;
+
+			/**
+			 * se detienen los error mientras se revisa al subir a u servidor
+			 */
+			error_reporting(0);
+			mail($to,$subject,$message,$from);
+
+			$datos = [
+				'mensaje' => "const Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000,
+					timerProgressBar: true,
+					onOpen: (toast) => {
+					  toast.addEventListener('mouseenter', Swal.stopTimer)
+					  toast.addEventListener('mouseleave', Swal.resumeTimer)
+					}
+				  })
+				  
+				  Toast.fire({
+					icon: 'success',
+					title: 'Revisa tu correo' 
+				  })",
+			];
+			$this->plantillaLogin($datos);
+		}else{
+			$datos = [
+				'mensaje' => "const Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000,
+					timerProgressBar: true,
+					onOpen: (toast) => {
+					  toast.addEventListener('mouseenter', Swal.stopTimer)
+					  toast.addEventListener('mouseleave', Swal.resumeTimer)
+					}
+				  })
+				  
+				  Toast.fire({
+					icon: 'error',
+					title: 'No se reconose el documento, favor verificar el docuemnto'
+				  })",
+			];
+			$this->plantillaLogin($datos);
+		}
 	}
 
 }
