@@ -25,7 +25,7 @@
 	<!--INFORMACION DEL REPORTE-->
 		<br>
 
-	<?php if($reporte[0]->estado=="Aprobado" or $reporte[0]->estado=="aprobado"){echo " <script>document.getElementById('ap').style.display = 'none'</script>"; }?>
+	<?php if($reporte[0]->estado=="Aprobado" or $reporte[0]->estado=="aprobado"){echo " <script>document.getElementById('ap').style.display = none</script>"; }?>
 
 		<table class="table table-bordered table-dark" style="width: 95%; margin: auto; ">
 
@@ -51,13 +51,13 @@
 					<th class="bg-sena text-white text-center" scope="col">No. Ficha:</th>
 					<td class="bg-light text-center text-black" colspan=""><?=$reporte[0]->ficha;?></td>
 					<th class="bg-sena text-white text-center" scope="col">Municipio:</th>
-					<td class="bg-light text-center" colspan=""><?=$reporte[0]->municipio;?></td>
+					<td class="bg-light text-center" colspan="1"><?=$reporte[0]->municipio;?></td>
 					<th class="bg-sena text-white text-center" scope="col">Horario:</th>
 					<td class="bg-light text-center" colspan="2"><?=$reporte[0]->fecha;?></td>
 				</tr>
 
 				<tr>
-					<th class="bg-sena text-white text-center" scope="row">Proyecto formativo:</th>
+					<th class="bg-sena text-white text-center">Proyecto formativo:</th>
 					<td class="bg-light text-black text-center" colspan="6"><?=$cordi[0]->pf;?></td>
 				</tr>
 
@@ -137,7 +137,7 @@
 						echo "<td class='bg-light text-center text-black'>".  $ver[$i]->telefonoMovil."  ".$fijo ."</td>";
 						echo "<td class='bg-light text-center text-black'>";?>
 						<?php if($ver[$i]->citacion==1){?>
-					<button  onclick="citarAprendiz(<?=$ver[$i]->docID;?>,<?=$ver[$i]->consecutivoAprendizReporte;?>)" type="button" class="btn btn-warning"   id="citar">Citar A Comite</button>
+					<button  onclick="citarAprendiz(<?=$ver[$i]->docID?>,<?=$ver[$i]->consecutivoAprendizReporte?>);" type="button" class="btn btn-warning"   id="citar">Citar A Comite</button>
 						</td>
 						<?php }else {echo "citado";};
 					} echo '</tr>'; ?>
@@ -157,7 +157,7 @@
 
 	</div>
 	<input type="text" id="evidentia" value="<?=$reporte[0]->evidencia;?>" readonly="readonly" style="display:none " >
-	<p align="center"><button id="ver" class="btn  btn-xs bg-sena mt-5" onclick="ver()">Ver Evidencias!</button>
+	<p class="text-center"><button id="ver" class="btn  btn-xs bg-sena mt-5" onclick="ver()">Ver Evidencias!</button> </p>
 
 	<a onclick="ocultar()" id="ocultar" style="display:none"><button  class="btn  btn-xs bg-sena mt-3">Ocultar Evidencias!</button  ></a></p>
 
@@ -215,6 +215,35 @@ HECHOS:<?=$reporte[0]->justificacion."\n\n"; echo $reporte[0]->normasReglamento.
 		</div>
 	</div><!--FIN MODAL-->
 
+
+
+
+
+
+
+
+
+	<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...maricas hgan esob bien 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 
 
@@ -231,8 +260,7 @@ HECHOS:<?=$reporte[0]->justificacion."\n\n"; echo $reporte[0]->normasReglamento.
 	function ver() {
 		var extPermitidas = /(.pdf|.jpg)$/i;
 
-            document.getElementById('visor').innerHTML =
-                '<embed src="../../'+archivo+'" width="100%"  style=" min-height: 450px" />';
+            document.getElementById('visor').innerHTML = '<embed src="../../'+archivo+'" width="100%"  style=" min-height: 450px" />';
             document.getElementById('ver').style.display = 'none';
             document.getElementById('ocultar').style.display = 'inline';
 
@@ -251,9 +279,10 @@ HECHOS:<?=$reporte[0]->justificacion."\n\n"; echo $reporte[0]->normasReglamento.
 
     //citarAprendiz() recoge como parametros documento de identidad y el consecutivo de aprendizreporte para generar una ventana de correo
     function citarAprendiz(a,b) {
-        document.getElementById('modal').style.display = 'block';
-        var snoc=document.getElementById("snoc");
-        snoc.value=b;
+		//document.getElementById('modal').style.display = 'block';
+		
+		$("modalCitacion").modal("show");
+		var snoc= $("#snoc").val(b);
 
         $.ajax({
             type:'POST',
