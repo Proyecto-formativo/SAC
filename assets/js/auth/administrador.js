@@ -517,12 +517,12 @@ $(document).ready(function () {
   });
 
   //Select box municipio filtrar sede
-  $("#select_municipio").on("change", function () {
+  $("#select_municipio").bind("change", function () {
     var municipio = $("#select_municipio").val();
     $.ajax({
       type: "POST",
       url: "filtroSedeMunicipio",
-      data: { codigo_municipio: municipio },
+      data: { municipio: municipio },
       success: function (respuesta) {
         alert(respuesta);
       }
