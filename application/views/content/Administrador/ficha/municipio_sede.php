@@ -14,7 +14,7 @@
           <label for="">Sede:</label>
           <select name="sede" class="form-control">
             <?php foreach($sedes->result() as $sede) : ?>
-              <option value="<?= $sede->codigo; ?>"><?= $sede->codigo; ?></option>
+              <option value="<?= $sede->codigo; ?>"><?= $sede->sede; ?></option>
             <?php endforeach; ?>
           </select>
         </div>

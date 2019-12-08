@@ -2795,11 +2795,13 @@ class Administrador extends CI_Controller {
 
     public function filtroSedeMunicipio() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
-            $codigo_municipio = $this->input->post('municipio');
+            $codigo_municipio = $_POST['municipio'];
 
             $data['sedes'] = $this->sede->mostrarSedesMunicipio($codigo_municipio);
 
-            if ($data['sedes'] != false) {
+            if ($data['sedes'] == null) {
+                # code...
+            } else if ($data['sedes']) {
                 $this->load->view('content/Administrador/ficha/municipio_sede', $data);
             } else {
                 $this->FrmAgregarFicha();
