@@ -516,6 +516,19 @@ $(document).ready(function () {
 
   });
 
+  //Select box municipio filtrar sede
+  $("#select_municipio").on("change", function () {
+    var municipio = $("#select_municipio").val();
+    $.ajax({
+      type: "POST",
+      url: "filtroSedeMunicipio",
+      data: { codigo_municipio: municipio },
+      success: function (respuesta) {
+        alert(respuesta);
+      }
+    });
+  });
+
   //Plugin Data Table Administrador
   $("#administradores").DataTable({
     //Para cambiar el lenguaje a español

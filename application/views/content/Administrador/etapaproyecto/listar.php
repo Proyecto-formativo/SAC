@@ -5,7 +5,6 @@
   <table id="etapasproyecto" class="table table-striped table-bordered" style="width: 100%;">
     <thead>
       <tr>
-        <th>Codigo</th>
         <th>Nombre</th>
         <th>Editar</th>
         <th>Eliminar</th>
@@ -15,7 +14,6 @@
     <tbody>
       <?php foreach ($etapasproyecto->result() as $etapaproyecto) : ?>
         <tr>
-          <td><?= $etapaproyecto->codigo; ?></td>
           <td><?= $etapaproyecto->nombre; ?></td>
           <td><a href="<?= base_url('Administrador/FrmEditarEtapaProyecto/' . $etapaproyecto->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>

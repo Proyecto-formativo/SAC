@@ -2305,7 +2305,6 @@ class Administrador extends CI_Controller {
                 $datos = array(
                     'codigo_area' => $this->input->post('codigo'),
                     'nombre' => $this->input->post('nombre'),
-                    'codigo_centro' => $this->input->post('centro'),
                     'docid_coordinador' => $this->input->post('coordinador') 
                 );
 
@@ -2371,7 +2370,6 @@ class Administrador extends CI_Controller {
             $datos = array(
                 'codigo_area' => $this->input->post('codigo'),
                 'nombre' => $this->input->post('nombre'),
-                'codigo_centro' => $this->input->post('centro'),
                 'docid_coordinador' => $this->input->post('coordinador')
             );
 
@@ -2748,6 +2746,69 @@ class Administrador extends CI_Controller {
         }
     }
 
+    //Funciones para validar select boxes
+    public function validar_programa($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('validar_programa', 'El campo {field} es obligatorio');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function validar_municipio($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('validar_municipio', 'El campo {field} es obligatorio');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function validar_etapa_formacion($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('validar_etapa_formacion', 'El campo {field} es obligatorio');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function validar_etapa_proyecto($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('validar_etapa_proyecto', 'El campo {field} es obligatorio');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function validar_instructor_lider($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('validar_instructor_lider', 'El campo {field} es obligatorio');
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //Fin Funciones para validar select boxes
+
+    public function filtroSedeMunicipio() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $codigo_municipio = $this->input->post('municipio');
+
+            $data['sedes'] = $this->sede->mostrarSedesMunicipio($codigo_municipio);
+
+            if ($data['sedes'] != false) {
+                $this->load->view('content/Administrador/ficha/municipio_sede', $data);
+            } else {
+                $this->FrmAgregarFicha();
+            }
+        } else {
+            show_404();
+        }
+    }
+
     public function agregarFicha() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             
@@ -2756,7 +2817,13 @@ class Administrador extends CI_Controller {
             $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'trim|required');
             $this->form_validation->set_rules('hora_inicio', 'Hora Inicio', 'trim|required');
             $this->form_validation->set_rules('hora_fin', 'Hora Fin', 'trim|required');
+            $this->form_validation->set_rules('programa', 'Programa', 'required|callback_validar_programa');
+            $this->form_validation->set_rules('municipio', 'Municipio', 'required|callback_validar_municipio');
+            $this->form_validation->set_rules('etapa_formacion', 'Etapa Formación', 'required|callback_validar_etapa_formacion');
+            $this->form_validation->set_rules('etapa_proyecto', 'Etapa Proyecto', 'required|callback_validar_etapa_proyecto');
+            $this->form_validation->set_rules('instructor_lider', 'Instructor Lider', 'required|callback_validar_instructor_lider');
             
+
             if ($this->form_validation->run() == false) {
                 $this->FrmAgregarFicha();
             } else {
@@ -2962,6 +3029,7 @@ class Administrador extends CI_Controller {
             $data['etapasformacion'] = $this->etapaformacion->mostrarEtapaFormacion();
             $data['etapasproyecto'] = $this->etapaproyecto->mostrarEtapaProyecto();
             $data['instructores'] = $this->usuario->getInstructores();
+            $data['sedes'] = $this->sede->mostrarSedes();
             $dinamica = $this->load->view('content/Administrador/ficha/agregar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -5003,7 +5071,7 @@ class Administrador extends CI_Controller {
             $this->load->dbutil();
 
             $prefs = array(
-                'tables' => array('tblsugerencia', 'tblrecomendacion', 'tblmunicipio', 'tbletapaformacion', 'tbletapaproyecto', 'tblestadoinstructor', 'tblestadoaprendiz', 'tblnivel','tblcentro', 'tblsede', 'tblperfil', 'tblusuario', 'tblacceso','tblarea', 'tblprograma', 'tblficha', 'tblequipoinstructor', 'tblaprendicesficha', 'tblacta', 'tblreporte', 'tblaprendicesreportados', 'tblreporteseguimientoaprendiz', 'tblcompromisos'),
+                'tables' => array('tblsugerencia', 'tblrecomendacion', 'tblmunicipio', 'tbletapaformacion', 'tbletapaproyecto', 'tblestadoinstructor', 'tblestadoaprendiz', 'tblnivel','tblcentro', 'tblsede', 'tblperfil', 'tblusuario', 'tblacceso','tblarea', 'tblareascentro','tblprograma', 'tblficha', 'tblequipoinstructor', 'tblaprendicesficha', 'tblacta', 'tblreporte', 'tblaprendicesreportados', 'tblreporteseguimientoaprendiz', 'tblcompromisos'),
                 'format' => 'sql',
                 'filename' => 'backupSAC.sql'
             );

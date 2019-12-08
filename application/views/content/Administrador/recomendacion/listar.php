@@ -5,7 +5,6 @@
   <table id="recomendacion" class="table table-striped table-bordered mt-3" style="width:100%">
     <thead>
       <tr>
-        <th>Codigo</th>
         <th>Nombre</th>
         <th>Editar</th>
         <th>Eliminar</th>
@@ -15,7 +14,6 @@
     <tbody>
       <?php foreach($recomendaciones->result() as $recomendacion) : ?>
         <tr>
-          <td><?= $recomendacion->codigo; ?></td>
           <td><?= $recomendacion->nombre; ?></td>
           <td><a href="<?php echo base_url('Administrador/FrmEditarRecomendacion/' . $recomendacion->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>

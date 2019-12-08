@@ -7,7 +7,6 @@
       <tr>
         <th>Codigo</th>
         <th>Área</th>
-        <th>Centro</th>
         <th>Coordinador</th>
         <th>Editar</th>
         <th>Eliminar</th>
@@ -19,7 +18,6 @@
         <tr>
           <td><?= $area->codigo; ?></td>
           <td><?= $area->nombre; ?></td>
-          <td><?= $area->centro; ?></td>
           <td><?= $area->coordinador; ?></td>
           <td><a href="<?= base_url('Administrador/FrmEditarArea/' . $area->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>

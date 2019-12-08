@@ -7,7 +7,7 @@ class ficha extends CI_Model{
 
     //Mostrar Ficha para el Modulo Ficha del perfil Administrador
     public function listarFichas() {
-        $sql = $this->db->query("SELECT f.nroFicha AS nroficha, f.fechaInicio AS fechainicio, f.fechaFinal AS fechafinal, p.nombre AS programa, m.nombre AS municipio, f.horaInicio AS horainicio, f.horafin AS horafin, ef.nombre AS etapaformacion, ep.nombre AS etapaproyecto, i.docID as documento, CONCAT(i.nombres, ' ', i.apellidos) AS instructorlider FROM tblficha AS f INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblmunicipio AS m ON f.municipio = m.codigo INNER JOIN tbletapaformacion AS ef ON f.etapaFormacion = ef.codigo INNER JOIN tbletapaproyecto AS ep ON f.etapaProyecto = ep.codigo INNER JOIN tblusuario AS i ON f.instructorLider = i.docID ORDER BY p.nombre");
+        $sql = $this->db->query("SELECT f.nroFicha AS nroficha, f.fechaInicio AS fechainicio, f.fechaFinal AS fechafinal, p.nombre AS programa, s.nombre AS sede, m.nombre AS municipio, f.horaInicio AS horainicio, f.horafin AS horafin, ef.nombre AS etapaformacion, ep.nombre AS etapaproyecto, i.docID as documento, CONCAT(i.nombres, ' ', i.apellidos) AS instructorlider FROM tblficha AS f INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblsede AS s ON f.sede = s.codigo INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo INNER JOIN tbletapaformacion AS ef ON f.etapaFormacion = ef.codigo INNER JOIN tbletapaproyecto AS ep ON f.etapaProyecto = ep.codigo INNER JOIN tblusuario AS i ON f.instructorLider = i.docID ORDER BY p.nombre");
         return $sql;
     }
 

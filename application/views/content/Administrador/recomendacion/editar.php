@@ -15,6 +15,7 @@
     </div>
     <input type="submit" name="editar" class="btn bg-sena" value="Guardar cambios">
   </form>
+
+  <a href="<?= base_url('Administrador/recomendacion'); ?>" class="btn bg-sena mt-3">Regresar Al Modulo Recomendación</a>
 </div>
 
-<a href="<?= base_url('Administrador/recomendacion'); ?>" class="btn bg-sena mt-3">Regresar Al Modulo Recomendación</a>

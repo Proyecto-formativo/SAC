@@ -62,15 +62,15 @@
                     </div>
 
                     <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/niveles'); ?>" id="btn-2" class="dropdown-item">Niveles</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/centros'); ?>" id="btn-2" class="dropdown-item">Centros</a>
                     </div>
 
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/sedes'); ?>" id="btn-2" class="dropdown-item">Sedes</a>
-                    </div>
-
-                    <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/niveles'); ?>" id="btn-2" class="dropdown-item">Niveles</a>
                     </div>
 
                     <div class="style-botones-dropdown">
