@@ -160,8 +160,6 @@ class Coordinador extends CI_Controller {
 			$Matriz=$this->reporte->Consult_especifica($consec);
 			$ficha= $Matriz[0]->ficha;
 
-			echo $ficha;
-			return;
 
 			$equipo=$this->reporte->equipoInstructores($ficha);
 			$cordi=$this->reporte->nombreCordi($ficha);
