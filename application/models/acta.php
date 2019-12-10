@@ -19,8 +19,7 @@ class acta extends CI_Model {
     }
 
     public function mostrarDatosActa($consecutivo){
-        $sql = $this->db->query(" SELECT a.consecutivo,
-        m.nombre as municipio,
+        $sql = $this->db->query("  SELECT a.consecutivo,
         a.fecha,
         a.horaInicio,
         a.horaFin,
@@ -31,17 +30,18 @@ class acta extends CI_Model {
         a.temasTratar,
         a.desarrolloReunion,
         a.conclusiones,
-        c.nombre as centro 
+        c.nombre as centro ,
+        m.nombre as municipio
         from tblacta as a
-        inner join tblmunicipio as m 
-        on m.codigo = a.municipio 
         inner join tblsede as s
         on s.codigo = a.sede
         inner join tblarea as are
         on are.codigo = a.area
         inner join tblcentro as c
         on c.codigo = a.centro
-        where a.consecutivo = '$consecutivo'");
+        inner join tblmunicipio as m
+        on m.codigo = s.municipio
+        where a.consecutivo = '$consecutivo' ");
         return $sql->row();
     }
 
@@ -51,17 +51,8 @@ class acta extends CI_Model {
 
 
     public function mostrarActasPorArea($codigoArea){
-        $sql = $this->db->query("SELECT a.consecutivo,m.nombre as municipio ,a.fecha,a.horaInicio,a.horaFin from tblacta as a 
-        inner join tblsede as s
-        on a.sede = s.codigo
-        inner join tblcentro as  cent
-        on s.centro = cent.codigo
-        inner join tblarea as are
-        on cent.codigo = are.centro
-        inner join tblmunicipio as m
-        on m.codigo = a.municipio 
-         where are.codigo = $codigoArea
-         order by a.consecutivo desc");
+        $sql = $this->db->query("SELECT a.consecutivo,a.fecha,a.horaInicio,a.horaFin from tblacta as a 
+        where a.area = $codigoArea");
         return $sql;
     }
 

@@ -6,7 +6,7 @@
     }
 
     public function mostrarAreas() {
-      $sql = $this->db->query("SELECT a.codigo AS codigo, a.nombre AS nombre, c.nombre AS centro, CONCAT(u.nombres, ' ', u.apellidos) AS coordinador FROM tblarea AS a INNER JOIN tblcentro AS c ON a.centro = c.codigo INNER JOIN tblusuario AS u ON a.docIDCoordinador = u.docID ORDER BY a.nombre");
+      $sql = $this->db->query("SELECT a.codigo AS codigo, a.nombre AS nombre, CONCAT(u.nombres, ' ', u.apellidos) AS coordinador FROM tblarea AS a  INNER JOIN tblusuario AS u ON a.docIDCoordinador = u.docID ORDER BY a.nombre");
       return $sql;
     }
 
