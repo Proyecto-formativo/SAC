@@ -8,6 +8,7 @@
         <tr>
           <th>Nro. Ficha</th>
           <th>Programa</th>
+          <th>Sede</th>
           <th>Municipio</th>
           <th>Etapa Formación</th>
           <th>Etapa Proyecto</th>
@@ -25,6 +26,7 @@
           <tr>
             <td><?= $ficha->nroficha; ?></td>
             <td><?= $ficha->programa; ?></td>
+            <td><?= $ficha->sede; ?></td>
             <td><?= $ficha->municipio; ?></td>
             <td><?= $ficha->etapaformacion; ?></td>
             <td><?= $ficha->etapaproyecto; ?></td>

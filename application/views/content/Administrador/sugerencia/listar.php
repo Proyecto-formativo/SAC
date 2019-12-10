@@ -5,7 +5,6 @@
   <table id="sugerencia" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Codigo</th>
                 <th>Nombre</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
@@ -14,9 +13,8 @@
         <tbody>
           <?php foreach($sugerencias->result() as $sugerencia) : ?>
             <tr>
-              <td><?php echo $sugerencia->codigo; ?></td>
-              <td><?php echo $sugerencia->nombre; ?></td>
-              <td><a href="<?php echo base_url('Administrador/FrmEditarSugerencia/' . $sugerencia->codigo); ?>" class="btn bg-sena">Editar</a></td>
+              <td><?= $sugerencia->nombre; ?></td>
+              <td><a href="<?= base_url('Administrador/FrmEditarSugerencia/' . $sugerencia->codigo); ?>" class="btn bg-sena">Editar</a></td>
               <td>
                 <button type="button" class="btn btn-danger eliminarSugerencia" data-toggle="modal">
                   Eliminar

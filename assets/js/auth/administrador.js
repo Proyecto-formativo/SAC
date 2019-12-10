@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
   //Puglin Data Table Sugerencia
   $("#sugerencia").DataTable({
     //Para cambiar el lenguaje a español
@@ -520,6 +521,43 @@ $(document).ready(function () {
 
   });
 
+  $.fn.select2.defaults.set("theme", "bootstrap");
+
+  $(".select2_instructor").select2();
+
+  //Select box municipio filtrar sede
+  $("#select_municipio").bind("change", function () {
+    var municipio = $("#select_municipio").val();
+    $.ajax({
+      type: "POST",
+      url: "filtroSedeMunicipio_agregar",
+      data: { municipio: municipio },
+      success: function (respuesta) {
+        console.log();
+        $(".infoSedeMunicipio").html(respuesta);
+      }
+    });
+  });
+
+  $("#select_m").bind("change", function () {
+    var municipio = $("#select_m").val();
+    var nroficha = $("#nroficha").val();
+    console.log(municipio, nroficha);
+
+    $.ajax({
+      type: "post",
+      url: "filtro_sedeMunicpio_editar",
+      data: {
+        municipio: municipio,
+        nroficha: nroficha,
+        ok: true
+      },
+      success: function (respuesta) {
+        $(".infoSedeMunicipio").html(respuesta);
+      }
+    });
+  });
+
   //Plugin Data Table Administrador
   $("#administradores").DataTable({
     //Para cambiar el lenguaje a español
@@ -544,22 +582,22 @@ $(document).ready(function () {
 
   //Boton Eliminar Administrador
   /*$("#administradores").on("click", ".eliminarAdministrador", function () {
-
+  
     $("#eliminarAdministradorModal").modal("show");
-
+  
     $tr = $(this).closest("tr");
-
+  
     let datos = $tr
       .children("td")
       .map(function () {
         return $(this).text();
       })
       .get();
-
+  
     console.log(datos);
-
+  
     $("#documento_administrador").val(datos[0]);
-
+  
   });*/
 
   //Plugin Data Table Coordinador
@@ -746,7 +784,7 @@ $(document).ready(function () {
 
   //=============================================================================================================
 
-  //Plugin Select 2
+  //Plugin Select2
   $('.select_fichas').select2();
 
   //Data tables para ventana modal instructores detalle
@@ -1125,6 +1163,113 @@ $(document).ready(function () {
     }
     console.log(docid_repetido.length);
     console.log(docid_repetido);
+    $(this).closest("tr").remove();
+
+  });
+
+  //Formulario maestro areas por centro
+
+  let area_repetida = [];
+  //Agregar instructores en la lista desplegable
+  $("#addAreaDetalle").on("click", function () {
+
+    let codigocentro = $("#selected_centro").val();
+    let centro = $("#selected_centro  option:selected").text();
+
+    if (area_repetida.length == 0) {
+
+      let codigoarea = $("#selected_area").val();
+      let area = $("#selected_area  option:selected").text();
+
+      area_repetida.push(codigoarea);
+
+      html = "<tr>";
+      html += "<td style='display: none;'><input type='hidden' name='areas[]' value='" + codigoarea + "'>" + codigoarea + "</td>";
+      html += "<td style='display: none;'><input type='hidden' name='centro' value='" + codigocentro + "'>>" + codigocentro + "</td>";
+      html += "<td>" + centro + "</td>";
+      html += "<td>" + area + "</td>";
+      html += '<td><button type="button" class="btn btn-danger remover_area">Remover</button></td>';
+      html += "</tr>";
+      $("#areascentro tbody").append(html);
+
+      $("#selected_centro").prop("disabled", true);
+      $("#guardar_area").prop("disabled", false);
+
+    } else {
+      area_existe = false;
+      let codigoarea = $("#selected_area").val();
+      let area = $("#selected_area  option:selected").text();
+
+      for (let i = 0; i < area_repetida.length; i++) {
+
+        if (area_repetida[i] == codigoarea) {
+          area_existe = true;
+        }
+      }
+
+      if (area_existe != true) {
+        area_repetida.push(codigoarea);
+
+        html = "<tr>";
+        html += "<td style='display: none;'><input type='hidden' name='areas[]' value='" + codigoarea + "'>" + codigoarea + "</td>";
+        html += "<td style='display: none;'>" + codigocentro + "</td>";
+        html += "<td>" + centro + "</td>";
+        html += "<td>" + area + "</td>";
+        html += '<td><button type="button" class="btn btn-danger remover_area">Remover</button></td>';
+        html += "</tr>";
+        $("#areascentro tbody").append(html);
+      } else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          onOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+
+        Toast.fire({
+          icon: 'error',
+          title: 'El área ya esta en la lista'
+        })
+      }
+    }
+
+  });
+
+  //Boton remover área de la tabla
+  $(document).on("click", ".remover_area", function () {
+
+    nuevo_area = $(this).closest("tr");
+
+    let verificar_area = nuevo_area
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    console.log(verificar_area);
+
+    for (let iterador = 0; iterador < area_repetida.length; iterador++) {
+
+      if (verificar_area[0] == area_repetida[iterador]) {
+        posicion_area = iterador;
+      }
+
+    }
+
+    area_repetida.splice(posicion_area, 1);
+
+    if (area_repetida.length == 0) {
+      $("#selected_centro").prop("disabled", false);
+      $("#guardar_area").prop("disabled", true);
+      swa = 0;
+    }
+
     $(this).closest("tr").remove();
 
   });

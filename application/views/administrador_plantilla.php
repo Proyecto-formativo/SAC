@@ -6,6 +6,8 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="https://unpkg.com/tableexport@5.2.0/dist/css/tableexport.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.css">
+
 <!--<script src="https://kit.fontawesome.com/4de60b0d23.js" crossorigin="anonymous"></script> -->
 </head>
 <body>
@@ -62,15 +64,15 @@
                     </div>
 
                     <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/niveles'); ?>" id="btn-2" class="dropdown-item">Niveles</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/centros'); ?>" id="btn-2" class="dropdown-item">Centros</a>
                     </div>
 
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/sedes'); ?>" id="btn-2" class="dropdown-item">Sedes</a>
-                    </div>
-
-                    <div class="style-botones-dropdown">
-                        <a href="<?= base_url('Administrador/niveles'); ?>" id="btn-2" class="dropdown-item">Niveles</a>
                     </div>
 
                     <div class="style-botones-dropdown">
@@ -83,6 +85,10 @@
 
                     <div class="style-botones-dropdown">
                         <a href="<?= base_url('Administrador/fichas'); ?>" id="btn-2" class="dropdown-item">Fichas</a>
+                    </div>
+
+                    <div class="style-botones-dropdown">
+                        <a href="<?= base_url('Administrador/areas_centro'); ?>" id="btn-2" class="dropdown-item">Áreas por centro</a>
                     </div>
 
                 </div>

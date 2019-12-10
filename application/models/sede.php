@@ -37,4 +37,9 @@
         
       return true;
     }
+
+    public function mostrarSedesMunicipio($codigo_municipio) {
+      $sql = $this->db->query("SELECT s.codigo AS codigo, s.nombre AS sede FROM tblsede AS s INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo WHERE s.municipio = '$codigo_municipio'");
+      return $sql;
+    }
   }

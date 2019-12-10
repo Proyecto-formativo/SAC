@@ -8,6 +8,6 @@
     </div>
     <input type="submit" name="agregar_sugerencia" class="btn bg-sena" value="Agregar">
   </form>
-</div>
 
-<a href="<?= base_url('Administrador/sugerencia'); ?>" class="btn bg-sena mt-3">Regresar Al Modulo Sugerencia</a>
+  <a href="<?= base_url('Administrador/sugerencia'); ?>" class="btn bg-sena mt-3">Regresar Al Modulo Sugerencia</a>
+</div>

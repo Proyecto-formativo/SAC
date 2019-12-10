@@ -16,6 +16,8 @@
 
     <input type="submit" name="submit" class="btn bg-sena" value="Agregar">
   </form>
+
+  <a href="<?= base_url('Administrador/municipio'); ?>" class="btn bg-sena mt-3">Regresar Al Modulo Municipio</a>
 </div>
 
-<a href="<?= base_url('Administrador/municipio'); ?>" class="btn bg-sena mt-3">Regresar Al Modulo Municipio</a>
+

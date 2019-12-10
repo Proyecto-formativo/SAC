@@ -14,7 +14,7 @@
 
       INNER JOIN 
 
-      (SELECT ar.consReporte AS consReporte, u.docID AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS aprendiz, f.nroFicha AS ficha, p.nombre AS programa, m.nombre AS municipio, a.nombre AS area, r.nombre AS recomendacion FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblmunicipio AS m ON f.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo) AS ar
+      (SELECT ar.consReporte AS consReporte, u.docID AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS aprendiz, f.nroFicha AS ficha, p.nombre AS programa, m.nombre AS municipio, a.nombre AS area, r.nombre AS recomendacion FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblsede AS s ON f.sede = s.codigo INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo) AS ar
 
       ON ir.consReporte = ar.consReporte
 
@@ -36,11 +36,11 @@
 
       INNER JOIN 
 
-      (SELECT ar.consReporte AS consReporte, u.docID AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS aprendiz, f.nroFicha AS ficha, p.nombre AS programa, m.nombre AS municipio, a.nombre AS area, r.nombre AS recomendacion FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblmunicipio AS m ON f.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo) AS ar
-
-      ON ir.consReporte = ar.consReporte
+      (SELECT ar.consReporte AS consReporte, u.docID AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS aprendiz, f.nroFicha AS ficha, p.nombre AS programa, m.nombre AS municipio, a.nombre AS area, r.nombre AS recomendacion FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblsede AS s ON f.sede = s.codigo INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo) AS ar
 
       WHERE ar.area LIKE '%$area%'
+      
+      GROUP BY ar.documento
 
       ORDER BY ar.consReporte");
 
@@ -56,7 +56,7 @@
 
     //Consulta cantidad aprendices citados por centro
     public function cant_ci_centro() {
-      $sql = $this->db->query("SELECT COUNT(u.docID) AS cantidad_citaciones, c.nombre AS centro, (SELECT YEAR(current_date())) AS cur_year FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblmunicipio AS m ON f.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo INNER JOIN tblcentro AS c ON a.centro = c.codigo INNER JOIN tblreporte AS re ON ar.consReporte = re.consecutivo WHERE YEAR(re.fecha) = (SELECT YEAR(current_date())) GROUP BY c.nombre");
+      $sql = $this->db->query("SELECT COUNT(u.docID) AS cantidad_citaciones, c.nombre AS centro, (SELECT YEAR(current_date())) AS cur_year FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblsede AS s ON f.sede = s.codigo INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo INNER JOIN tblareascentro AS ac ON a.codigo = ac.codigoarea INNER JOIN tblcentro AS c ON ac.codigocentro = c.codigo INNER JOIN tblreporte AS re ON ar.consReporte = re.consecutivo WHERE YEAR(re.fecha) = (SELECT YEAR(current_date())) GROUP BY c.nombre");
       return $sql;
     }
 
@@ -70,11 +70,12 @@
 
       INNER JOIN 
 
-      (SELECT ar.consReporte AS consReporte, u.docID AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS aprendiz, f.nroFicha AS ficha, p.nombre AS programa, m.nombre AS municipio, a.nombre AS area, r.nombre AS recomendacion FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblmunicipio AS m ON f.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo) AS ar
+      (SELECT ar.consReporte AS consReporte, u.docID AS documento, CONCAT(u.nombres, ' ', u.apellidos) AS aprendiz, f.nroFicha AS ficha, p.nombre AS programa, m.nombre AS municipio, a.nombre AS area, r.nombre AS recomendacion FROM tblrecomendacion AS r INNER JOIN tblreporteseguimientoaprendiz AS rsa ON r.codigo = rsa.recomendacion INNER JOIN tblaprendicesreportados AS ar ON rsa.consAprendizReporte = ar.consecutivoAprendizReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblsede AS s ON f.sede = s.codigo INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo) AS ar
 
       ON ir.consReporte = ar.consReporte
 
-      ORDER BY ar.consReporte	;");
+      ORDER BY ar.consReporte;");
       return $sql;
+
     }
   }

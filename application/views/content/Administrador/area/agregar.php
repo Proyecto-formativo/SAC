@@ -3,30 +3,31 @@
 
   <form action="<?= base_url('Administrador/agregarArea'); ?>" method="POST">
     
-    <div class="form-group">
-      <label for="">Codigo:</label>
-      <input type="text" name="codigo" class="form-control" value="<?= set_value('codigo'); ?>" placeholder="Codigo">
-      <?= form_error('codigo', '<p class="text-danger">', '</p>'); ?>
-    </div>
+    
 
-    <div class="form-group">
-      <label for="">Nombre:</label>
-      <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>" placeholder="Nombre">
-      <?= form_error('nombre', '<p class="text-danger">', '</p>'); ?>
-    </div>
+    
 
     <div class="row">
+
       <div class="col-6">
         <div class="form-group">
-          <label for="">Centro:</label>
-            <select name="centro" class="form-control">
-              <?php foreach($centros->result() as $centro) : ?>
-                <option value="<?= $centro->codigo; ?>" <?= set_select('centro', $centro->codigo); ?>><?= $centro->nombre; ?></option>
-              <?php endforeach; ?>
-            </select>
+          <label for="">Codigo:</label>
+          <input type="text" name="codigo" class="form-control" value="<?= set_value('codigo'); ?>" placeholder="Codigo">
+          <?= form_error('codigo', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>
 
+      <div class="col-6">
+        <div class="form-group">
+          <label for="">Nombre:</label>
+          <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>" placeholder="Nombre">
+          <?= form_error('nombre', '<p class="text-danger">', '</p>'); ?>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      
       <div class="col-6">
         <div class="form-group">
           <label for="">Coordinador:</label>

@@ -5,7 +5,6 @@
   <table id="etapasformacion" class="table table-striped table-bordered" style="width:100%">
     <thead>
       <tr>
-        <th>Codigo</th>
         <th>Nombre</th>
         <th>Editar</th>
         <th>Eliminar</th>
@@ -15,7 +14,6 @@
     <tbody>
       <?php foreach($etapasformacion->result() as $etapaformacion) : ?>
         <tr>
-          <td><?= $etapaformacion->codigo; ?></td>
           <td><?= $etapaformacion->nombre; ?></td>
           <td><a href="<?php echo base_url('Administrador/FrmEditarEtapaFormacion/' . $etapaformacion->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>
