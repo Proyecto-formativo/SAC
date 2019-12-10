@@ -6,7 +6,7 @@
         <thead  style=" font-size: 20px;">
             <tr class="bg-sena text-center">
                 <th>Nombre acta</th>
-                <th>Fecha</th>
+                <th>Fehca</th>
                 <th>Hora inicio</th> 
                 <th>Hora fin</th> 
                 <th>ver Acta</th> 

@@ -234,4 +234,10 @@ class usuario extends CI_Model{
         $resultados = $this->db->get();
         return $resultados->result_array();
     }
+
+    //correoAprendiz al citar en coordnador
+    public function nombreycorreoAprendiz($id){
+		$sql=$this->db->query("SELECT concat(nombres,' ', apellidos)as nombre, correoCorporativo FROM tblusuario where docID=$id");
+		return $sql->result_object();
+	}
 }

@@ -118,7 +118,7 @@ class Bienestar extends CI_Controller {
                 $this->Plantilla_Bienestar($dinamica);
             }
 
-        }else{
+        }else{     
             show_404();
         }
     }
@@ -127,7 +127,7 @@ class Bienestar extends CI_Controller {
  
         if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {
             $datos  =  $this->area->mostrarAreas();
-             
+            
             $dinamica = $this->load->view('content/Bienestar/listaArea',['datos'=>$datos,'mensaje'=>$mensaje],true);
 		    $this->Plantilla_Bienestar($dinamica);
         }else{
@@ -228,7 +228,7 @@ class Bienestar extends CI_Controller {
              * 
              */
             $mensaje = "
-            const Toast = Swal.mixin({ 
+            const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,

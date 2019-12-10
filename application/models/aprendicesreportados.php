@@ -12,7 +12,8 @@ class aprendicesreportados extends CI_Model{
 
 
 	public function mostrarAprendicesReporte($consec){
-		$sql = $this->db->query("SELECT a.consecutivoAprendizReporte, u.docID, u.nombres,u.apellidos,u.correoPersonal,u.correoCorporativo,u.telefonoMovil,u.telefonoFijo 
+		$sql = $this->db->query("SELECT a.consecutivoAprendizReporte, u.docID, u.nombres,u.apellidos,u.correoPersonal,u.correoCorporativo,u.telefonoMovil,
+        u.telefonoFijo,a.citacion
         FROM tblusuario as u INNER JOIN tblaprendicesreportados as a 
         ON u.docID=a.docIDAprendiz INNER JOIN tblreporte as r 
         ON r.consecutivo=a.consReporte WHERE r.consecutivo=$consec");
@@ -51,6 +52,17 @@ class aprendicesreportados extends CI_Model{
         where consReporte = $consecutivoReporte");
         
         return $sql->result();
+        
+    }
+
+    public  function citarAprendiz($consec){
+        $query=$this->db->query("UPDATE `tblaprendicesreportados` SET `citacion` = '2' WHERE consecutivoAprendizReporte =$consec ");
+
+        if ($query){
+            return "Aprobacion Exitosa ";
+        }else{
+            return "No se pudo realizar la solicitud";
+        }
     }
 }
 

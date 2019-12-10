@@ -130,7 +130,7 @@ class Instructor extends CI_Controller {
                             
                             Toast.fire({
                                 icon: 'error',
-                                title: 'El tamaño del archivo es demaciado grande solo se aceptan '
+                                title: 'El tama単o del archivo es demaciado grande solo se aceptan '
                             })",
                         ];
                     }else{
@@ -304,7 +304,7 @@ class Instructor extends CI_Controller {
                     'telefonoMovil' => $Celular
                 ];
                 $this->usuario->ActualizarPerfil($this->session->userdata("documento"),$valores);
-                $this->acceso->ActualizarContraseña($this->session->userdata("documento"),['clave' => $password]);
+                $this->acceso->ActualizarContrase単a($this->session->userdata("documento"),['clave' => $password]);
                 $datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
                 $mensaje = "
                     const Toast = Swal.mixin({
