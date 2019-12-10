@@ -5,7 +5,7 @@
 <div class="  border  rounded contenido-login">
     <form method="post" action="<?=base_url('login_controller/validar')?>">
         <div class="logosena">
-            <img src="<?= base_url('assets/images_sac/LogoSAC.png')?>" alt="Logo SENA">
+            <img src="<?= base_url('assets/images_sac/logosac.png')?>" alt="Logo SENA">
         </div>
         <div class="form-group   ">
             <label for="exampleInputEmail1 ">Número de documento:</label>

@@ -6,6 +6,7 @@
         <thead  style=" font-size: 20px;">
             <tr class="bg-sena text-center">
                 <th>Nombre Area</th>
+                <th>Centro</th>
                 <th>Coordinador</th>
                 <th>Generar Acta</th> 
             </tr>
@@ -14,6 +15,7 @@
             <?php foreach ($datos->result() as $valores): ?>
                 <tr>
                     <td><?=$valores->nombre?></td>
+                    <td><?=$valores->centro?></td>
                     <td><?=$valores->coordinador?></td>
                     <td>
                         <form action="<?=base_url("Bienestar/crearActa")?>" method="post" class="text-center">

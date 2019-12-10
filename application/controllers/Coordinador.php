@@ -158,15 +158,19 @@ class Coordinador extends CI_Controller {
 			$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
 			//$consec =  $_POST["id"];
 			$Matriz=$this->reporte->Consult_especifica($consec);
-			$ficha= $Matriz[0]->ficha;
-
-
+			$ficha=$Matriz[0]->ficha;
 			$equipo=$this->reporte->equipoInstructores($ficha);
 			$cordi=$this->reporte->nombreCordi($ficha);
 			$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);
 			$noms=$this->aprendicesreportados->getFilasAp($consec);
+
+			$asunto[]=" Citaci贸n a descargos al comit茅 de evaluaci贸n y seguimiento";
+			$asunto[]="Una de las principales labores de los instructores y la coordinaci贸n acad茅mica, es velar por el desarrollo adecuado de su proceso formativo. Teniendo en cuenta su desempe帽o ";
+			$asunto[]="y lo establecido en el manual del aprendiz.";
+			$asunto[]="Lo invitamos a presentar descargos ante el comit茅 de evaluaci贸n y seguimiento a realizarse el pr贸ximo (fecha Comit茅) ";
+			$asunto[]="en el Sena sede ";
 			$dinamica[] = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
-				'filas'=>$noms,'ver'=>$ar,'equipo'=>$equipo,'cordi'=>$cordi],true);
+				'filas'=>$noms,'ver'=>$ar,'equipo'=>$equipo,'cordi'=>$cordi,'asunto'=>$asunto],true);
 			$this->Plantilla_Coordinador($dinamica);
 		}
 	}
@@ -293,7 +297,59 @@ class Coordinador extends CI_Controller {
 		}
 	}
 
+	//___________________cordinador
+	//llamado por un ajax trae correo de un aprendiz de la base de datos
+	public function correo_aprendiz(){
+		$id=$_POST['id'];
+		$correo=$this->usuario->nombreycorreoAprendiz($id);
+		$email=$correo[0]->correoCorporativo;
+		echo $email;
+	}
 
+	//llamado por un ajax trae nombre de un aprendiz del modelo repor
+	public function nombre_aprendiz(){
+		$id=$_POST['id'];
+		$nombre=$this->usuario->nombreycorreoAprendiz($id);
+		$nombre=$nombre[0]->nombre;
+		echo $nombre;
+	}
+
+
+
+	public function mail(){
+		$email=$_POST['mail'];
+		$cons=$_POST['cons'];
+		$reporte=$_POST['reporte'];
+		$asunto=$_POST['asunto'];
+		$mensaje=$_POST['mensaje'];
+
+		//$estadocitacion=$this->aprendicesreportados->citarAprendiz($cons);
+		//$aprobarRepo=$this->reporte->aprobarRep($reporte);
+
+		$email_to = $email;
+		$email_subject = "contacto de venta: Nuevo cliente";
+		$email_message = "detalles del formulario de contacto:\n\n";
+		$email_message .= "nombre: sergio torres\n";
+		$email_message .= "apellido: sergio torres\n";
+		$email_message .= "E-mail: fdmontoya0@misena.edu.co \n";
+		$email_message .= "telefono: sergio torres\n";
+		$email_message .= "comentarios: comentarios del mensaje x \n\n";
+
+		$mail = "frayjes10@gmail.com";
+		$header = "From: " . $mail . "\r\n";
+		$header .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+		$header .= "Mime-Version: 1.0  \r\n";
+		$header .= "Content-Type: text/plain";
+
+		if (mail($email_to, $email_subject, $email_message, $header)) {
+			$estadocitacion=$this->aprendicesreportados->citarAprendiz($cons);
+			$aprobarRepo=$this->reporte->aprobarRep($reporte);
+			echo "enviado correctamente";
+		} else {
+			echo "no se pudo enviar el correo debido a problemas de conexion ";
+		}
+
+	}
 
 }
 
