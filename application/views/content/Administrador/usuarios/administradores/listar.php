@@ -1,7 +1,8 @@
 <div class="container">
-  <a href="<?= base_url('Administrador/FrmAgregarAdministrador'); ?>" class="btn bg-sena">Agregar</a>
+  <h2 class="text-center">Administradores</h2>
+  <a href="<?= base_url('Administrador/FrmAgregarAdministrador'); ?>" class="btn bg-sena mb-3">Agregar</a>
   <div class="table-responsive">
-    <table id="administradores" class="table table-striped table-bordered mt-3" style="width: 100%;">
+    <table id="administradores" class="table table-striped table-bordered" style="width: 100%;">
       <thead>
         <tr>
           <th>Documento</th>
@@ -11,6 +12,7 @@
           <th>Tel. Movil</th>
           <th>Tel. Fijo</th>
           <th>Perfil</th>
+          <th>Acceso</th>
           <th>Editar</th>
           <th>Eliminar</th>
         </tr>
@@ -26,6 +28,11 @@
             <td><?= $administrador->telmovil; ?></td>
             <td><?= $administrador->telfijo; ?></td>
             <td><?= $administrador->perfil; ?></td>
+            <?php if ($administrador->docidusuario == null) : ?>
+              <td class="text-danger">Sin Acceso</td>
+            <?php else : ?>
+              <td class="text-success">Con Acceso</td>
+            <?php endif; ?>  
             <td><a href="<?= base_url('Administrador/FrmEditarAdministrador/' . $administrador->documento); ?>" class="btn bg-sena">Editar</a></td>
             <td>
               <button type="button" class="btn btn-danger eliminarAdministrador" data-toggle="modal">
@@ -49,8 +56,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="<?php echo base_url('Administrador/eliminarAdministrador'); ?>" method="POST">
-        <input type="hidden" id="documento_administrador" name="codigo">
+      <form action="<?php echo base_url('Administrador/eliminarUsuario'); ?>" method="POST">
+        <input type="hidden" id="documento_administrador" name="documento">
         <div class="modal-body">
           Esta seguro de eliminar este Usuario?
         </div>

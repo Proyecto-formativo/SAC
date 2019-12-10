@@ -31,11 +31,14 @@
                     break;
             }
             ?>
+                <!-- nompres del usuario -->
                 <div class="px-5">
-                    <label class="sr-only" for="nombre">Nombre:</label>
+                    <div class="d-flex">
+                        <label for="nombre">Nombres:</label>
+                    </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <div class="input-group-text"><i class="fas fa-clipboard-list"></i></div>
+                            <div class="input-group-text"><img src="<?=base_url("assets/images_sac/credencialesDeNombreYApellido.png")?>" width="20" alt=""></div>
                         </div>
                         <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre instructor" value="<?=isset($valor_nombre)?$valor_nombre:$datos->nombres?>">
                     </div>
@@ -45,10 +48,12 @@
                 </div>
                 <!-- apellido del usuario -->
                 <div class="px-5">
-                    <label class="sr-only" for="apellido">Apellido:</label>
+                    <div class="d-flex">
+                        <label for="apellido">Apellidos:</label>
+                    </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                        <div class="input-group-text"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="input-group-text"><img src="<?=base_url("assets/images_sac/credencialesDeNombreYApellido.png")?>" width="20" alt=""></div>
                         </div>
                         <input type="text" name="Apellido" class="form-control" id="apellido" placeholder="Apellidos" value="<?=isset($valor_apellido)?$valor_apellido:$datos->apellidos?>">
                     </div>
@@ -56,12 +61,14 @@
                         <?= isset($apellido)?$apellido : ""?>
                     </div>
                 </div>
-                <!-- correo del instructor -->
+                <!-- correo del Usuario -->
                 <div class="px-5">
-                    <label class="sr-only" for="correo">Correo:</label>
+                    <div class="d-flex">
+                        <label for="correo">Correo:</label>
+                    </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                        <div class="input-group-text"><i class="fas fa-envelope"></i></div>
+                        <div class="input-group-text"><img src="<?=base_url("assets/images_sac/correo.png")?>" width="20" alt=""></div>
                         </div>
                         <input type="email" name="Correo" class="form-control" id="correo" placeholder="Correo" value="<?=isset($valor_Correo)?$valor_Correo:$datos->correoCorporativo?>">
                     </div>
@@ -69,12 +76,14 @@
                         <?= isset($Correo)?$Correo : ""?>
                     </div>
                 </div>
-
+                <!-- celular del usuario -->
                 <div class="px-5">
-                    <label class="sr-only" for="celular">Celular:</label>
+                    <div class="d-flex">
+                    <label for="celular">Celular:</label>
+                    </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                        <div class="input-group-text"><i class="fas fa-phone-alt"></i></div>
+                        <div class="input-group-text"><img src="<?=base_url("assets/images_sac/telefono.png")?>" width="20" alt=""></div>
                         </div>
                         <input type="text"name="Celular" class="form-control" id="celular" placeholder="Celular"  value="<?=isset($valor_Celular)?$valor_Celular:$datos->telefonoMovil?>">
                     </div>
@@ -82,12 +91,14 @@
                         <?= isset($Celular)?$Celular : ""?>
                     </div>
                 </div>
-
+                <!-- contraseña del usuario -->
                 <div class="px-5">
-                    <label class="sr-only" for="password">Contraseña:</label>
+                    <div class="d-flex">
+                        <label for="password">Contraseña:</label>
+                    </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                        <div class="input-group-text"><i class="fas fa-unlock-alt"></i></div>
+                        <div class="input-group-text"><img src="<?=base_url("assets/images_sac/contraseña.png")?>" width="20" alt=""></div>
                         </div>
                         <input type="password"name="password" class="form-control" id="password" placeholder="Nueva Contraseña" size="10" maxlength="10" value="<?=isset($valor_password)?$valor_password:$datos->clave?>">
                     </div>
@@ -103,6 +114,7 @@
             </form>
         </div>
     </div>
+    <!-- imprimir mensaje de la actualizacion de la informacion  -->
     <script>
         <?= isset($mensaje)?$mensaje:""?>
     </script>

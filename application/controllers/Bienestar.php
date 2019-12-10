@@ -5,7 +5,7 @@ class Bienestar extends CI_Controller {
     public $sw = true;
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta','compromisos']);
+		$this->load->model(['usuario','acceso','area','reporte','municipio','aprendicesreportados','reporteseguimientoaprendiz','sugerencia','acta','compromisos','recomendacion','reportes_admin']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil','validarActa']);
 	}
@@ -167,9 +167,9 @@ class Bienestar extends CI_Controller {
                 $municipio = $this->municipio->mostrarMunicipios();
 
                 /**
-                 * la sugerencia es para los descargos del aprendiz
+                 * las  recomendaciones es para los descargos del aprendiz
                  */
-                $sugerencia = $this->sugerencia->MostrarSuegerencia();
+                $recomendaciones = $this->recomendacion->mostrarRecomendaciones();
 
 
                 /**
@@ -185,7 +185,7 @@ class Bienestar extends CI_Controller {
                 
                 $descargos = $this->load->view("content/bienestar/vistaDescargosAprendices",['datos'=>$datos],true);
 
-                $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes,'descargos'=>$descargos,'sugerencia'=>$sugerencia],true);
+                $dinamica = $this->load->view('content/Bienestar/acta',['codigo'=>$codigo,'nombreArea'=>$area,'coordinador'=>$coordinador,'municipio'=>$municipio,'valoresDeLosReportes'=>$valoresDeLosReportes,'descargos'=>$descargos,'recomendacion'=>$recomendaciones],true);
                 $this->Plantilla_Bienestar($dinamica);
             }else{
                 $mensaje ="const Toast = Swal.mixin({
@@ -212,14 +212,9 @@ class Bienestar extends CI_Controller {
     }
 
     public function ingresarActa(){
-        // falta no se sabe si se agrega centro a la acta echo "<br> *******************".$this->input->post('centro');
+        
 
 
-        // if (  $this->acta->NumeroActa($this->input->post('NumroActa'))  ) {
-        //     echo "no se puede ya existe";
-        // }else{
-        //     echo "se puede hacer la insercion";
-        // }
 
         $this->form_validation->set_error_delimiters("","");
 
@@ -259,21 +254,21 @@ class Bienestar extends CI_Controller {
              */
             $mensaje = "
             const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            onOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
-        })
-        
-        Toast.fire({
-            icon: 'error',
-            title: 'Numero de acta ya existente favor volver a intentar con un numero de acta diferente'
-        })";
+            })
+            
+            Toast.fire({
+                icon: 'error',
+                title: 'Numero de acta ya existente favor volver a intentar con un numero de acta diferente'
+            })";
         }else{
 
             $NombresAsistentes = $this->IngresarArchivos('NombresAsistentes');
@@ -311,7 +306,8 @@ class Bienestar extends CI_Controller {
                     "desarrolloReunion" => $this->input->post('Desarrollo'),
                     "conclusiones" => $this->input->post('concluciones'),
                     "archivoAsistentes" => $NombresAsistentes,
-                    "archivoInvitados" => $NombreInvitados
+                    "archivoInvitados" => $NombreInvitados,
+                    'centro'=> $this->input->post('centro'),
                 ];
                 $this->acta->agregarActa($valores);
         
@@ -321,9 +317,11 @@ class Bienestar extends CI_Controller {
                 }
     
                 $valores = $this->reporte->MostrarReportesDelArea($this->input->post('area'));
+
                 foreach ($valores->result() as $reporte) {
-                   $this->reporte->agregarActa($this->input->post('NumroActa'),$reporte->consecutivo);
+                   $this->reporte->agregarActaAreportes($this->input->post('NumroActa'),$reporte->consecutivo);
                 }
+
                 $mensaje = "
                     const Toast = Swal.mixin({
                     toast: true,
@@ -344,10 +342,15 @@ class Bienestar extends CI_Controller {
             }
         }   
         $this->actaIngresada($mensaje);
+
+
     }
     public function actaIngresada($mensaje){
         $this->ActaComite($mensaje);
     }
+
+
+
 
     public function IngresarArchivos($archivo){
         
@@ -406,5 +409,158 @@ class Bienestar extends CI_Controller {
         $this->reporteseguimientoaprendiz->agregar($valores);
         
         
+    }
+
+    public function ActasGeneradas($mensaje = null){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
+            $datos  =  $this->area->mostrarAreas();
+            
+            $dinamica = $this->load->view('content/Bienestar/listaArea_paraActasGeneradas',['datos'=>$datos,'mensaje'=>$mensaje],true);
+		    $this->Plantilla_Bienestar($dinamica);
+        }else{
+            show_404();
+        }
+    }
+
+
+    public function verActas(){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
+            $valores = $this->acta->mostrarActasPorArea($this->input->post("codigoArea"));
+            if ($valores->num_rows() > 0) {
+                $dinamica = $this->load->view('content/Bienestar/listaActasPorArea',['datos'=>$valores],true);
+		        $this->Plantilla_Bienestar($dinamica);
+            }else{
+                $mensaje = "const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })
+                
+                Toast.fire({
+                    icon: 'info',
+                    title: 'No se encuantran actas generadas en esta area'
+                })";
+                $this->ActasGeneradas($mensaje);
+            }
+        }else{
+            show_404();
+        }
+    }
+
+    public function MostrarActa(){
+        if ($this->session->userdata("is_logged")  && $this->session->userdata('perfil') == 3) {    
+            
+            $acta  =  $this->acta->mostrarDatosActa($this->input->post("consecutivoActa"));
+            $compromisos = $this->compromisos->MostrarCompromisosConsecutivoActa($this->input->post("consecutivoActa"));
+
+            $reportes = $this->reporte->MostrarReportePorActa($this->input->post("consecutivoActa"));
+            $datos = [];
+            foreach ($reportes->result() as $datosreporte) {
+                $valores = $this->reporteseguimientoaprendiz->mostrarDstosPorNumeroReporte($datosreporte->consecutivo);
+                array_push($datos,$valores);
+            }
+            
+                         
+            $vistaDatosPoraprendiz = $this->load->view("content/Bienestar/vistaDeDatosPorAprendiz",['datos'=>$datos,'reportes'=>$reportes],true);
+            
+            $dinamica = $this->load->view('content/Bienestar/verActa',['Acta'=>$acta,'compromisos'=>$compromisos,'vistaDatosPoraprendiz'=>$vistaDatosPoraprendiz],true);
+		    $this->Plantilla_Bienestar($dinamica);
+        }else{
+            show_404();
+        }
+    }
+
+
+    
+    //Aprendices citados por fecha
+    public function reporte_comite_evaluacion() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/aprendices_citados/generar', '', true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function rac_params() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            
+            $this->form_validation->set_rules('fecha_inicial', 'Fecha Inicial', 'required');
+            $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'required');
+
+            if ($this->form_validation->run() == false) {
+                $this->reporte_comite_evaluacion();
+            } else {
+                $fecha_inicial = $this->input->post('fecha_inicial');
+                $fecha_final = $this->input->post('fecha_final');
+                $data['reporte_seguimiento_aprendiz'] = $this->reportes_admin->apr_cit_fecha($fecha_inicial, $fecha_final);
+                $dinamica = $this->load->view('content/Bienestar/reportes_admin/aprendices_citados/listar', $data, true);
+                $this->Plantilla_Bienestar($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Aprendices citados por área
+    public function apr_c_area() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['areas'] = $this->area->mostrarAreas();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/apr_c_area/generar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function raca_param() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            
+            $area = $this->input->post('area');
+            $data['aprendices_citados_area'] = $this->reportes_admin->apr_cit_area($area);
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/apr_c_area/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Cantidad de citaciones realizadas por instructor
+    public function cant_ci_inst() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['cant_ci_inst'] = $this->reportes_admin->cant_ci_inst();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/cantidad_ri/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Cantidad de aprendices citados por centro
+    public function cant_ci_centro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['cant_ci_centro'] = $this->reportes_admin->cant_ci_centro();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/cantidad_aprc/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    //Aprendices citados a comité
+    public function aprendices_citados() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 3) {
+            $data['aprendices_citados'] = $this->reportes_admin->aprendices_citados();
+            $dinamica = $this->load->view('content/Bienestar/reportes_admin/aprendiz_citado/listar', $data, true);
+            $this->Plantilla_Bienestar($dinamica);
+        } else {
+            show_404();
+        }
     }
 }

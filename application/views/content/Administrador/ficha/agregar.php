@@ -7,7 +7,7 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Nro. Ficha:</label>
-          <input type="text" name="nro_ficha" class="form-control" value="<?= set_value('nro_ficha'); ?>">
+          <input type="text" name="nro_ficha" class="form-control" value="<?= set_value('nro_ficha'); ?>" placeholder="Número ficha">
           <?= form_error('nro_ficha', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>

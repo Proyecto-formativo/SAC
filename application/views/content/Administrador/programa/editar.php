@@ -41,7 +41,7 @@
           <label for="">Área:</label>
           <select name="area" class="form-control">
             <?php foreach($areas->result() as $area) : ?>
-              <?php if ($nivel->area == $programa->area) : ?>
+              <?php if ($area->codigo == $programa->area) : ?>
                 <option value="<?= $area->codigo; ?>" selected><?= $area->nombre; ?></option>
               <?php else : ?>
                 <option value="<?= $area->codigo; ?>"><?= $area->nombre; ?></option>
@@ -60,7 +60,7 @@
       <?= form_error('proyecto', '<p class="text-danger">', '</p>'); ?>
     </div>
 
-    <input type="submit" name="submit" class="btn bg-sena" value="Editar">
+    <input type="submit" name="submit" class="btn bg-sena" value="Guardar cambios">
   </form>
 
   <a href="<?= base_url('Administrador/programas'); ?>" class="btn bg-sena mt-3">Regresar al Modulo Programa</a>

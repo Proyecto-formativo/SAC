@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Coordinador extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['usuario','acceso','reporte','aprendicesreportados']);
+		$this->load->model(['usuario','acceso','reporte','aprendicesreportados','reportes_admin','area']);
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarPerfil']);
 		//$this->load->library('pdf');
@@ -113,7 +113,6 @@ class Coordinador extends CI_Controller {
 		}
 	}
 
-	//LISTA TODOS LOS REPORTES
 	public function reportes(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$id=$this->session->userdata("documento");
@@ -127,8 +126,6 @@ class Coordinador extends CI_Controller {
 			show_404();
 		}
 	}
-
-	//lista reportes en los que se ha citado al menos un aprendiz
 	public function aprobados(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$id=$this->session->userdata("documento");
@@ -142,8 +139,6 @@ class Coordinador extends CI_Controller {
 			show_404();
 		}
 	}
-
-	//muestra los reeportes que no se han aprobado, no ha sido citado ninguno de los aprendices en el reporte
 	public function cancelados(){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2) {
 			$id=$this->session->userdata("documento");
@@ -158,39 +153,151 @@ class Coordinador extends CI_Controller {
 		}
 	}
 
-	//recoge datos necesarios en la vista verReporte de coordinador
 	public function verReportes($consec){
-	if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
-		$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
-		//$consec =  $_POST["id"];
-		$Matriz=$this->reporte->Consult_especifica($consec);
-		$ficha=$Matriz[0]->ficha;
-		$equipo=$this->reporte->equipoInstructores($ficha);
-		$cordi=$this->reporte->nombreCordi($ficha);
-		$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);
-		$noms=$this->aprendicesreportados->getFilasAp($consec);
+		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
+			$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
+			//$consec =  $_POST["id"];
+			$Matriz=$this->reporte->Consult_especifica($consec);
+			$ficha=$Matriz[0]->ficha;
+			$equipo=$this->reporte->equipoInstructores($ficha);
+			$cordi=$this->reporte->nombreCordi($ficha);
+			$ar=$this->aprendicesreportados->mostrarAprendicesReporte($consec);
+			$noms=$this->aprendicesreportados->getFilasAp($consec);
 
-		$asunto[]=" Citación a descargos al comité de evaluación y seguimiento";
-		$asunto[]="Una de las principales labores de los instructores y la coordinación académica, es velar por el desarrollo adecuado de su proceso formativo. Teniendo en cuenta su desempeño ";
-		$asunto[]="y lo establecido en el manual del aprendiz.";
-		$asunto[]="Lo invitamos a presentar descargos ante el comité de evaluación y seguimiento a realizarse el próximo (fecha Comité) ";
-		$asunto[]="en el Sena sede ";
-		$dinamica[] = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
-			'filas'=>$noms,'ver'=>$ar,'equipo'=>$equipo,'cordi'=>$cordi,'asunto'=>$asunto],true);
-		$this->Plantilla_Coordinador($dinamica);
+			$asunto[]=" Citaci贸n a descargos al comit茅 de evaluaci贸n y seguimiento";
+			$asunto[]="Una de las principales labores de los instructores y la coordinaci贸n acad茅mica, es velar por el desarrollo adecuado de su proceso formativo. Teniendo en cuenta su desempe帽o ";
+			$asunto[]="y lo establecido en el manual del aprendiz.";
+			$asunto[]="Lo invitamos a presentar descargos ante el comit茅 de evaluaci贸n y seguimiento a realizarse el pr贸ximo (fecha Comit茅) ";
+			$asunto[]="en el Sena sede ";
+			$dinamica[] = $this->load->view('content/Coordinador/verReporte',['datos'=>$datos,'reporte'=>$Matriz,
+				'filas'=>$noms,'ver'=>$ar,'equipo'=>$equipo,'cordi'=>$cordi,'asunto'=>$asunto],true);
+			$this->Plantilla_Coordinador($dinamica);
+		}
 	}
-}
 
-    // para aprobar reportes desde el boton aprobarreportes color anaranjando, se encuentra comentado tambien
-	/*public function aprobarReporte($consec){
+
+	public function aprobarReporte($consec){
 		if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 2){
 			//$datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
+			//$consec =  $_POST["id"];
 			$aprobar=$this->reporte->aprobarRep($consec);
 			$dinamica[] = $this->load->view('content/Coordinador/reporteAprobado',['reporte'=>$aprobar,'n'=>$consec],true);
 			$this->Plantilla_Coordinador($dinamica);
 		}
-	}*/
+	}
 
+	public function pdf(){
+
+        $otra="otro texto";
+		$san="prueba pdf";
+
+		$this->load->library('fpdf_gen');
+		$pdf = new FPDF("L", "mm", "A4");
+
+		$dinamica[] = $this->load->view('content/Coordinador/otro', [], true);
+		$this->Plantilla_Coordinador($dinamica);
+		$this->fpdf->setAuthor('f de mont');
+		$this->fpdf->SetTitle('biblioteca de codei', 0);
+		$this->fpdf->AliasNbPages('(np)');
+		$this->fpdf->SetAutoPageBreak(false);
+		$this->fpdf->SetMargins(8, 8, 8, 8);
+		$this->fpdf->SetFont('Arial', 'I', 35);
+
+		$this->fpdf->Ln(4);
+		$this->fpdf->Cell(95, 10, '', 0, 0, 'L');
+		$this->fpdf->SetTextColor(0, 0, 255);
+		$this->fpdf->Cell(2, -6, 'Titulo de Documento', 0, 0, 'C');
+
+	}
+
+
+	//Aprendices citados por fecha
+	public function reporte_comite_evaluacion() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/aprendices_citados/generar', '', true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	public function rac_params() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			
+			$this->form_validation->set_rules('fecha_inicial', 'Fecha Inicial', 'required');
+			$this->form_validation->set_rules('fecha_final', 'Fecha Final', 'required');
+
+			if ($this->form_validation->run() == false) {
+				$this->reporte_comite_evaluacion();
+			} else {
+				$fecha_inicial = $this->input->post('fecha_inicial');
+				$fecha_final = $this->input->post('fecha_final');
+				$data['reporte_seguimiento_aprendiz'] = $this->reportes_admin->apr_cit_fecha($fecha_inicial, $fecha_final);
+				$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/aprendices_citados/listar', $data, true);
+				$this->Plantilla_Coordinador($dinamica);
+			}
+		} else {
+			show_404();
+		}
+	}
+
+	//Aprendices citados por área
+	public function apr_c_area() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['areas'] = $this->area->mostrarAreas();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/apr_c_area/generar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	public function raca_param() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			
+			$area = $this->input->post('area');
+			$data['aprendices_citados_area'] = $this->reportes_admin->apr_cit_area($area);
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/apr_c_area/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	//Cantidad de citaciones realizadas por instructor
+	public function cant_ci_inst() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['cant_ci_inst'] = $this->reportes_admin->cant_ci_inst();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/cantidad_ri/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	//Cantidad de aprendices citados por centro
+	public function cant_ci_centro() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['cant_ci_centro'] = $this->reportes_admin->cant_ci_centro();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/cantidad_aprc/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	//Aprendices citados a comité
+	public function aprendices_citados() {
+		if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 2) {
+			$data['aprendices_citados'] = $this->reportes_admin->aprendices_citados();
+			$dinamica[] = $this->load->view('content/Coordinador/reportes_admin/aprendiz_citado/listar', $data, true);
+			$this->Plantilla_Coordinador($dinamica);
+		} else {
+			show_404();
+		}
+	}
+
+	//___________________cordinador
 	//llamado por un ajax trae correo de un aprendiz de la base de datos
 	public function correo_aprendiz(){
 		$id=$_POST['id'];
@@ -213,9 +320,11 @@ class Coordinador extends CI_Controller {
 		$email=$_POST['mail'];
 		$cons=$_POST['cons'];
 		$reporte=$_POST['reporte'];
+		$asunto=$_POST['asunto'];
+		$mensaje=$_POST['mensaje'];
 
-		$estadocitacion=$this->aprendicesreportados->citarAprendiz($cons);
-		$aprobarRepo=$this->reporte->aprobarRep($reporte);
+		//$estadocitacion=$this->aprendicesreportados->citarAprendiz($cons);
+		//$aprobarRepo=$this->reporte->aprobarRep($reporte);
 
 		$email_to = $email;
 		$email_subject = "contacto de venta: Nuevo cliente";
@@ -232,13 +341,15 @@ class Coordinador extends CI_Controller {
 		$header .= "Mime-Version: 1.0  \r\n";
 		$header .= "Content-Type: text/plain";
 
-		if (mail('$email_to', $email_subject, $email_message, $header)) {
-
-			echo "enviado correctamente";
+		if (mail($email_to, $email_subject, $email_message, $header)) {
+			$estadocitacion=$this->aprendicesreportados->citarAprendiz($cons);
+			$aprobarRepo=$this->reporte->aprobarRep($reporte);
+			return false;
 		} else {
-			echo "no se pudo enviar el correo debido a problemas de conexion";
+			return true;
 		}
 
 	}
 
-	}
+}
+

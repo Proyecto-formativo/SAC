@@ -7,7 +7,7 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Codigo:</label>
-          <input type="text" name="codigo" class="form-control" value="<?= set_value('codigo'); ?>">
+          <input type="text" name="codigo" class="form-control" value="<?= set_value('codigo'); ?>" placeholder="Codigo">
           <?= form_error('codigo', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>
@@ -15,7 +15,7 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Programa:</label>
-          <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>">
+          <input type="text" name="nombre" class="form-control" value="<?= set_value('nombre'); ?>" placeholder="Programa">
           <?= form_error('nombre', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>
@@ -49,7 +49,7 @@
 
     <div class="form-group">
       <label for="">Proyecto Formativo:</label>
-      <textarea name="proyecto" cols="30" rows="3" class="form-control"><?= set_value('proyecto'); ?></textarea>
+      <textarea name="proyecto" cols="30" rows="3" class="form-control" placeholder="Proyecto formativo"><?= set_value('proyecto'); ?></textarea>
       <?= form_error('proyecto', '<p class="text-danger">', '</p>'); ?>
     </div>
 

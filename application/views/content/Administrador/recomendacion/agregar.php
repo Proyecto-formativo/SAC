@@ -4,7 +4,7 @@
   <form action="<?= base_url('Administrador/agregarRecomendacion'); ?>" method="POST">
     <div class="form-group">
       <label for="">Recomendación:</label>
-      <input type="text" name="recomendacion" class="form-control" value="<?= set_value('recomendacion'); ?>">
+      <input type="text" name="recomendacion" class="form-control" value="<?= set_value('recomendacion'); ?>" placeholder="Recomendación">
       <?= form_error('recomendacion', '<p class="text-danger mt-2">', '</p>'); ?>
     </div>
     <input type="submit" name="submit" class="btn bg-sena" value="Agregar">

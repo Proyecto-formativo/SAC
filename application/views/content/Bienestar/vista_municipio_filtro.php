@@ -7,9 +7,12 @@
                 <?php 
                 if (isset($datos)):
                     foreach ($datos->result() as $valores):
-                ?>
-                    <option value="<?=$valores->codigo_centro?>"><?=$valores->centro?></option>     
-                <?php
+                    if ($valores->centro != $verificacion) {
+                        ?>
+                            <option value="<?=$valores->codigo_centro?>"><?=$valores->centro?></option>     
+                        <?php
+                    }
+                    $verificacion = $valores->centro;
                     endforeach;
                 endif;
                 ?>
@@ -26,10 +29,13 @@
             <?php 
             if (isset($datos)):
                 foreach ($datos->result() as $valores):
-            ?>
+                   
+                ?>
                 <option value="<?=$valores->codigo_sede?>"><?=$valores->sede?></option>     
-            <?php
+                <?php
                 endforeach;
+
+
             endif;
             ?>
             </select>

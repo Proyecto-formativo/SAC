@@ -1,12 +1,14 @@
 <div class="container">
-  <a href="<?= base_url('Administrador/FrmAgregarSede'); ?>" class="btn bg-sena">Agregar</a>
+  <h2 class="text-center">Sedes</h2>
+  <a href="<?= base_url('Administrador/FrmAgregarSede'); ?>" class="btn bg-sena mb-3">Agregar</a>
 
-  <table id="sede" class="table table-striped table-bordered mt-3" style="width: 100%;">
+  <table id="sede" class="table table-striped table-bordered" style="width: 100%;">
     <thead>
       <tr>
         <th>Codigo</th>
         <th>Sede</th>
         <th>Centro</th>
+        <th>Municipio</th>
         <th>Editar</th>
         <th>Eliminar</th>
       </tr>
@@ -18,6 +20,7 @@
           <td><?= $sede->codigo; ?></td>
           <td><?= $sede->nombre; ?></td>
           <td><?= $sede->centro; ?></td>
+          <td><?= $sede->municipio; ?></td>
           <td><a href="<?= base_url('Administrador/FrmEditarSede/' . $sede->codigo); ?>" class="btn bg-sena">Editar</a></td>
           <td>
             <button type="button" class="btn btn-danger eliminarSede" data-toggle="modal">

@@ -1,4 +1,5 @@
 <div class="container">
+  <h2 class="text-center">Recomendaciones</h2>
   <a href="<?= base_url('Administrador/FrmAgregarRecomendacion'); ?>" class="btn bg-sena mb-3">Agregar</a>
 
   <table id="recomendacion" class="table table-striped table-bordered mt-3" style="width:100%">
