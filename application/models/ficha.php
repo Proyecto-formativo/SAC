@@ -7,7 +7,7 @@ class ficha extends CI_Model{
 
     //Mostrar Ficha para el Modulo Ficha del perfil Administrador
     public function listarFichas() {
-        $sql = $this->db->query("SELECT f.nroFicha AS nroficha, f.fechaInicio AS fechainicio, f.fechaFinal AS fechafinal, p.nombre AS programa, s.nombre AS sede, m.nombre AS municipio, f.horaInicio AS horainicio, f.horafin AS horafin, ef.nombre AS etapaformacion, ep.nombre AS etapaproyecto, i.docID as documento, CONCAT(i.nombres, ' ', i.apellidos) AS instructorlider FROM tblficha AS f INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblsede AS s ON f.sede = s.codigo INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo INNER JOIN tbletapaformacion AS ef ON f.etapaFormacion = ef.codigo INNER JOIN tbletapaproyecto AS ep ON f.etapaProyecto = ep.codigo INNER JOIN tblusuario AS i ON f.instructorLider = i.docID ORDER BY p.nombre");
+        $sql = $this->db->query("SELECT f.nroFicha AS nroficha, f.fechaInicio AS fechainicio, f.fechaFinal AS fechafinal, p.nombre AS programa, s.nombre AS sede, m.nombre AS municipio, DATE_FORMAT(f.horaInicio, '%l:%i:%p') AS horainicio, DATE_FORMAT(f.horafin, '%l:%i:%p') AS horafin, ef.nombre AS etapaformacion, ep.nombre AS etapaproyecto, i.docID as documento, CONCAT(i.nombres, ' ', i.apellidos) AS instructorlider FROM tblficha AS f INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblsede AS s ON f.sede = s.codigo INNER JOIN tblmunicipio AS m ON s.municipio = m.codigo INNER JOIN tbletapaformacion AS ef ON f.etapaFormacion = ef.codigo INNER JOIN tbletapaproyecto AS ep ON f.etapaProyecto = ep.codigo INNER JOIN tblusuario AS i ON f.instructorLider = i.docID ORDER BY p.nombre");
         return $sql;
     }
 
@@ -41,13 +41,12 @@ class ficha extends CI_Model{
 
     //Mostrar Ficha dependiendo del Nro. Ficha para el actualizar
     public function getFicha($nroficha) {
-        $this->db->where('nroFicha', $nroficha);
-        $sql = $this->db->get('tblficha');
+        $sql = $this->db->query("SELECT f.nroFicha AS nroficha, f.fechainicio AS fechainicio, f.fechafinal AS fechafinal, f.programa AS programa, f.horaInicio AS horainicio, f.horaFin AS horafin, f.etapaFormacion AS etapaformacion, f.etapaProyecto AS etapaproyecto, f.instructorLider AS instructorlider, f.sede AS sede, s.municipio AS municipio FROM tblficha AS f INNER JOIN tblsede AS s ON f.sede = s.codigo WHERE f.nroFicha = '$nroficha'");
         return $sql->row();
     }
 
     public function agregarFicha($datos) {
-        $sql = $this->db->insert('tblficha', ['nroFicha' => $datos['nro_ficha'], 'fechaInicio' => $datos['fecha_inicio'], 'fechaFinal' => $datos['fecha_final'], 'programa' => $datos['programa'], 'municipio' => $datos['municipio'], 'horaInicio' => $datos['hora_inicio'], 'horaFin' => $datos['hora_fin'], 'etapaFormacion' => $datos['etapa_formacion'], 'etapaProyecto' => $datos['etapa_proyecto'], 'instructorLider' => $datos['instructor_lider']]);
+        $sql = $this->db->insert('tblficha', ['nroFicha' => $datos['nro_ficha'], 'fechaInicio' => $datos['fecha_inicio'], 'fechaFinal' => $datos['fecha_final'], 'programa' => $datos['programa'], 'sede' => $datos['sede'], 'horaInicio' => $datos['hora_inicio'], 'horaFin' => $datos['hora_fin'], 'etapaFormacion' => $datos['etapa_formacion'], 'etapaProyecto' => $datos['etapa_proyecto'], 'instructorLider' => $datos['instructor_lider']]);
         return $sql;
     }
 

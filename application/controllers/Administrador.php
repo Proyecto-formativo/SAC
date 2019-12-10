@@ -5,7 +5,7 @@ class Administrador extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         //Carga de los Modelos Requeridos en el perfil de Administrador
-        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores', 'aprendicesficha', 'reportes_admin']);
+        $this->load->model(['usuario','acceso', 'sugerencia', 'recomendacion', 'municipio', 'etapaformacion', 'etapaproyecto', 'estadoinstructor', 'estadoaprendiz', 'centro', 'sede', 'nivel', 'area', 'programa', 'ficha', 'perfil', 'equipoinstructores', 'aprendicesficha', 'reportes_admin', 'areascentro']);
         
         //Carga de la libreria para la validación de formularios
         $this->load->library(['form_validation']);
@@ -2791,21 +2791,29 @@ class Administrador extends CI_Controller {
             return true;
         }
     }
+
+    public function validar_sede($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('validar_sede', 'El campo {field} es obligatorio');
+            return false;
+        } else {
+            return true;
+        }
+    }
     //Fin Funciones para validar select boxes
 
-    public function filtroSedeMunicipio() {
+    public function filtroSedeMunicipio_agregar() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
-            $codigo_municipio = $_POST['municipio'];
+            $codigo_municipio = $this->input->post('municipio');
 
             $data['sedes'] = $this->sede->mostrarSedesMunicipio($codigo_municipio);
 
-            if ($data['sedes'] == null) {
-                # code...
-            } else if ($data['sedes']) {
+            if ($data['sedes']) {
                 $this->load->view('content/Administrador/ficha/municipio_sede', $data);
             } else {
                 $this->FrmAgregarFicha();
             }
+
         } else {
             show_404();
         }
@@ -2824,19 +2832,24 @@ class Administrador extends CI_Controller {
             $this->form_validation->set_rules('etapa_formacion', 'Etapa Formación', 'required|callback_validar_etapa_formacion');
             $this->form_validation->set_rules('etapa_proyecto', 'Etapa Proyecto', 'required|callback_validar_etapa_proyecto');
             $this->form_validation->set_rules('instructor_lider', 'Instructor Lider', 'required|callback_validar_instructor_lider');
+            $this->form_validation->set_rules('sede', 'Sede', 'required|callback_validar_sede');
             
 
             if ($this->form_validation->run() == false) {
                 $this->FrmAgregarFicha();
             } else {
+
+                $hora_inicio = date('H:i:s', strtotime($this->input->post('hora_inicio')));
+                $hora_fin = date('H:i:s', strtotime($this->input->post('hora_fin')));
+    
                 $datos = array(
                     'nro_ficha' => $this->input->post('nro_ficha'),
                     'fecha_inicio' => $this->input->post('fecha_inicio'),
                     'fecha_final' => $this->input->post('fecha_final'),
                     'programa' => $this->input->post('programa'),
-                    'municipio' => $this->input->post('municipio'),
-                    'hora_inicio' => $this->input->post('hora_inicio'),
-                    'hora_fin' => $this->input->post('hora_fin'),
+                    'sede' => $this->input->post('sede'),
+                    'hora_inicio' => $hora_inicio,
+                    'hora_fin' => $hora_fin,
                     'etapa_formacion' => $this->input->post('etapa_formacion'),
                     'etapa_proyecto' => $this->input->post('etapa_proyecto'),
                     'instructor_lider' => $this->input->post('instructor_lider')
@@ -2885,7 +2898,7 @@ class Administrador extends CI_Controller {
                     })";
                     $dinamica = $this->load->view('content/Administrador/ficha/listar', $data, true);
                     $this->Plantilla_Administrador($dinamica);
-                }         
+                }
             }
 
         } else {
@@ -2901,19 +2914,23 @@ class Administrador extends CI_Controller {
             $this->form_validation->set_rules('fecha_final', 'Fecha Final', 'trim|required');
             $this->form_validation->set_rules('hora_inicio', 'Hora Inicio', 'trim|required');
             $this->form_validation->set_rules('hora_fin', 'Hora Fin', 'trim|required');
+            $this->form_validation->set_rules('sede', 'Sede', 'required|callback_validar_sede');
 
             if ($this->form_validation->run() == false) {
                 $nroficha = $this->input->post('nro_ficha');
                 $this->FrmEditarFicha($nroficha);
             } else {
                 $numeroficha = $this->input->post('nro_ficha');
+                $hora_inicio = date('H:i:s', strtotime($this->input->post('hora_inicio')));
+                $hora_fin = date('H:i:s', strtotime($this->input->post('hora_fin')));
+
                 $valores = array(
                     'fechaInicio' => $this->input->post('fecha_inicio'),
                     'fechaFinal' => $this->input->post('fecha_final'),
                     'programa' => $this->input->post('programa'),
-                    'municipio' => $this->input->post('municipio'),
-                    'horaInicio' => $this->input->post('hora_inicio'),
-                    'horaFin' => $this->input->post('hora_fin'),
+                    'sede' => $this->input->post('sede'),
+                    'horaInicio' => $hora_inicio,
+                    'horaFin' => $hora_fin,
                     'etapaFormacion' => $this->input->post('etapa_formacion'),
                     'etapaProyecto' => $this->input->post('etapa_proyecto'),
                     'instructorLider' => $this->input->post('instructor_lider')
@@ -3039,15 +3056,174 @@ class Administrador extends CI_Controller {
         }
     }
 
+    //En la vista de editar ficha cuando se ejecuta el form_validation carga las vistas de nuevo pero la url es diferente, entonces con el ajax causa problemas para hacer el filtro de municipios y sedes
+    public function filtro_sedeMunicpio_editar() {
+        $codigo_municipio = $_POST['municipio'];
+        $nroficha = $this->input->post('nroficha');
+        $data['sedes'] = $this->sede->mostrarSedesMunicipio($codigo_municipio);
+
+        if ($data['sedes']) {
+            $this->load->view('content/Administrador/ficha/municipio_sede_editar', $data);
+        } else {
+            $this->FrmEditarFicha($nroficha);
+        }
+    }
+
     public function FrmEditarFicha($nroficha) {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
-            $data['ficha'] = $this->ficha->getFicha($nroficha);
-            $data['programas'] = $this->programa->mostrarProgramas();
-            $data['municipios'] = $this->municipio->mostrarMunicipios();
-            $data['etapasformacion'] = $this->etapaformacion->mostrarEtapaFormacion();
-            $data['etapasproyecto'] = $this->etapaproyecto->mostrarEtapaProyecto();
-            $data['instructores'] = $this->usuario->getInstructores();
-            $dinamica = $this->load->view('content/Administrador/ficha/editar', $data, true);
+            //Si el input post es ok entonces significa que se esta cargando por primera vez el formulario editar
+            if ($this->input->post("ok")) {
+                
+                $codigo_municipio = $_POST['municipio'];
+                $nroficha = $this->input->post('nroficha');
+                $data['sedes'] = $this->sede->mostrarSedesMunicipio($codigo_municipio);
+
+                if ($data['sedes']) {
+                    $this->load->view('content/Administrador/ficha/municipio_sede_editar', $data);
+                } else {
+                    $this->FrmEditarFicha($nroficha);
+                }
+
+            }else{
+
+                $data['ficha'] = $this->ficha->getFicha($nroficha);
+                $codigo_municipio = $data['ficha']->municipio;
+                $data['programas'] = $this->programa->mostrarProgramas();
+                $data['municipios'] = $this->municipio->mostrarMunicipios();
+                $data['etapasformacion'] = $this->etapaformacion->mostrarEtapaFormacion();
+                $data['etapasproyecto'] = $this->etapaproyecto->mostrarEtapaProyecto();
+                $data['instructores'] = $this->usuario->getInstructores();
+                $data['sedes'] = $this->sede->mostrarSedesMunicipio($codigo_municipio);
+                $dinamica = $this->load->view('content/Administrador/ficha/editar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function areas_centro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['areas_centro'] = $this->areascentro->mostrarAreasCentro();
+            $dinamica = $this->load->view('content/Administrador/areas_centro/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function agregarAreasCentro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $areas = $this->input->post('areas');
+            $centro = $this->input->post('centro');
+            
+            $resultado = $this->areascentro->agregarAreasCentro($centro, $areas);
+
+            if ($resultado) {
+
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+    
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario Administrador agregado'
+                })";
+
+                $data['areas_centro'] = $this->areascentro->mostrarAreasCentro();
+                $dinamica = $this->load->view('content/Administrador/areas_centro/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+                
+            } else {
+
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+    
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Los registros ya existen'
+                })";
+
+                $data['areas'] = $this->area->mostrarAreasCentro();
+                $data['centros'] = $this->centro->mostrarCentros();
+                $dinamica = $this->load->view('content/Administrador/areas_centro/agregar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    public function eliminarAreasCentro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $centro = $this->input->post('centro');
+            $area = $this->input->post('area');
+
+            $resultado = $this->areascentro->eliminarAreasCentro($centro, $area);
+
+            if ($resultado) {
+                $this->FrmEditarAreasCentro($centro);
+            } else {
+                $data['mensaje'] = "const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+    
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No se ha podido eliminar el área del centro'
+                })";
+
+                $data['areas_centro'] = $this->areascentro->mostrarAreasCentro();
+                $dinamica = $this->load->view('content/Administrador/areas_centro/listar', $data, true);
+                $this->Plantilla_Administrador($dinamica);
+            }
+        } else {
+            show_404();
+        }
+    }
+
+    //Carga de vista formularios areas centro
+    public function FrmAgregarAreasCentro() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['areas'] = $this->area->mostrarAreasCentro();
+            $data['centros'] = $this->centro->mostrarCentros();
+            $dinamica = $this->load->view('content/Administrador/areas_centro/agregar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            show_404();
+        }
+    }
+
+    public function FrmEditarAreasCentro($centro) {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $data['areascentro'] = $this->areascentro->areasCentro($centro);
+            $dinamica = $this->load->view('content/Administrador/areas_centro/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
             show_404();

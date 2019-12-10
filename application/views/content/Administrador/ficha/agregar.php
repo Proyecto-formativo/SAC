@@ -58,14 +58,18 @@
         </div>
       </div>
 
-      <div class="col-6">
-        <div class="form-group">
-          <label for="">Sede:</label>
-          <select name="sede" class="form-control">
-
-          </select>
-        </div>
+      <div class="infoSedeMunicipio col-6">
+        
+          <div class="form-group">
+            <label for="">Sede:</label>
+            <select name="sede" class="form-control">
+            </select>
+            <?= form_error('sede', '<p class="text-danger">', '</p>'); ?>
+          </div>
+        
       </div>
+
+      
 
     </div>
     
@@ -118,10 +122,10 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Instructor Lider:</label>
-          <select name="instructor_lider" class="form-control">
+          <select name="instructor_lider" class="form-control select2_instructor">
             <option value="0">Seleccione un instructor</option>
             <?php foreach($instructores->result() as $instructor) : ?>
-              <option value="<?= $instructor->documento; ?>" <?= set_select('instructor_lider', $instructor->documento); ?>><?= $instructor->instructor; ?></option>
+              <option value="<?= $instructor->documento; ?>" <?= set_select('instructor_lider', $instructor->documento); ?>><?= $instructor->documento .' - '. $instructor->instructor; ?></option>
             <?php endforeach; ?>  
           </select>
           <?= form_error('instructor_lider', '<p class="text-danger">', '</p>'); ?>

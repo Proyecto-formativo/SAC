@@ -7,7 +7,7 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Nro. Ficha:</label>
-          <input type="text" name="nro_ficha" class="form-control" value="<?= $ficha->nroFicha; ?>" readonly>
+          <input type="text" name="nro_ficha" class="form-control" value="<?= $ficha->nroficha; ?>" readonly>
           <?= form_error('nro_ficha', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>
@@ -15,7 +15,7 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Fecha Inicio:</label>
-          <input type="date" name="fecha_inicio" class="form-control" value="<?= $ficha->fechaInicio; ?>">
+          <input type="date" name="fecha_inicio" class="form-control" value="<?= $ficha->fechainicio; ?>">
           <?= form_error('fecha_inicio', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>
@@ -25,7 +25,7 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Fecha Final:</label>
-          <input type="date" name="fecha_final" class="form-control" value="<?= $ficha->fechaFinal; ?>">
+          <input type="date" name="fecha_final" class="form-control" value="<?= $ficha->fechafinal; ?>">
           <?= form_error('fecha_final', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>
@@ -49,10 +49,11 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group">
+          <input type="hidden" name="nroficha" id="nroficha" value="<?= $ficha->nroficha; ?>">
           <label for="">Municipio:</label>
-          <select name="municipio" class="form-control">
+          <select name="municipio" id="select_m" class="form-control">
             <?php foreach($municipios->result() as $municipio) : ?>
-              <?php if ($municipio->codigo == $ficha->municpio) : ?>
+              <?php if ($municipio->codigo == $ficha->municipio) : ?>
                 <option value="<?= $municipio->codigo; ?>" <?= set_select('municipio', $municipio->codigo); ?> selected><?= $municipio->nombre; ?></option>
               <?php else: ?>
                 <option value="<?= $municipio->codigo; ?>" <?= set_select('municipio', $municipio->codigo); ?>><?= $municipio->nombre; ?></option>
@@ -62,30 +63,46 @@
         </div>
       </div>
 
-      <div class="col-6">
+      <div class="infoSedeMunicipio col-6">
         <div class="form-group">
-          <label for="">Hora Inicio:</label>
-          <input type="time" name="hora_inicio" class="form-control" value="<?= $ficha->horaInicio; ?>">
-          <?= form_error('hora_inicio', '<p class="text-danger">', '</p>'); ?>
-        </div>      
+          <label for="">Sede:</label>
+          <select name="sede" id="select_m" class="form-control">
+            <?php foreach($sedes->result() as $sede) : ?>
+              <?php if ($sede->codigo == $ficha->sede) : ?>
+                <option value="<?= $sede->codigo; ?>" <?= set_select('sede', $sede->codigo); ?> selected><?= $sede->sede; ?></option>
+              <?php else: ?>
+                <option value="<?= $sede->codigo; ?>" <?= set_select('sede', $sede->codigo); ?>><?= $sede->sede; ?></option>
+              <?php endif; ?>  
+            <?php endforeach; ?>
+          </select>
+          <?= form_error('sede', '<p class="text-danger">', '</p>'); ?>
+        </div>
       </div>
     </div>
     
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="">Hora Inicio:</label>
+          <input type="time" name="hora_inicio" class="form-control" value="<?= $ficha->horainicio; ?>">
+          <?= form_error('hora_inicio', '<p class="text-danger">', '</p>'); ?>
+        </div>      
+      </div>
+
+      <div class="col-4">
         <div class="form-group">
           <label for="">Hora Fin:</label>
-          <input type="time" name="hora_fin" class="form-control" value="<?= $ficha->horaFin; ?>">
+          <input type="time" name="hora_fin" class="form-control" value="<?= $ficha->horafin; ?>">
           <?= form_error('hora_fin', '<p class="text-danger">', '</p>'); ?>
         </div>
       </div>
       
-      <div class="col-6">
+      <div class="col-4">
         <div class="form-group">
           <label for="">Etapa Formación:</label>
           <select name="etapa_formacion" class="form-control">
             <?php foreach($etapasformacion->result() as $etapaformacion) : ?>
-              <?php if ($etapaformacion->codigo == $ficha->etapaFormacion) : ?>
+              <?php if ($etapaformacion->codigo == $ficha->etapaformacion) : ?>
                 <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?> selected><?= $etapaformacion->nombre; ?></option>
               <?php else : ?>
                 <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?>><?= $etapaformacion->nombre; ?></option>
@@ -102,7 +119,7 @@
           <label for="">Etapa Proyecto:</label>
           <select name="etapa_proyecto" class="form-control">
             <?php foreach($etapasproyecto->result() as $etapaproyecto) : ?>
-              <?php if ($etapaproyecto->codigo == $ficha->etapaProyecto) : ?>
+              <?php if ($etapaproyecto->codigo == $ficha->etapaproyecto) : ?>
                 <option value="<?= $etapaproyecto->codigo; ?>" <?= set_select('etapa_proyecto', $etapaproyecto->codigo); ?> selected><?= $etapaproyecto->nombre; ?></option>
               <?php else : ?>
                 <option value="<?= $etapaproyecto->codigo; ?>" <?= set_select('etapa_proyecto', $etapaproyecto->codigo); ?>><?= $etapaproyecto->nombre; ?></option>
@@ -115,12 +132,12 @@
       <div class="col-6">
         <div class="form-group">
           <label for="">Instructor Lider:</label>
-          <select name="instructor_lider" class="form-control">
+          <select name="instructor_lider" class="form-control select2_instructor">
             <?php foreach($instructores->result() as $instructor) : ?>
-              <?php if ($instructor->documento == $ficha->instructorLider) : ?>
-                <option value="<?= $instructor->documento; ?>" <?= set_select('instructor_lider', $instructor->documento); ?> selected><?= $instructor->instructor; ?></option>
+              <?php if ($instructor->documento == $ficha->instructorlider) : ?>
+                <option value="<?= $instructor->documento; ?>" <?= set_select('instructor_lider', $instructor->documento); ?> selected><?= $instructor->documento .' - '. $instructor->instructor; ?></option>
               <?php else : ?>
-                <option value="<?= $instructor->documento; ?>" <?= set_select('instructor_lider', $instructor->documento); ?>><?= $instructor->instructor; ?></option>
+                <option value="<?= $instructor->documento; ?>" <?= set_select('instructor_lider', $instructor->documento); ?>><?= $instructor->documento .' - '. $instructor->instructor; ?></option>
               <?php endif; ?>  
             <?php endforeach; ?>  
           </select>
