@@ -179,8 +179,8 @@
                 
                 ?>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="<?=$row->nombres?>" name="aprendices[]"  value="<?=$row->docId?>">
-                        <label class="custom-control-label" for="<?=$row->nombres?>"> <?=$row->nombres.' '.$row->apellidos?></label>
+                        <input type="checkbox" class="custom-control-input" id="<?=$row->nombres.' '.$row->apellidos?>" name="aprendices[]"  value="<?=$row->docId?>">
+                        <label class="custom-control-label" for="<?=$row->nombres.' '.$row->apellidos?>"> <?=$row->nombres.' '.$row->apellidos?></label>
                     </div>
                 <?php
                endforeach;

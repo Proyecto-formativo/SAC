@@ -10,14 +10,6 @@ function acta_rules(){
             )
         ],
         [
-            'field' => 'municipio',
-            'label' => 'municipio',
-            'rules' => 'required',
-            'errors' => array(
-                'required' => 'el %s es requerida',
-            )
-        ],
-        [
             'field' => 'hora_inicio',
             'label' => 'hora_inicio',
             'rules' => 'required',

@@ -6,8 +6,7 @@
         <thead  style=" font-size: 20px;">
             <tr class="bg-sena text-center">
                 <th>Nombre acta</th>
-                <th>Municipio</th>
-                <th>Fehca</th>
+                <th>Fecha</th>
                 <th>Hora inicio</th> 
                 <th>Hora fin</th> 
                 <th>ver Acta</th> 
@@ -17,7 +16,6 @@
             <?php foreach ($datos->result() as $valores): ?>
                 <tr>
                     <td><?=$valores->consecutivo?></td>
-                    <td><?=$valores->municipio?></td>
                     <td><?=$valores->fecha?></td>
                     <td><?=$valores->horaInicio?></td>
                     <td><?=$valores->horaFin?></td>

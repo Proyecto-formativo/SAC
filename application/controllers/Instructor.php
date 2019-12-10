@@ -225,7 +225,7 @@ class Instructor extends CI_Controller {
     public function traerdatosficha(){
         if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 1) {
             $ficha =  $_POST["numeroficha"];
-
+ 
             $datosFicha = $this->ficha->mostrarficha($ficha);
 
             if ($datosFicha != false) {

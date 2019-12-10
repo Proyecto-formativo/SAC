@@ -274,39 +274,8 @@ $(document).ready(function() {
 
 
   $('#generarpdf').click(function() {
-		// var options = {
-    //   // 'width': 800, 
-    //   // 'height': 500,
-    //   pegesplit:true,
+    let numeroacta = $("#numeroActa").text();
 
-    // };
-    // l = { 
-    //   orientation: 'p', 
-    //   unit: 'mm', 
-    //   format: 'a3', 
-    //   compress: true, 
-    //   fontSize: 11, 
-    //   lineHeight: 1, 
-    //   autoSize: false, 
-    //   printHeaders: true 
-    //  };
-    // var pdf = new jsPDF(l, 'pt', 'letter');
-    // pdf.internal.scaleFactor = 5;
-    // pdf.page = 1;
-		// //pdf.text("Reporte numero");
-		// pdf.addHTML($("#pdf").get(0), 15, 15, options, function() {
-    //   // pdf.addPage();
-    //   // pdf.save('informe.pdf');
-      
-    //   var pageCount = pdf.internal.getNumberOfPages();
-    //   for (i = 0; i < pageCount; i++) {
-    //     pdf.setPage(i);
-    //     pdf.text(10, 10, pdf.internal.getCurrentPageInfo().pageNumber + "/" + pageCount);
-    //   };
-    //   pdf.save('Informacion.pdf');
-    // });
-
-    // console.log($("#pdf").get(0));
 
 
 
@@ -333,7 +302,7 @@ $(document).ready(function() {
             pdf.addPage(PDF_Width, PDF_Height);
             pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
         }
-        pdf.save(user + ".pdf");
+        pdf.save(`acta comite ${numeroacta}.pdf`);
     });
    
     

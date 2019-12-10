@@ -7,7 +7,7 @@
         <div class="row">
             <div class=" col-4  d-flex justify-content-center align-items-center pt-1 pb-1 border"><img src="<?=base_url('assets/images_sac/logo.png')?>" style="width:60px;"></div>
             <div class=" col-4 pt-4 pl-4 pr-4   border bg-sena">Numero de acta:</div>
-            <div class="col-4  pt-4 pl-4 pr-4   border " ><?=$Acta->consecutivo?></div>
+            <div class="col-4  pt-4 pl-4 pr-4   border " id="numeroActa"><?=$Acta->consecutivo?></div>
         </div>
         <div class="row">
             <div class=" col-12 pt-4 pl-4 pr-4 pb-4  text-center border ">COMITE DE EVALUACION Y SEQUIMIENTO</div>
