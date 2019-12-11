@@ -464,11 +464,8 @@ class Bienestar extends CI_Controller {
                 $valores = $this->reporteseguimientoaprendiz->mostrarDstosPorNumeroReporte($datosreporte->consecutivo);
                 array_push($datos,$valores);
             }
-            
-                         
-            $vistaDatosPoraprendiz = $this->load->view("content/Bienestar/vistaDeDatosPorAprendiz",['datos'=>$datos,'reportes'=>$reportes],true);
-            
-            $dinamica = $this->load->view('content/Bienestar/verActa',['Acta'=>$acta,'compromisos'=>$compromisos,'vistaDatosPoraprendiz'=>$vistaDatosPoraprendiz],true);
+                        
+            $dinamica = $this->load->view('content/Bienestar/verActa',['Acta'=>$acta,'compromisos'=>$compromisos,'datos'=>$datos,'reportes'=>$reportes],true);
 		    $this->Plantilla_Bienestar($dinamica);
         }else{
             show_404();

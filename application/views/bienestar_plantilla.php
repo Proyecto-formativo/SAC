@@ -10,7 +10,7 @@
 
 <header>
     <div class=" d-flex align-items-center text-white  style-flex">
-        <img src="<?=base_url('assets/images_sac/Logo-B-white.png')?>" class="style-img" alt="Logo SENA">
+        <img src="<?=base_url('assets/images_sac/logo_b_white.png')?>" class="style-img" alt="Logo SENA">
         <h3 class="st-text">SAC - Seguimientos Aprendices Citados </h3>
         <div>
             

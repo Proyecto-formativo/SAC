@@ -98,7 +98,7 @@
                     </div>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                        <div class="input-group-text"><img src="<?=base_url("assets/images_sac/contraseña.png")?>" width="20" alt=""></div>
+                        <div class="input-group-text"><img src="<?=base_url("assets/images_sac/contrasena.png")?>" width="20" alt=""></div>
                         </div>
                         <input type="password"name="password" class="form-control" id="password" placeholder="Nueva Contraseña" size="10" maxlength="10" value="<?=isset($valor_password)?$valor_password:$datos->clave?>">
                     </div>
