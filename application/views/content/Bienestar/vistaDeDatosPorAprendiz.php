@@ -20,16 +20,16 @@ foreach ($datos as $array):
     </div>
     <div class="row">
         <div class=" col-3  p-0  border text-center bg-sena">
-            <div class="pl-2">justificacion</div>
+            <div class="pl-2">Justificacion:</div>
         </div>
         <div class=" col-3  p-0  border text-center bg-sena">
-            <div class="pl-2">Normas reglamentarias</div>
+            <div class="pl-2">Normas reglamentarias:</div>
         </div>
         <div class=" col-3  p-0  border text-center bg-sena">
-            <div class="pl-2">Tipo de falta</div>
+            <div class="pl-2">Tipo de falta:</div>
         </div>
         <div class=" col-3  p-0  border text-center bg-sena">
-            <div class="pl-2">Tipo de calificacion</div>
+            <div class="pl-2">Tipo de calificación:</div>
         </div>
     </div>
     <?php
@@ -62,7 +62,7 @@ foreach ($datos as $array):
             <div class="pl-2">Descargos:</div>
         </div>
         <div class=" col-3  p-0  border text-center bg-sena">
-            <div class="pl-2">Recomendacion:</div>
+            <div class="pl-2">Recomendación:</div>
         </div>
     </div>
     <?php

@@ -21,13 +21,13 @@
             <div class="style-navegacion">
                 <a href="<?=base_url('Instructor/reporte')?>" id="btn-4" class="btn botoncito btn4">
                     <div class="style-botones boton">
-                        <button type="button" id="btn-3" class="btn botoncito">Realizar Reporte  </button> <img src="<?=base_url("assets/images_sac/reportes.png")?>" width="30" alt="">
+                        <button type="button" id="btn-3" class="btn botoncito">Realizar citación  </button> <img src="<?=base_url("assets/images_sac/reportes.png")?>" width="30" alt="">
                     </div>
                 </a>
 
                 <a href="<?=base_url('Instructor/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                     <div class="style-botones boton">
-                        <button type="button" id="btn-3" class="btn botoncito">Configuracion  </button><img src="<?=base_url("assets/images_sac/configuraciones.png")?>" width="25" alt="">
+                        <button type="button" id="btn-3" class="btn botoncito">Configuración  </button><img src="<?=base_url("assets/images_sac/configuraciones.png")?>" width="25" alt="">
                     </div>
                 </a>
                 

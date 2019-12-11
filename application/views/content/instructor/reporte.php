@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="area">Area:</label>
+                        <label for="area">Área:</label>
                         <input type="text" name="AREA"class="form-control" id="area" disabled required>
                     </div>
                 </div>

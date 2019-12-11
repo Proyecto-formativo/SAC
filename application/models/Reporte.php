@@ -74,16 +74,7 @@ class reporte extends CI_Model{
 
 	public function Consult_general_coor($doc){
 
-	$sql = $this->db->query("SELECT af.numFicha,p.nombre,r.fecha,r.consecutivo,r.estado
-        FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar 
-        ON ar.consReporte=r.consecutivo         
-        INNER JOIN tblaprendicesficha as af ON af.docIDAprendiz=ar.docIDAprendiz
-        INNER JOIN tblficha as f ON f.nroFicha=af.numFicha
-        INNER JOIN tblprograma as p ON p.codigo=f.programa
-        INNER JOIN tblarea as area ON p.area = area.codigo
-    	INNER JOIN tblarea as acor ON r.docIDCoordinador=acor.docIDCoordinador       
-        WHERE acor.docIDCoordinador=$doc
-        GROUP BY r.consecutivo ORDER BY r.consecutivo DESC ");
+	$sql = $this->db->query("SELECT r.consecutivo, r.fecha, f.nroFicha AS numFicha, r.estado,p.nombre FROM tblreporte AS r INNER JOIN tblaprendicesreportados AS ar ON r.consecutivo = ar.consReporte INNER JOIN tblusuario AS u ON ar.docIDAprendiz = u.docID INNER JOIN tblaprendicesficha AS af ON u.docID = af.docIDAprendiz INNER JOIN tblficha AS f ON af.numFicha = f.nroFicha INNER JOIN tblprograma AS p ON f.programa = p.codigo INNER JOIN tblarea AS a ON p.area = a.codigo WHERE a.docIDCoordinador = '$doc' GROUP BY r.consecutivo");
 		return $sql;
 	}
 	public function Consult_aprobados($doc){

@@ -1,18 +1,18 @@
 
 <?php error_reporting(E_ALL ^ E_NOTICE);?>
 
-
-<table id="estadoinstructor" class="table table-striped table-bordered" style="width: 100%;">
+<div class="container">
+	<table id="reportes_coordinador" class="table table-striped table-bordered" style="width: 100%;">
     <thead>
       <tr>
        
-        <th>FECHA </th>
-		<th>FICHA</th>
-        <th>PROGRAMA DE FORMACION </th>
+        <th>Fecha</th>
+		<th>Ficha</th>
+        <th>Programa de formación</th>
 		<?php if($caso=="todos"){
-				echo '<th > ESTADO </th>';
+				echo '<th > Estado </th>';
 			} ?>
-        <th>VER</th>
+        <th>Ver</th>
       </tr>	
 
 
@@ -32,10 +32,11 @@
 							<img src="<?=base_url("assets/images_sac/lupa.png")?>" alt="" width="30" style="margin:auto">
 						</div>
 					</a>
-				</td
+				</td>
 			</tr>
 		<?php endforeach?>
 	</tbody>
-		</table>
+</table>
+</div>
 
 

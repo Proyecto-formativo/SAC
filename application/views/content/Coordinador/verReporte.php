@@ -14,8 +14,8 @@
 <body>
 <p align="right" style="border-block-end-color:   #1f1d1d">
 
- <!--	<a id="ap"  href="<?=base_url('Coordinador/aprobarReporte/') . $reporte[0]->consecutivo;?>"><button type="button" class="btn btn-primary"  style="background: #fc7323; border: 1px solid #fc7323;" id="btnsave">Citar A Comite</button></a>-->
-	<button type="button" style="background: #249762" id="download" class="btn btn-primary" id="btnsave">Generar Pdf</button>
+ <a id="ap"  href="<?=base_url('Coordinador/aprobarReporte/') . $reporte[0]->consecutivo;?>"><button type="button" class="btn btn-primary"  style="background: #fc7323; border: 1px solid #fc7323;" id="btnsave">Citar a comité</button></a>
+	<button type="button" style="background: #249762" id="download" class="btn btn-primary" id="btnsave">Generar pdf</button>
 
 	<a href="<?=base_url('Coordinador/reportes/');?>"><button type="button" class="btn btn-secondary" >Volver</button></a>
 </p>
@@ -32,9 +32,9 @@
 
 			<tbody>
 			<tr>
-				<th class="bg-sena text-white text-center" scope="col">Area:</th>
+				<th class="bg-sena text-white text-center" scope="col">Área:</th>
 				<td class="bg-light text-center text-black" colspan="3"><?=$reporte[0]->area;?></td>
-				<th class="bg-sena text-white text-center" scope="col">Fecha</th>
+				<th class="bg-sena text-white text-center" scope="col">Fecha<:/th>
 				<td class="bg-light text-center" colspan="2"><?=$reporte[0]->fecha;?></td>
 			</tr>
 
@@ -80,7 +80,7 @@
 			</tr>
 
 			<tr>
-				<th class="bg-sena text-white text-center" scope="row">Coordinador de area:</th>
+				<th class="bg-sena text-white text-center" scope="row">Coordinador de área:</th>
 				<td class="bg-light text-black text-center" colspan="6"><?=$cordi[0]->cordi;?></td>
 			</tr>
 

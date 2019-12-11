@@ -138,6 +138,7 @@
             <select name="tipofalta" class="form-control"  id="tipofalta" required>
                 <option value="Academica">Academica</option>
                 <option value="Diciplinaria">Diciplinaria</option>
+                <option value="No aplica">No aplica</option>
             </select>                    
         </div>
     
@@ -164,6 +165,7 @@
                 <option value="leve">Leve</option>
                 <option value="Grave">Grave</option>
                 <option value="Gravisima">Gravisima</option>
+                <option value="No aplica">No aplica</option>
             </select>                    
         </div>
     </div>
@@ -179,8 +181,8 @@
                 
                 ?>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="<?=$row->nombres?>" name="aprendices[]"  value="<?=$row->docId?>">
-                        <label class="custom-control-label" for="<?=$row->nombres?>"> <?=$row->nombres.' '.$row->apellidos?></label>
+                        <input type="checkbox" class="custom-control-input" id="<?=$row->nombres.' '.$row->apellidos?>" name="aprendices[]"  value="<?=$row->docId?>">
+                        <label class="custom-control-label" for="<?=$row->nombres.' '.$row->apellidos?>"> <?=$row->nombres.' '.$row->apellidos?></label>
                     </div>
                 <?php
                endforeach;

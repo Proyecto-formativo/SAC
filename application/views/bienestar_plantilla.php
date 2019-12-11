@@ -10,7 +10,7 @@
 
 <header>
     <div class=" d-flex align-items-center text-white  style-flex">
-        <img src="<?=base_url('assets/images_sac/logo-b-white.png')?>" class="style-img" alt="Logo SENA">
+        <img src="<?=base_url('assets/images_sac/Logo-B-white.png')?>" class="style-img" alt="Logo SENA">
         <h3 class="st-text">SAC - Seguimientos Aprendices Citados </h3>
         <div>
             
@@ -24,7 +24,7 @@
         <div class="style-navegacion">
             <a href="<?=base_url('Bienestar/ActaComite')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
-                <button type="button" id="btn-1" class="btn botoncito">Acta comite </button> <img src="<?=base_url("assets/images_sac/iconoActa.png")?>" width="30" alt=""> 
+                <button type="button" id="btn-1" class="btn botoncito">Acta comité </button> <img src="<?=base_url("assets/images_sac/iconoActa.png")?>" width="30" alt=""> 
                 </div>
             </a>
 
@@ -69,7 +69,7 @@
 
             <a href="<?=base_url('Bienestar/configuraciones')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones boton">
-                    <button type="button" id="btn-3" class="btn botoncito">Configuracion  </button><img src="<?=base_url("assets/images_sac/configuraciones.png")?>" width="25" alt="">
+                    <button type="button" id="btn-3" class="btn botoncito">Configuración  </button><img src="<?=base_url("assets/images_sac/configuraciones.png")?>" width="25" alt="">
                 </div>
             </a>
             

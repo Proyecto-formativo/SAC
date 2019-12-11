@@ -5,11 +5,11 @@
     <table id="example" class="table table-striped table-bordered" style="width:100%;">
         <thead  style=" font-size: 20px;">
             <tr class="bg-sena text-center">
-                <th>Nombre acta</th>
-                <th>Fehca</th>
+                <th>Nro Acta</th>
+                <th>Fecha</th>
                 <th>Hora inicio</th> 
                 <th>Hora fin</th> 
-                <th>ver Acta</th> 
+                <th>Ver acta</th> 
             </tr>
         </thead>
         <tbody>

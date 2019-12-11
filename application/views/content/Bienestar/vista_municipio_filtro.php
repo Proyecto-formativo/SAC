@@ -2,7 +2,7 @@
     <!-- centro -->
     <div class="col-6">
         <div class="form-group">
-            <label for="centro">centro:</label>
+            <label for="centro">Centro:</label>
             <select name="centro" class="form-control"  id="centro" >    
                 <?php 
                 if (isset($datos)):

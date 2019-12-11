@@ -4,9 +4,9 @@
     <table id="example" class="table table-striped table-bordered" style="width:100%;">
         <thead  style=" font-size: 20px;">
             <tr class="bg-sena text-center">
-                <th>Nombre Area</th>
+                <th>Área</th>
                 <th>Coordinador</th>
-                <th>Generar Acta</th> 
+                <th>Generar acta</th> 
             </tr>
         </thead>
         <tbody>

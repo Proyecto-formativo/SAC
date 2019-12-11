@@ -14,7 +14,7 @@ date_default_timezone_set('America/Bogota');
                     <!-- municipio -->
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="NumroActa">Numero Acta:</label>
+                            <label for="NumroActa">Número Acta:</label>
                             <input type="text" class="form-control" id="NumroActa" name="NumroActa"  value="Nro_acta">
                         </div>
                     </div>
@@ -26,7 +26,7 @@ date_default_timezone_set('America/Bogota');
                         <div class="form-group">
                             <label for="municipio">Municipio:</label>
                             <select name="municipio" class="form-control"  id="municipio" required >
-                            <option value="null">seleccionar municipio</option>
+                            <option value="null">Seleccionar municipio</option>
                                 <?php foreach ($municipio->result() as $valores): ?>
                                     <option value="<?=$valores->codigo?>"><?=$valores->nombre?></option>
                                 <?php endforeach; ?>    
@@ -52,7 +52,7 @@ date_default_timezone_set('America/Bogota');
                         <!-- centro -->
                         <div class="col-6">
                             <div class="form-group">
-                                <label for="centro">centro:</label>
+                                <label for="centro">Centro:</label>
                                 <select name="centro" class="form-control"  id="centro" required>
                                     
                                 </select>
@@ -75,7 +75,7 @@ date_default_timezone_set('America/Bogota');
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="hora_inicio">hora inicio:</label>
+                            <label for="hora_inicio">Hora inicio:</label>
                             <input type="text" name="hora_inicio"class="form-control" id="hora-inicio" value="<?= date('h:i:s')?>" required readonly>
                         </div>
                     </div>
@@ -83,7 +83,7 @@ date_default_timezone_set('America/Bogota');
 
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="hora_fin">hora Fin:</label>
+                            <label for="hora_fin">Hora Fin:</label>
                             <input type="time" name="hora_fin"class="form-control" id="hora_fin" value="<?= date('h:i:s')?>" required>
                         </div>
                     </div>
@@ -96,14 +96,14 @@ date_default_timezone_set('America/Bogota');
                     <!--  Temas -->
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="temas">temas:</label>
+                            <label for="temas">Temas:</label>
                             <input type="text" name="temas"class="form-control" id="temas"  value="Comité de Evaluación y Seguimiento" required readonly>                                  
                         </div>
                     </div>
                     <!-- Área -->
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="Area">Area:</label>
+                            <label for="Area">Área:</label>
                             <input type="text" class="form-control" disabled required value="<?=$nombreArea?>">
                             <input type="hidden" name="area"class="form-control" id="area" required value="<?=$codigo?>">
                         </div>
@@ -117,7 +117,7 @@ date_default_timezone_set('America/Bogota');
                     <!-- Objetivos Reunión -->
                     <div class="col-12">
                         <div class="form-group">
-                            <label for="Objetivos">Objetivos De La Reunión:</label>
+                            <label for="Objetivos">Objetivos de la reunión:</label>
                             <textarea readonly class="form-control style-textareaficha" name="ObjetivosReunion" id="objetivos" cols="20" rows="" required>Analizar los informes académicos y disciplinarios de los aprendices que fueron citados al Comité, y realizar las recomendaciones al Subdirector.</textarea>
                         </div>
                     </div>
@@ -125,7 +125,7 @@ date_default_timezone_set('America/Bogota');
 
 
                 <div class="titulo-desarrollo mb-4 text-center p-2 ">
-                    <h2>Desarrollo De la Reunión</h2>
+                    <h2>Desarrollo de la reunión</h2>
                 </div>
 
 
@@ -136,7 +136,7 @@ date_default_timezone_set('America/Bogota');
                     <!-- Temas a Tratar -->
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="Temas-a-tratar">Temas A Tratar:</label>
+                            <label for="Temas-a-tratar">Temas a tratar:</label>
                             <textarea  class="form-control style-textareaficha-bienestar" name="Temas_a_Tratar" id="temasTratar" cols="100" rows="" required>
 A. Presentación de Asistentes al Comité.
 
@@ -190,12 +190,12 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
 
 
                 <div class="text-center mb-3">
-                    <button type="button" id="agregarCpompromisos" class="btn bg-success text-white" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">AÑADIR COMPROMISOS</button>
+                    <button type="button" id="agregarCpompromisos" class="btn bg-success text-white" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Añadir compromisos</button>
                 </div>
                 <table class="table" id="tableCompromisos">
                     <thead>
                         <tr>
-                        <th scope="col">consecutivo</th>
+                        <th scope="col">Consecutivo</th>
                         <th scope="col">Actividad</th>
                         <th scope="col">Responsable</th>
                         <th scope="col">Fecha Compromiso</th>
@@ -212,7 +212,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <!-- Descargos Aprendiz -->
                 <div class="col-12">
                     <div class="form-group">
-                        <h3>Descargos Aprendiz:</h3>
+                        <h3>Descargos aprendiz:</h3>
                         <?=$descargos?>
                     </div>
                 </div>
@@ -228,7 +228,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <!-- Nombre Asistentes -->
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="Asistentes">Nombres Asistentes:</label>
+                        <label for="Asistentes">Nombres asistentes:</label>
                         <input type="file"name="NombresAsistentes" class="form-control-file" id="asistentes" required>
                     </div>
                 </div>
@@ -236,7 +236,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                 <!-- Nombre Invitados -->
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="Invitados">Nombres Invitados:</label>
+                        <label for="Invitados">Nombres invitados:</label>
                         <input type="file"name="NombreInvitados" class="form-control-file" id="invitados" required>
                     </div>
                 </div>
@@ -276,7 +276,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                         <form id="formularioDeCompromisos">
                             <div class="row">
                                 <div class="col-12">
-                                    <label for="Actividad">actividad</label>
+                                    <label for="Actividad">Actividad</label>
                                     <textarea class="form-control" name="Actividad" id="actividad_text" cols="20" rows="" required></textarea>
                                 </div>
                             </div>
@@ -288,7 +288,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
                                 </div>
 
                                 <div class="col-6">
-                                    <label for="Fecha">Fecha Compromiso</label>
+                                    <label for="Fecha">Fecha compromiso</label>
                                     <input class="form-control" type="date" id="fecha-compromiso" required>
                                 </div>
                             </div>
@@ -316,7 +316,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Descargos Aprendiz:</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Descargos aprendiz:</h5>
       </div>
         <div class="container">
             <form id="formularioDeDescargos">
@@ -335,7 +335,7 @@ C. Se da informe de los aprendices citados a Comité de Evaluación.
 
 
                 <div class="form-group form-check">
-                    <label for="descarosAprendiz">Descargos del Aprendiz:</label>
+                    <label for="descarosAprendiz">Descargos del aprendiz:</label>
                     <textarea  class="form-control style-textareaficha-descargos" name="Desarrollo" id="descarosAprendiz" cols="20" rows=""></textarea>
                 </div>
 
