@@ -1,0 +1,19 @@
+Hi everyone, My name is Juan Pablo Agudelo Castro, I'm 19 y/o, I live in Rionegro city, I like working out and mostly going on a walk every afternoon.
+I am an apprentice at SENA in the technological program information systems analysis and development, also known as ADSI.
+In this program, i am learning to specify the requirements needed in order to develop an information system according to customer needs,
+Build the system that meets the solution requirements, Analyze the customer's difficulties and then build the information system that will help to solve those difficulties,
+and last design the system according to the customer's requests.
+When it comes to Database management, i have knowledge in SQL language such as ddl(data definition language), dml(data manipulation language) and querying
+data, as a technologist i have the ability to design relational and normalized databases. For database management systems i work with SQL Server and MySQL.
+When i develop web apps or webpages, i work with HTML for displaying content in the browser, CSS for styling, besides i got knowledge in Bootstrap and
+Materialize which are frameworks used for CSS.
+
+I also work with Javascript for making web apps or webpages dynamic. Like with CSS, I also have knowledge in frameworks for Javascript like JQuery and
+this is all related to frontend, But as a fullstack developer I work with PHP for backend in order to manipulate data between the application and
+a database. However web development is not the only thing i am capable of doing. I also work with the .NET Framework and the Visual Basic programming
+language for developing desktop apps. 
+
+To wrap it up i consider myself a calm person, someone who does not fear to take challenges, My main goal is, once i finish my carreer, i would
+like to work in a software development enterprise located in colombia and work there for as long os i feel my knowledge it's worthy of, but my dream is to learn
+english and get all the documents needed for traveling abroad or the usa, if i ever get to be in the us, i will get a job at one of the greatest software
+enterprises in the usa like google, facebook or amazon.

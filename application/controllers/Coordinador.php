@@ -351,5 +351,21 @@ class Coordinador extends CI_Controller {
 
 	}
 
+
+	public function enviar_observaciones(){
+		$observaciones=$_POST['obser'];
+		$reporte=$_POST['reporte'];
+		$mail=$_POST['mail'];
+		$res=$this->reporte->agregar_observacion($reporte,$observaciones);
+		echo "acción realizada correctamente";
+		/*
+        $email_subject="observaciones de reporte ";
+		if (mail($mail, $email_subject, $email_message, $header)) {
+		
+			return false;
+		} else {*/
+
+	}
+
 }
 

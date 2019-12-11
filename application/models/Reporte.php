@@ -9,7 +9,7 @@ class reporte extends CI_Model{
 
 
 	public function IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$coordinador,$tipofalta,$tipoCalificcion,$sugerencia){
-		$this->db->query("INSERT INTO tblreporte value(null,current_date() ,' $justificacion ',$instructorReporte,'$evidencia ',' $normasReglamentarias',$coordinador,'$tipofalta',' $tipoCalificcion',$sugerencia, 'No aprobado',null)");
+		$this->db->query("INSERT INTO tblreporte value(null,current_date() ,' $justificacion ',$instructorReporte,'$evidencia ',' $normasReglamentarias',$coordinador,'$tipofalta',' $tipoCalificcion',$sugerencia, 'No aprobado',null,null)");
 	}
 
     public function Actualizarficha($numeroficha,$valores){
@@ -106,11 +106,11 @@ class reporte extends CI_Model{
 		return $sql;
 	}
 
-	public function Consult_especifica($consec){
+    public function Consult_especifica($consec){
 		$sql=$this->db->query("SELECT af.numFicha as ficha,p.nombre as programa,r.fecha,r.consecutivo,r.estado,r.evidencia,
 		se.nombre as sede, area.nombre as area,ce.nombre as centro, nv.nombre as nivel
          ,su.nombre as sugerencia, mu.nombre as municipio ,ef.nombre as 'etapa_formacion',
-         ep.nombre as 'etapa_proyecto', concat(user.nombres,' ',  user.apellidos) as 
+         ep.nombre as 'etapa_proyecto', user.correoCorporativo as mailpro,r.observaciones,concat(user.nombres,' ',  user.apellidos) as 
          'Instructor_Reporte', concat(us2.nombres,' ',  us2.apellidos) as 'Instructor_Lider',
          r.justificacion,r.normasReglamento,r.tipoFalta,r.tipoCalificacion
 		
@@ -134,6 +134,7 @@ class reporte extends CI_Model{
         GROUP BY r.consecutivo");
 		return $sql->result_object();
 	}
+
 
 	public function getNumReportes(){
 		$sql=$this->db->query("SELECT consecutivo from tblreporte");
@@ -179,4 +180,9 @@ class reporte extends CI_Model{
 		return $sql->result_object();
 	}
 
+   //agregar observaciones al reporte en el perfil Coordinador
+   public function agregar_observacion($reporte,$observaciones){
+    $this->db->query("UPDATE tblreporte SET observaciones='$observaciones' WHERE consecutivo=$reporte");
+    return;
+    }
 }

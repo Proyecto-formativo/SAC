@@ -1,6 +1,5 @@
 <head>
 	<!-- jQuery library -->
-	<script src="<?=base_url('assets/jspdf/jquery-3.4.1.min.js');?>"></script>
 	<script src="<?=base_url('assets/jspdf/jspdf.min.js');?>"></script>
 	<script src="<?=base_url('assets/js/auth/coordinador.js');?>"></script>
 	<style>
@@ -14,11 +13,44 @@
 <body>
 <p align="right" style="border-block-end-color:   #1f1d1d">
 
+</button>
+
  <a id="ap"  href="<?=base_url('Coordinador/aprobarReporte/') . $reporte[0]->consecutivo;?>"><button type="button" class="btn btn-primary"  style="background: #fc7323; border: 1px solid #fc7323;" id="btnsave">Citar a comité</button></a>
+	<?php if($reporte[0]->observaciones==""){ ?><button type="button"   data-toggle="modal" data-target="#Modal_obs"  class="btn btn-primary"  style="background: #fc7323; border: 1px solid #fc7323;" id="btnsave">Observaciones</button> <?php } ?>
+
 	<button type="button" style="background: #249762" id="download" class="btn btn-primary" id="btnsave">Generar pdf</button>
 
 	<a href="<?=base_url('Coordinador/reportes/');?>"><button type="button" class="btn btn-secondary" >Volver</button></a>
 </p>
+	<!-- MODAL OBSERVACIONES   -->
+	<div class="modal fade" id="Modal_obs" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel" >Indique Observaciones</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+                <input type="text" id="mailprofe" value="<?=$reporte[0]->mailpro;?>" style="display:none"	>
+				<form action="">
+					<textarea class="form-control" id="observacionesf" style="overflow: scroll; height: 350px"  rows="14" placeholder="Mensaje">
+					</textarea>
+				</form>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-primary" onclick="observaciones(<?=$reporte[0]->consecutivo;?>)" >Aceptar</button>
+			</div>
+			</div>
+
+			</div>
+		</div>
+  <!--FIN MODAL OBSERVACIONES-->
+
 
 <div id="pdf" style="background-color: white; width: 100%;">
 	<h4 id="h4" align="center" >Reporte Generado N° <?=$reporte[0]->consecutivo;?></h4>
@@ -28,13 +60,13 @@
 
 	<?php if($reporte[0]->estado=="Aprobado"){echo " <script>document.getElementById('ap').style.display = 'none'</script>"; }?>
 
-		<table class="table table-bordered table-dark">
+		<table class="table table-bordered table-dark" style="width: 100%; height: auto; word-wrap: break-word; overflow-wrap: break-word;">
 
 			<tbody>
 			<tr>
 				<th class="bg-sena text-white text-center" scope="col">Área:</th>
 				<td class="bg-light text-center text-black" colspan="3"><?=$reporte[0]->area;?></td>
-				<th class="bg-sena text-white text-center" scope="col">Fecha<:/th>
+				<th class="bg-sena text-white text-center" scope="col">Fecha</th>
 				<td class="bg-light text-center" colspan="2"><?=$reporte[0]->fecha;?></td>
 			</tr>
 
@@ -214,8 +246,7 @@ HECHOS:<?=$reporte[0]->justificacion."\n\n"; echo $reporte[0]->normasReglamento.
 			</div>
 		</div>
 	</div><!--FIN MODAL-->
-
-
+	
 
 
 </body>
@@ -341,7 +372,7 @@ function ocultar() {
             data: {'mail': nombre, 'cons': snoc,'reporte':consecutivo,'asunto':asunto,'mensaje':mensaje },
             url:"../mail",
             success:function(r){
-                if(r == false){
+                if(r == true){
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -392,4 +423,20 @@ function ocultar() {
 		ocultarModal();
 
     }
+
+	function observaciones(repo){
+        var obser=document.getElementById("observacionesf").value;
+        var mail=document.getElementById("mailprofe").value;
+        $.ajax({
+            type:'POST',
+            data: {obser:obser,reporte:repo,mail:mail},
+            url:"../enviar_observaciones",
+            success:function(r){
+			   location.reload(false);
+				alert(r);
+            }
+        });//este ajax envia las observaciones del reporte 
+
+      
+	}
 </script>
