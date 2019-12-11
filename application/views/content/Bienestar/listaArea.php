@@ -7,7 +7,7 @@
             <tr class="bg-sena text-center">
                 <th>Área</th>
                 <th>Coordinador</th>
-                <th>Generar acta</th> 
+                <th>Realizar acta</th> 
             </tr>
         </thead>
         <tbody>

@@ -30,7 +30,7 @@
 
             <a href="<?=base_url('Bienestar/ActasGeneradas')?>" id="btn-4" class="btn botoncito btn4">
                 <div class="style-botones ">
-                <button type="button" id="btn-1" class="btn botoncito">Actas generadas</button> <img src="<?=base_url("assets/images_sac/actaGeneradas.png")?>" width="35" alt="">
+                <button type="button" id="btn-1" class="btn botoncito">Actas realizadas</button> <img src="<?=base_url("assets/images_sac/actaGeneradas.png")?>" width="35" alt="">
                 </div>
             </a>
 
