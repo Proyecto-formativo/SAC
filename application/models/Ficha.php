@@ -89,4 +89,9 @@ class ficha extends CI_Model{
 
         return true;
     }
+
+    public function mostrarPorInstructor($documento){
+        $sql = $this->db->query("SELECT * from tblequipoinstructor where docIDInstructor = '$documento'");
+        return $sql;
+    }
 }

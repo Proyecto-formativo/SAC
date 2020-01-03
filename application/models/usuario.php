@@ -45,7 +45,7 @@ class usuario extends CI_Model{
     }
 
     public function getAprendices() {
-        $sql = $this->db->query("SELECT docID AS documento, CONCAT(nombres, ' ', apellidos) AS instructor FROM tblusuario WHERE perfil = 4 ORDER BY CONCAT(nombres, ' ', apellidos)");
+        $sql = $this->db->query("SELECT docID AS documento, CONCAT(nombres, ' ', apellidos) AS instructor from tblusuario where perfil = 4 and docid not in (select docidaprendiz from tblaprendicesficha)");
         return $sql;
     }
 

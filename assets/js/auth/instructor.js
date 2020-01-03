@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $(".ficha").bind("keyup", function() {
+  $(".ficha").bind("change", function() {
 
     var ficha = $(".ficha").val();
     $.ajax({

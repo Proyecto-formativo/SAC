@@ -171,16 +171,16 @@ class login_controller extends CI_Controller {
 			 * se crea el mensaje para ser enviado al correo del usuario
 			 */
 			$to = $this->input->post("correoverificacion");
-			$from = "From: SAC";
 			$subject = "Recuperar contraseña";
-			$message = "El usuario identificado con el numero de documento: ". $this->input->post("docuemntoVerificacion")."\n";
-			$message .= "se le asigno una nueva contraseña: ".$newpass;
+			$carta = "De:  SAC ";
+			$carta .= "El usuario identificado con el numero de documento: ". $this->input->post("docuemntoVerificacion")."\n";
+			$carta .= "se le asigno una nueva contraseña: ".$newpass;
 
 			/**
 			 * se detienen los error mientras se revisa al subir a u servidor
 			 */
-			error_reporting(0);
-			mail($to,$subject,$message,$from);
+
+			mail($to,$subject,$carta);
 
 			$datos = [
 				'mensaje' => "const Toast = Swal.mixin({

@@ -6,8 +6,13 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="ficha">Ficha:</label>
-                    <input type="text"name="ficha" class="form-control ficha" id="ficha"  required >
-                    <!-- pattern="[A-Za-z]{3}" -->
+                    <select name="ficha" class="form-control ficha" required >
+                        <option value="">Seleccionar ficha</option>
+                        <?php 
+                        foreach ($fichas->result() as $ficha):?>
+                            <option value="<?=$ficha->numFicha?>"><?=$ficha->numFicha?></option>
+                        <?php endforeach;?>
+                    </select>
                 </div>
             </div>
             <div class="col-6">

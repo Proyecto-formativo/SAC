@@ -46,7 +46,8 @@ class Instructor extends CI_Controller {
      */
     public function reporte($mensaje = null){
         if ($this->session->userdata("is_logged") && $this->session->userdata('perfil') == 1) {
-            $dinamica = $this->load->view('content/instructor/reporte',$mensaje,true);
+            $fichasDelInstructor = $this->ficha->mostrarPorInstructor($this->session->userdata("documento"));
+            $dinamica = $this->load->view('content/instructor/reporte',['fichas'=> $fichasDelInstructor,"mensaje" => $mensaje],true);
             $this->Plantilla_instructor($dinamica);
         }else{
             show_404();
@@ -58,8 +59,7 @@ class Instructor extends CI_Controller {
             $this->form_validation->set_error_delimiters('','');
             $this->form_validation->set_rules(ficha_rules());
             if($this->form_validation->run() == false){
-                $mensaje = [
-                    'mensaje' => "                    
+                $mensaje = "                    
                     const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-end',
@@ -75,12 +75,11 @@ class Instructor extends CI_Controller {
                       Toast.fire({
                         icon: 'error',
                         title: 'Todos los campos son requeridos'
-                      })",
-                ];
+                      })";
+                
                 $this->reporte($mensaje);
             }else if ($this->input->post("aprendices") == null)  {
-                $mensaje = [
-                    'mensaje' => "                    
+                $mensaje =  "                    
                     const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-end',
@@ -96,8 +95,7 @@ class Instructor extends CI_Controller {
                       Toast.fire({
                         icon: 'error',
                         title: 'No se puede generar un reporte si no ha seleccionado aprendices'
-                      })",
-                ];
+                      })";
                 $this->reporte($mensaje);
             }else{
                 /**
@@ -114,8 +112,7 @@ class Instructor extends CI_Controller {
 
 
                     if ($this->upload->data()["file_size"] > 6155.39) {
-                        $mensaje = [
-                            'mensaje' => "                    
+                        $mensaje = "                    
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -131,8 +128,7 @@ class Instructor extends CI_Controller {
                             Toast.fire({
                                 icon: 'error',
                                 title: 'El tama単o del archivo es demaciado grande solo se aceptan '
-                            })",
-                        ];
+                            })";
                     }else{
                         /**
                          * 
@@ -174,8 +170,7 @@ class Instructor extends CI_Controller {
                         for ($i=0; $i < count($aprendices); $i++) { 
                             $this->aprendicesreportados->IngresarAprencides($sql->consecutivo,$aprendices[$i]);
                         }
-                        $mensaje = [
-                            'mensaje' => "                    
+                        $mensaje = "                    
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -191,12 +186,10 @@ class Instructor extends CI_Controller {
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Reporte enviado correctamente'
-                            })",
-                        ];
+                            })";
                     }
                 }else{
-                    $mensaje = [
-                        'mensaje' => "                    
+                    $mensaje =  "                    
                         const Toast = Swal.mixin({
                             toast: true,
                             position: 'top-end',
@@ -212,8 +205,7 @@ class Instructor extends CI_Controller {
                           Toast.fire({
                             icon: 'error',
                             title: 'La evidencia es requerida, favor repetir el procediminto correspondiente'
-                          })",
-                    ];
+                          })";
                 }
                 $this->reporte($mensaje);
             }
