@@ -5,8 +5,8 @@ class acceso extends CI_Model{
         $this->load->database();
     }
 
-    public function verificarLogin($docuemnto,$contraseña){
-        $sql = $this->db->get_where('tblacceso',['docIDUsuario'=>$docuemnto,'clave' =>$contraseña]);
+    public function verificarLogin($docuemnto,$contrasena){
+        $sql = $this->db->get_where('tblacceso',['docIDUsuario'=>$docuemnto,'clave' =>$contrasena]);
         if ($sql->result()) {
             return $sql->row();
         }
@@ -21,7 +21,7 @@ class acceso extends CI_Model{
         return false;
     } 
 
-    public function ActualizarContraseña($documento,$valores){
+    public function ActualizarContrasena($documento,$valores){
         $this->db->where('docIDUsuario',$documento);
         $this->db->update('tblacceso',$valores);
     }

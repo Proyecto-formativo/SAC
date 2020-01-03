@@ -296,7 +296,7 @@ class Instructor extends CI_Controller {
                     'telefonoMovil' => $Celular
                 ];
                 $this->usuario->ActualizarPerfil($this->session->userdata("documento"),$valores);
-                $this->acceso->ActualizarContrase単a($this->session->userdata("documento"),['clave' => $password]);
+                $this->acceso->ActualizarContrasena($this->session->userdata("documento"),['clave' => $password]);
                 $datos = $this->usuario->MostrarPerfil($this->session->userdata('documento'));
                 $mensaje = "
                     const Toast = Swal.mixin({
