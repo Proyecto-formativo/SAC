@@ -81,7 +81,7 @@ class usuario extends CI_Model{
 
     //Mostrar Usuario para edición
     public function getUsuario($documento) {
-        $sql = $this->db->query("SELECT docId AS documento, nombres AS nombres, apellidos AS apellidos, correoPersonal AS correopersonal, correoCorporativo AS correocorporativo, telefonoMovil AS telmovil, telefonoFijo AS telfijo, perfil AS perfil FROM tblusuario WHERE docID = $documento");
+        $sql = $this->db->query("SELECT docId AS documento, nombres AS nombres, apellidos AS apellidos, correoPersonal AS correopersonal, correoCorporativo AS correocorporativo, telefonoMovil AS telmovil, telefonoFijo AS telfijo, perfil AS perfil FROM tblusuario WHERE docID = '$documento'");
         return $sql->row();
     }
 

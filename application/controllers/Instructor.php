@@ -155,7 +155,7 @@ class Instructor extends CI_Controller {
                         $justificacion = $this->input->post("justificacion");
                         $instructorReporte = $this->session->userdata("documento");
                         $normasReglamentarias = $this->input->post("normasReglamentarias");
-                        $coordinador = $this->input->post("codigocoordinador");
+                        $ficha = $this->input->post("ficha");
                         $tipofalta = $this->input->post("tipofalta");
                         $tipoCalificcion = $this->input->post("tipocalificacion");
                         $sugerencia = $this->input->post("sugerencia");
@@ -163,7 +163,7 @@ class Instructor extends CI_Controller {
                         $dato = ['upload_data' =>$this->upload->data()];
                         $evidencia = $ruta.$dato['upload_data']['file_name'];
 
-                        $this->reporte->IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$coordinador,$tipofalta,$tipoCalificcion,$sugerencia);
+                        $this->reporte->IngresarReporte($justificacion,$instructorReporte,$evidencia,$normasReglamentarias,$ficha,$tipofalta,$tipoCalificcion,$sugerencia);
                         
                         
                         /**
