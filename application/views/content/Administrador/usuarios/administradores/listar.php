@@ -33,11 +33,17 @@
             <?php else : ?>
               <td class="text-success">Con Acceso</td>
             <?php endif; ?>  
-            <td><a href="<?= base_url('Administrador/FrmEditarAdministrador/' . $administrador->documento); ?>" class="btn bg-sena">Editar</a></td>
             <td>
-              <button type="button" class="btn btn-danger eliminarAdministrador" data-toggle="modal">
+              <?php if($administrador->documento != "superusuario") : ?>
+                <a href="<?= base_url('Administrador/FrmEditarAdministrador/' . $administrador->documento); ?>" class="btn bg-sena">Editar</a>
+              <?php endif; ?>
+            </td>
+            <td>
+              <?php if($administrador->documento != "superusuario") : ?>
+                <button type="button" class="btn btn-danger eliminarAdministrador" data-toggle="modal">
                 Eliminar
-              </button>
+                </button>
+              <?php endif; ?>
             </td>
           </tr>
         <?php endforeach; ?>

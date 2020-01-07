@@ -99,22 +99,23 @@
       
       <div class="col-4">
         <div class="form-group">
-          <label for="">Etapa Formación:</label>
-          <select name="etapa_formacion" class="form-control">
-            <?php foreach($etapasformacion->result() as $etapaformacion) : ?>
-              <?php if ($etapaformacion->codigo == $ficha->etapaformacion) : ?>
-                <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?> selected><?= $etapaformacion->nombre; ?></option>
-              <?php else : ?>
-                <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?>><?= $etapaformacion->nombre; ?></option>
-              <?php endif; ?>  
-            <?php endforeach; ?>  
+          <label for="">Estado:</label>
+          <select name="estado" class="form-control">
+            <?php if ($ficha->estado == "En Ejecución") : ?>
+              <option value="En Ejecución" <?= set_select('estado', "En Ejecución"); ?> selected>En Ejecución</option>
+              <option value="Finalizada" <?= set_select('estado', "Finalizada"); ?>>Finalizada</option> 
+            <?php endif; ?>  
+            <?php if ($ficha->estado == "Finalizada") : ?>
+              <option value="Finalizada" <?= set_select('estado', "Finalizada"); ?> selected>Finalizada</option> 
+              <option value="En Ejecución" <?= set_select('estado', "En Ejecución"); ?>>En Ejecución</option>
+            <?php endif; ?>  
           </select>
         </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <div class="form-group">
           <label for="">Etapa Proyecto:</label>
           <select name="etapa_proyecto" class="form-control">
@@ -129,7 +130,22 @@
         </div>
       </div>
 
-      <div class="col-6">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="">Etapa Formación:</label>
+          <select name="etapa_formacion" class="form-control">
+            <?php foreach($etapasformacion->result() as $etapaformacion) : ?>
+              <?php if ($etapaformacion->codigo == $ficha->etapaformacion) : ?>
+                <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?> selected><?= $etapaformacion->nombre; ?></option>
+              <?php else : ?>
+                <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?>><?= $etapaformacion->nombre; ?></option>
+              <?php endif; ?>  
+            <?php endforeach; ?>  
+          </select>
+        </div>
+      </div>
+
+      <div class="col-4">
         <div class="form-group">
           <label for="">Instructor Lider:</label>
           <select name="instructor_lider" class="form-control select2_instructor">
