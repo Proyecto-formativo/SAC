@@ -8,6 +8,7 @@
       <thead>
         <tr>
           <th>Ficha</th>
+          <th>Programa</th>
           <th>Equipo Instructores</th>
           <th>Editar</th>
         </tr>  
@@ -17,6 +18,7 @@
         <?php foreach($equipoinstructores->result() as $ei) : ?>
           <tr>
             <td><?= $ei->ficha; ?></td>
+            <td><?= $ei->programa; ?></td>
             <td><?= $ei->instructores; ?></td>
             <td><a href="<?= base_url('Administrador/FrmEditarEquipoInstructores/' . $ei->ficha); ?>" class="btn bg-sena">Editar</a></td>
           </tr>  
@@ -26,3 +28,6 @@
   </div>
 
 </div>
+<script>
+  <?= isset($mensaje) ? $mensaje : "" ;?>
+</script>

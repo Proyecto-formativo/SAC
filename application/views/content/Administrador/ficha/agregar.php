@@ -93,20 +93,19 @@
       
       <div class="col-4">
         <div class="form-group">
-          <label for="">Etapa Formación:</label>
-          <select name="etapa_formacion" class="form-control">
-            <option value="0">Seleccione una etapa de formación</option>
-            <?php foreach($etapasformacion->result() as $etapaformacion) : ?>
-              <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?>><?= $etapaformacion->nombre; ?></option>
-            <?php endforeach; ?>  
+          <label for="">Estado:</label>
+          <select name="estado" class="form-control">
+            <option value="0">Seleccione un estado</option>
+            <option value="En Ejecución" <?= set_select('estado', "En Ejecución"); ?>>En Ejecución</option>
+            <option value="Finalizada" <?= set_select('estado', "Finalizada"); ?>>Finalizada</option>
           </select>
-          <?= form_error('etapa_formacion', '<p class="text-danger">', '</p>'); ?>
+          <?= form_error('estado', '<p class="text-danger">', '</p>'); ?>
         </div>
-      </div>
+      </div> 
     </div>
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <div class="form-group">
           <label for="">Etapa Proyecto:</label>
           <select name="etapa_proyecto" class="form-control">
@@ -119,7 +118,20 @@
         </div>
       </div>
 
-      <div class="col-6">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="">Etapa Formación:</label>
+          <select name="etapa_formacion" class="form-control">
+            <option value="0">Seleccione una etapa de formación</option>
+            <?php foreach($etapasformacion->result() as $etapaformacion) : ?>
+              <option value="<?= $etapaformacion->codigo; ?>" <?= set_select('etapa_formacion', $etapaformacion->codigo); ?>><?= $etapaformacion->nombre; ?></option>
+            <?php endforeach; ?>  
+          </select>
+          <?= form_error('etapa_formacion', '<p class="text-danger">', '</p>'); ?>
+        </div>
+      </div>
+
+      <div class="col-4">
         <div class="form-group">
           <label for="">Instructor Lider:</label>
           <select name="instructor_lider" class="form-control select2_instructor">

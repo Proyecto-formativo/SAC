@@ -12,6 +12,7 @@
           <th>Municipio</th>
           <th>Etapa Formación</th>
           <th>Etapa Proyecto</th>
+          <th>Estado</th>
           <th>Instructor Lider</th>
           <th>Horario</th>
           <th>Fecha Inicio</th>
@@ -30,6 +31,7 @@
             <td><?= $ficha->municipio; ?></td>
             <td><?= $ficha->etapaformacion; ?></td>
             <td><?= $ficha->etapaproyecto; ?></td>
+            <td><?= $ficha->estado; ?></td>
             <td><?= $ficha->instructorlider ?></td>
             <td><?= $ficha->horainicio; ?> a <?=$ficha->horafin; ?></td>
             <td><?= $ficha->fechainicio?></td>

@@ -8,6 +8,7 @@
       <thead>
         <tr>
           <th>Ficha</th>
+          <th>Programa</th>
           <th>Aprendices</th>
           <th>Editar</th>
         </tr>  
@@ -17,6 +18,7 @@
         <?php foreach($aprendicesficha->result() as $af) : ?>
           <tr>
             <td><?= $af->nroficha; ?></td>
+            <td><?= $af->programa; ?></td>
             <td><?= $af->aprendiz; ?></td>
             <td><a href="<?= base_url('Administrador/FrmEditarAprendicesFicha/' . $af->nroficha); ?>" class="btn bg-sena">Editar</a></td>
           </tr>  

@@ -78,7 +78,7 @@ $(document).ready(function () {
     $("#codigo_recomendacion").val(datos[0]);
 
   });
-  
+
   //Fin Opciones Recomendacion
 
   //Plugin Data Table Municipio
@@ -102,8 +102,8 @@ $(document).ready(function () {
   });
 
   //Boton Eliminar Municipio
-  
-  $("#municipio").on("click",".eliminarMunicipio", function () {
+
+  $("#municipio").on("click", ".eliminarMunicipio", function () {
 
     $("#eliminarMunicipioModal").modal("show");
 
@@ -120,7 +120,7 @@ $(document).ready(function () {
 
     $("#codigo_municipio").val(datos[0]);
   });
-  
+
   //Fin Opciones Recomendacion
 
   //Plugin Data Table Etapas Formación
@@ -770,17 +770,17 @@ $(document).ready(function () {
 
   /*
   ========================================================================================================================
-  */ 
-  
+  */
+
   //Buscar El Numero de Ficha con Autocomplete JQUERY
-  
+
   $("#buscar_ficha").autocomplete({
-    source : "autoCompleteFichas"
+    source: "autoCompleteFichas"
   });
 
   /*
   ========================================================================================================================
-  */ 
+  */
 
   //=============================================================================================================
 
@@ -1421,6 +1421,44 @@ $(document).ready(function () {
   });
 
   /* ==========================================================================================================*/
+
+  //Eliminar a los instructores de la ficha
+  $("#equipo_instructores_ficha").on("click", ".removerInstructor", function () {
+
+    $("#removerEquipoInstructor").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    $("#numFicha").val(datos[0]);
+    $("#documento_instructor").val(datos[1]);
+
+  });
+
+  //Eliminar a los aprendices de la ficha
+  $("#aprendicesfichas").on("click", ".removerAprendiz", function () {
+
+    $("#removerAprendicesFicha").modal("show");
+
+    $tr = $(this).closest("tr");
+
+    let datos = $tr
+      .children("td")
+      .map(function () {
+        return $(this).text();
+      })
+      .get();
+
+    $("#numFicha").val(datos[0]);
+    $("#documento_aprendiz").val(datos[1]);
+
+  });
   // Fin del Document Ready()
 });
 

@@ -2799,6 +2799,15 @@ class Administrador extends CI_Controller {
             return true;
         }
     }
+
+    public function validar_estado($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('validar_estado', 'El campo {field} es obligatorio');
+            return false;
+        } else {
+            return true;
+        }
+    }
     //Fin Funciones para validar select boxes
 
     public function filtroSedeMunicipio_agregar() {
@@ -2832,8 +2841,8 @@ class Administrador extends CI_Controller {
             $this->form_validation->set_rules('etapa_proyecto', 'Etapa Proyecto', 'required|callback_validar_etapa_proyecto');
             $this->form_validation->set_rules('instructor_lider', 'Instructor Lider', 'required|callback_validar_instructor_lider');
             $this->form_validation->set_rules('sede', 'Sede', 'required|callback_validar_sede');
-            
-
+            $this->form_validation->set_rules('estado', 'Estado', 'required|callback_validar_estado');
+        
             if ($this->form_validation->run() == false) {
                 $this->FrmAgregarFicha();
             } else {
@@ -2851,7 +2860,8 @@ class Administrador extends CI_Controller {
                     'hora_fin' => $hora_fin,
                     'etapa_formacion' => $this->input->post('etapa_formacion'),
                     'etapa_proyecto' => $this->input->post('etapa_proyecto'),
-                    'instructor_lider' => $this->input->post('instructor_lider')
+                    'instructor_lider' => $this->input->post('instructor_lider'),
+                    'estado' => $this->input->post('estado')
                 );
 
                 $resultado = $this->ficha->agregarFicha($datos);
@@ -2932,7 +2942,8 @@ class Administrador extends CI_Controller {
                     'horaFin' => $hora_fin,
                     'etapaFormacion' => $this->input->post('etapa_formacion'),
                     'etapaProyecto' => $this->input->post('etapa_proyecto'),
-                    'instructorLider' => $this->input->post('instructor_lider')
+                    'instructorLider' => $this->input->post('instructor_lider'),
+                    'estado' => $this->input->post('estado')
                 );
 
                 $resultado = $this->ficha->editarFicha($numeroficha, $valores);
@@ -3134,7 +3145,7 @@ class Administrador extends CI_Controller {
     
                 Toast.fire({
                     icon: 'success',
-                    title: 'Usuario Administrador agregado'
+                    title: 'Se ha agregado el área al centro'
                 })";
 
                 $data['areas_centro'] = $this->areascentro->mostrarAreasCentro();
@@ -4488,6 +4499,69 @@ class Administrador extends CI_Controller {
         }
     }
 
+    public function editarInstructorFicha() {
+
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+
+            $estados = array();
+            $num = $this->input->post('num_instructores');
+    
+            for($i = 1; $i < $num; $i++) {
+                array_push($estados, $this->input->post('estado' . $i));
+            }
+
+            $documentos = $this->input->post('documento');
+            $ficha = $this->input->post('ficha');
+            $resultado = $this->equipoinstructores->editarEstadoInstructor($documentos, $estados, $ficha);
+
+        if ($resultado) {
+            $data['equipoinstructores'] = $this->equipoinstructores->mostrarEquipoInstructores();
+            $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Los estados de los instructores se han actulizado'
+                })";
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            $data['equipoinstructores'] = $this->equipoinstructores->mostrarEquipoInstructores();
+            $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Ha ocurrido un error actulizando los estados, intentelo de nuevo'
+                })";
+            $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        }
+
+        } else {
+            show_404();
+        }
+
+    }
+
     public function eliminarInstructorFicha() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $documento = $this->input->post('documento');
@@ -4539,6 +4613,7 @@ class Administrador extends CI_Controller {
     public function FrmEditarEquipoInstructores($nroficha) {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['equipoinstructores'] = $this->equipoinstructores->getEquipoInstructores($nroficha);
+            $data['estadoinstructores'] = $this->estadoinstructor->mostrarEstadoInstructores();
             $dinamica = $this->load->view('content/Administrador/usuarios/equipoinstructores/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
@@ -4620,6 +4695,66 @@ class Administrador extends CI_Controller {
         }
     }
 
+    public function editarAprendicesFicha() {
+        if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
+            $estados = array();
+            $num = $this->input->post('num_aprendices');
+    
+            for($i = 1; $i < $num; $i++) {
+                array_push($estados, $this->input->post('estado' . $i));
+            }
+
+            $documentos = $this->input->post('documento');
+            $ficha = $this->input->post('ficha');
+            $resultado = $this->aprendicesficha->editarEstadoAprendices($documentos, $estados, $ficha);
+
+            if ($resultado) {
+            $data['aprendicesficha'] = $this->aprendicesficha->mostrarAprendicesFicha();
+            $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Los estados de los aprendices se han actulizado'
+                })";
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        } else {
+            $data['aprendicesficha'] = $this->aprendicesficha->mostrarAprendicesFicha();
+            $data['mensaje'] = "const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Ha ocurrido un error actulizando los estados, intentelo de nuevo'
+                })";
+            $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/listar', $data, true);
+            $this->Plantilla_Administrador($dinamica);
+        }
+
+        } else {
+            show_404();
+        }
+    }
+
     public function eliminarAprendicesFicha() {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $documento = $this->input->post('documento');
@@ -4671,6 +4806,7 @@ class Administrador extends CI_Controller {
     public function FrmEditarAprendicesFicha($nroficha) {
         if ($this->session->userdata('is_logged') && $this->session->userdata('perfil') == 5) {
             $data['aprendicesficha'] = $this->aprendicesficha->getAprendicesFicha($nroficha);
+            $data['estadoaprendices'] = $this->estadoaprendiz->mostrarEstadoAprendices();
             $dinamica = $this->load->view('content/Administrador/usuarios/aprendicesficha/editar', $data, true);
             $this->Plantilla_Administrador($dinamica);
         } else {
