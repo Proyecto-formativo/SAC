@@ -56,9 +56,9 @@
                     <label for="docuemntoVerificacion">Documento:</label>
                     <input type="text" name="docuemntoVerificacion" class="form-control" id="docuemntoVerificacion" required>
                 </div>
-                <div class="form-group">
+               <div class="form-group" style="display: none">
                     <label for="correo">Correo:</label>
-                    <input type="email" name="correoverificacion" class="form-control" id="correo" aria-describedby="emailHelp" required>
+                    <input type="email" name="correoverificacion" class="form-control" id="correo" aria-describedby="emailHelp" value="xx@hotmail.es" required>
                 </div>
                 <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary">Enviar</button>

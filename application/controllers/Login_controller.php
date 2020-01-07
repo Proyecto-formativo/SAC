@@ -7,6 +7,7 @@ class login_controller extends CI_Controller {
 		$this->load->library(['form_validation']);
 		$this->load->helper(['validarLogin']);
 		$this->load->model(['acceso','usuario']);
+
 	}
 	
 	public function index(){
@@ -137,6 +138,7 @@ class login_controller extends CI_Controller {
 
 
 	public function recuperar(){
+
 		$this->form_validation->set_error_delimiters('','');
 		$this->form_validation->set_rules(recuperar_rules());
 		if ($this->form_validation->run() === false) {
@@ -165,22 +167,68 @@ class login_controller extends CI_Controller {
 			 * y se enviara al correo que el usuario digito
 			 */
 			$newpass = substr(md5(microtime()),1,10);
-			$this->acceso->ActualizarContraseña($this->input->post("docuemntoVerificacion"),['clave'=>$newpass]);
+			$this->acceso->ActualizarContrasena($this->input->post("docuemntoVerificacion"),['clave'=>$newpass]);
 
 			/**
 			 * se crea el mensaje para ser enviado al correo del usuario
 			 */
-			$to = $this->input->post("correoverificacion");
-			$subject = "Recuperar contraseña";
-			$carta = "De:  SAC ";
-			$carta .= "El usuario identificado con el numero de documento: ". $this->input->post("docuemntoVerificacion")."\n";
-			$carta .= "se le asigno una nueva contraseña: ".$newpass;
+
+
+			// cargar libreria PHPMailer
+			$this->load->library('phpmailer_lib');
+
+			// PHPMailer object
+			$mail = $this->phpmailer_lib->load();
+
+			//configuracion SMTP
+			$mail->isSMTP();
+			$mail->Host     = 'smtp.gmail.com';
+			$mail->SMTPAuth = true;
+			$mail->Username = 'aprendicescitados@gmail.com';
+			$mail->Password = 'Sena123456';
+			$mail->SMTPSecure = 'ssl';
+			$mail->Port     = 465;
+
+			$mail->setFrom('info@example.com', 'SAC');
+			$mail->addReplyTo('info@example.com', 'sistema SAC');
+
+			// Add a recipient
+			//consultar nombre y correo del usuario
+			$doc=$this->input->post("docuemntoVerificacion");
+			$cor=$this->usuario->nombreycorreoAprendiz($doc);
+
+			$mail->addAddress($cor[0]->correoCorporativo);
+
+			// Add cc or bcc
+			$mail->addCC('cc@example.com');
+			$mail->addBCC('bcc@example.com');
+
+			// asunto del correo
+			$asunto="recuperar clave de acceso";
+			$mail->Subject =$asunto ;
+
+			// establecer email con formato html
+			$mail->isHTML(true);
+
+			// contenido del mail
+			$mensaje="<h3>El usuario ".$cor[0]->nombre ." identificado con el numero de documento: <p style='color:black;font-size: 17px; display: inline-flex;margin: 0;padding: 0'>".$doc ."</p> ha solicitado un cambio de contraseña <br> La nueva contraseña asignada es:<h1 style='color:blue'>".$newpass."</h1></h3>";
+			$mailContent = $mensaje;
+			//$mailContent.= "se le asigno una nueva contraseña: ".$newpass;
+			$mail->Body = $mailContent;
 
 			/**
 			 * se detienen los error mientras se revisa al subir a u servidor
 			 */
 
-			mail($to,$subject,$carta);
+			// enviar correo
+
+			if($mail->send()){
+				$msj='Revisa tu correo';
+			}else{
+				$msj= "no se pudo realizar la acción";
+
+			}
+			//------
 
 			$datos = [
 				'mensaje' => "const Toast = Swal.mixin({
